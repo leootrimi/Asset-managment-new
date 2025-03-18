@@ -12,8 +12,9 @@ function App() {
     <Router>
       <div className="flex">
         <Sidebar />
-        <div className="flex-1 ">
+        <div className="flex-1">
           <Appbar />
+          <div className="h rounded-lg">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/orders" element={<h1>Orders Page</h1>} />
@@ -22,6 +23,7 @@ function App() {
             <Route path="/analytics" element={<h1>Analytics Page</h1>} />
             <Route path="/settings" element={<h1>Settings Page</h1>} />
           </Routes>
+        </div>
         </div>
       </div>
     </Router>

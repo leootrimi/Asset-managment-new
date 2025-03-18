@@ -21,12 +21,12 @@ const Sidebar = () => {
     <div className="flex">
       {/* Sidebar */}
       <div 
-        className={`h-screen backdrop-blur-md text-gray-100 shadow-xl
+        className={`h-screen backdrop-blur-md bg-white text-gray-100
           transition-all duration-300 ease-in-out
           ${isCollapsed ? 'w-20' : 'w-52'} flex flex-col`} 
       >
         {/* Sidebar Header */}
-        <div className="p-6 pb-8 border-b border-gray-800/50">
+        <div className="p-6 pb-8 ">
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg" />

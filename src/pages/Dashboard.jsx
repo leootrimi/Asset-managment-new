@@ -1,12 +1,13 @@
-// Dashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { Grid, Card, CardContent, Typography, Box, Skeleton } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, Skeleton, Paper, Stack, IconButton } from '@mui/material';
 import { 
   PeopleAltOutlined as PeopleAltOutlinedIcon, 
   AttachMoneyOutlined as AttachMoneyOutlinedIcon, 
   TrendingUpOutlined as TrendingUpOutlinedIcon, 
   PercentOutlined as PercentOutlinedIcon 
 } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import ActionCard from '../components/ActionCard';
 
 // Sample data for the metrics
 const metricsData = [
@@ -19,7 +20,6 @@ const metricsData = [
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate data loading with a delay
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -58,7 +58,6 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
             ) : (
-              // Actual metric box when loaded
               <Card
                 sx={{
                   bgcolor: '#fff',
@@ -72,11 +71,10 @@ const Dashboard = () => {
                 }}
               >
                 <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  {/* Icon with dynamic color */}
                   <Box
                     sx={{
                       p: 1,
-                      bgcolor: `${metric.color}20`, // 20% opacity of the color
+                      bgcolor: `${metric.color}20`,
                       borderRadius: 1,
                       display: 'flex',
                       alignItems: 'center',
@@ -85,7 +83,6 @@ const Dashboard = () => {
                   >
                     <metric.icon sx={{ fontSize: 32, color: metric.color }} />
                   </Box>
-                  {/* Metric Info */}
                   <Box>
                     <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', color: '#1f2937' }}>
                       {metric.value}
@@ -100,6 +97,45 @@ const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
+
+      <Box sx={{ flexGrow: 1, mt: 2 }}>
+        <Grid container spacing={2}>
+          {/* First Column with fixed height */}
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2, height: 130, borderRadius: 3, overflow: 'auto' }}>
+              <Typography variant="h6" gutterBottom>
+                Column 1
+              </Typography>
+              <Typography>
+                This is the content for the first column. It will take full width 
+                on mobile devices and half width on larger screens. The height is fixed 
+                at 200px to prevent it from adjusting based on the second column.
+              </Typography>
+            </Paper>
+          </Grid>
+
+          {/* Second Column */}
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2, height: '100%', borderRadius: 3 }}>
+              <Typography variant="h6" gutterBottom>
+                Manage
+              </Typography>
+              <Typography>
+                <Box sx={{ flexGrow: 1, mt: 1 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} md={6}>
+                    <ActionCard icon={<AddIcon />} title="Create new user" subtitle="Additional text here" />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                    <ActionCard icon={<AddIcon />} title="Create new user" subtitle="Additional text here" />
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
     </Box>
   );
 };
