@@ -30,7 +30,7 @@ const Sidebar = () => {
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg" />
-              <h1 className="text-xl font-semibold tracking-tight text-[#205781]">ModernApp</h1>
+              <h1 className="text-xl font-semibold tracking-tight text-[#205781]">Matrics.io</h1>
             </div>
           )}
           {isCollapsed && (
@@ -39,12 +39,12 @@ const Sidebar = () => {
         </div>
 
         {/* Menu Items */}
-        <nav className="mt-6 flex-1"> {/* Added flex-1 to push footer down */}
+        <nav className="flex-1"> {/* Added flex-1 to push footer down */}
           {menuItems.map((item, index) => (
             <a
               key={index}
               href={item.path}
-              className="flex items-center px-6 py-4 text-[#205781] hover:bg-[#4F959D] 
+              className="flex items-center px-6 py-4 text-[#205781] hover:bg-[#205781] 
                 hover:text-white transition-all duration-200 group relative"
             >
               <item.icon className="w-6 h-6" />

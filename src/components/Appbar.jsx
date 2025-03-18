@@ -9,12 +9,13 @@ import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -156,13 +157,13 @@ export default function Appbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="#ffffff">
+      <AppBar position="static" color="#ffffff" elevation={0}>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
-                <MailIcon sx={{ fontSize: 30 }}/>
+                <MailOutlinedIcon sx={{ fontSize: 30 }}/>
               </Badge>
             </IconButton>
             <IconButton
@@ -171,7 +172,7 @@ export default function Appbar() {
               color="inherit"
             >
               <Badge badgeContent={30} color="error">
-                <NotificationsIcon sx={{ fontSize: 30 }} />
+                <NotificationsNoneOutlinedIcon sx={{ fontSize: 30 }} />
               </Badge>
             </IconButton>
             <IconButton
@@ -183,7 +184,7 @@ export default function Appbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle sx={{ fontSize: 30 }} />
+              <AccountCircleOutlinedIcon sx={{ fontSize: 30 }} />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
