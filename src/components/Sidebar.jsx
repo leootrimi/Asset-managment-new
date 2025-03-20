@@ -18,10 +18,10 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex">
+    <div className="flex sticky top-0">
       {/* Sidebar */}
       <div 
-        className={`h-screen backdrop-blur-md bg-white text-gray-100
+        className={`backdrop-blur-md bg-white text-gray-100
           transition-all duration-300 ease-in-out
           ${isCollapsed ? 'w-20' : 'w-52'} flex flex-col`} 
       >

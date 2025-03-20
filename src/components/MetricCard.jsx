@@ -31,7 +31,7 @@ const MetricCard = ({ isLoading, metric }) => {
               sx={{
                 p: 1,
                 bgcolor: `${metric.color}20`,
-                borderRadius: 1,
+                borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
