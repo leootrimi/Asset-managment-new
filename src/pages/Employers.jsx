@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import EmployersProfileView from "../components/EmployersProfileView";
 import EmployerListItem from "../components/EmployerListItem";
+import { motion } from "framer-motion";
 
 const Employers = () => {
   const mockData = [
@@ -42,6 +43,7 @@ const Employers = () => {
       <Grid container spacing={2}>
         {/* Left section (User list) */}
         <Grid item xs={selectedUser ? 3 : 12}>
+          
           <Stack spacing={1}>
             {mockData.map((employer) => (
               <EmployerListItem
@@ -57,7 +59,14 @@ const Employers = () => {
         {/* Right section (Profile) */}
         {selectedUser && (
           <Grid item xs={9}>
-            <EmployersProfileView selectedUser={selectedUser} />
+             <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 50 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+            >
+              <EmployersProfileView selectedUser={selectedUser} />
+            </motion.div>
           </Grid>
         )}
       </Grid>

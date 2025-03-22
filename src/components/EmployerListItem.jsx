@@ -1,17 +1,22 @@
 import React from "react";
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 
-const EmployerListItem = ({ selectedUser, onSelectUser }) => {
+const EmployerListItem = ({ selectedUser, onSelectUser, user }) => {
+  const isSelected = selectedUser?.id === user.id; // Check if the current item is selected
+
   return (
     <Grid item xs={12}>
       <Paper
         sx={{
           p: 1.5,
           height: "100%",
-          border: selectedUser ? "2px solid #205781" : "none"
+          border: isSelected ? "2px solid #205781" : "none", 
+          borderRadius: isSelected ? "8px" : "3px", 
+          transition: "all 0.1s ease",
         }}
+        onClick={() => onSelectUser(user)}
       >
-        <Stack direction="row" spacing={1} fontSize={12} alignItems='baseline'>
+        <Stack direction="row" spacing={1} fontSize={12} alignItems="baseline">
           <Typography
             style={{
               backgroundColor: "rgba(32, 87, 129, 0.6)",
@@ -26,13 +31,11 @@ const EmployerListItem = ({ selectedUser, onSelectUser }) => {
               fontWeight: "bold",
             }}
           >
-            JD
+            {user.profilePicture}
           </Typography>
           <Stack spacing={0.5}>
             <Stack direction="row" spacing={1}>
-              <Box onClick={() => onSelectUser({ name: "John Doe" })} sx={{ cursor: "pointer" }}>
-                John Doe
-              </Box>
+              <Box sx={{ cursor: "pointer" }}>{user.name}</Box>
               <Typography
                 style={{
                   backgroundColor: "rgba(235, 235, 235, 0.6)",
@@ -41,7 +44,7 @@ const EmployerListItem = ({ selectedUser, onSelectUser }) => {
                 borderRadius={2}
                 fontSize={12}
               >
-                iOS Engineer
+                {user.role}
               </Typography>
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -59,8 +62,8 @@ const EmployerListItem = ({ selectedUser, onSelectUser }) => {
                   fontWeight: "bold",
                 }}
               ></Typography>
-              <Typography fontSize={12}>#153423</Typography>
-              <Typography color="gray" fontSize={12}>8 rue Lavoisier 75008 Paris</Typography>
+              <Typography fontSize={12}>#{user.id}</Typography>
+              <Typography color="gray" fontSize={12}>{user.address}</Typography>
             </Stack>
           </Stack>
         </Stack>
