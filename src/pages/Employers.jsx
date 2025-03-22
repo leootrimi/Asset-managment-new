@@ -65,7 +65,7 @@ const Employers = () => {
               exit={{ opacity: 0, x: 50 }}
               transition={{ duration: 0.7, ease: "easeInOut" }}
             >
-              <EmployersProfileView selectedUser={selectedUser} />
+              <EmployersProfileView selectedUser={selectedUser} onSelectUser={setSelectedUser} />
             </motion.div>
           </Grid>
         )}

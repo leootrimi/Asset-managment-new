@@ -11,7 +11,7 @@ import {
 } from "@heroicons/react/24/outline";
 import EmployerEquipmentTable from "./EmployerEquipmentTable";
 
-const EmployersProfileView = ({ selectedUser }) => {
+const EmployersProfileView = ({ selectedUser, onSelectUser }) => {
   return (
     <Paper sx={{ height: "100%" }}>
       <Stack
@@ -24,7 +24,7 @@ const EmployersProfileView = ({ selectedUser }) => {
         }}
       >
         <Stack direction="row" spacing={1}>
-          <XMarkIcon className="w-6 h-6" />
+          <XMarkIcon className="w-6 h-6"  onClick={() => onSelectUser(null)}/>
           <ArrowsPointingOutIcon className="w-6 h-6" />
         </Stack>
         <Typography color="gray">
@@ -52,7 +52,7 @@ const EmployersProfileView = ({ selectedUser }) => {
             <Typography>8 rue Lavoisier 75008 Paris</Typography>
           </Stack>
 
-          <Typography variant="h4">John Doe</Typography>
+          <Typography variant="h4">{selectedUser.name}</Typography>
 
           <Stack direction="row" spacing={3}>
             <Stack direction="row" spacing={1}>

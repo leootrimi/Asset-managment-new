@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 
 const EmployerListItem = ({ selectedUser, onSelectUser, user }) => {
-  const isSelected = selectedUser?.id === user.id; // Check if the current item is selected
+  const isSelected = selectedUser?.id === user.id;
 
   return (
     <Grid item xs={12}>
