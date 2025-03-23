@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import NewUser from './pages/NewUser';
 import Appbar from './components/Appbar';
+import Login from './pages/Login';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
 
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/customers" element={<h1>Customers Page</h1>} />
                 <Route path="/analytics" element={<h1>Analytics Page</h1>} />
                 <Route path="/settings" element={<h1>Settings Page</h1>} />
+                <Route path="/pages/Login" element={<Login />} />
               </Routes>
             </div>
           </div>
