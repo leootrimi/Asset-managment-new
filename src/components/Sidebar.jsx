@@ -17,6 +17,8 @@ const Sidebar = () => {
     { icon: UserIcon, label: 'Profile', path: '/profile' },
     { icon: UserGroupIcon, label: 'Employers', path: '/employers'},
     { icon: CogIcon, label: 'Settings', path: '/settings' },
+
+
   ];
 
   return (
