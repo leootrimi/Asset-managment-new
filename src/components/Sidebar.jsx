@@ -15,6 +15,8 @@ const Sidebar = () => {
     { icon: HomeIcon, label: 'Dashboard', path: '/' },
     { icon: UserIcon, label: 'Profile', path: '/profile' },
     { icon: CogIcon, label: 'Settings', path: '/settings' },
+
+
   ];
 
   return (

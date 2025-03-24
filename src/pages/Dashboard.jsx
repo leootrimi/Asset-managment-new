@@ -16,6 +16,9 @@ import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import LaptopMacOutlinedIcon from "@mui/icons-material/LaptopMacOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
+import LoginPage from "./Login";
+
+
 
 // Sample data for the metrics
 const metricsData = [
