@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import NewUser from './pages/NewUser';
+import Profile from './pages/Profile';
+import Employers from './pages/Employers';
 import Appbar from './components/Appbar';
 import Login from './pages/Login';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -36,8 +38,8 @@ function MainLayout() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/user/add" element={<NewUser />} />
-            <Route path="/products" element={<h1>Products Page</h1>} />
-            <Route path="/customers" element={<h1>Customers Page</h1>} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/employers" element={<Employers />} />
             <Route path="/analytics" element={<h1>Analytics Page</h1>} />
             <Route path="/settings" element={<h1>Settings Page</h1>} />
           </Routes>

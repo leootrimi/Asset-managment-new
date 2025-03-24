@@ -5,7 +5,8 @@ import {
   UserIcon, 
   CogIcon, 
   ChevronLeftIcon, 
-  ChevronRightIcon 
+  ChevronRightIcon,
+  UserGroupIcon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
@@ -14,6 +15,7 @@ const Sidebar = () => {
   const menuItems = [
     { icon: HomeIcon, label: 'Dashboard', path: '/' },
     { icon: UserIcon, label: 'Profile', path: '/profile' },
+    { icon: UserGroupIcon, label: 'Employers', path: '/employers'},
     { icon: CogIcon, label: 'Settings', path: '/settings' },
 
 
@@ -53,7 +55,7 @@ const Sidebar = () => {
               {!isCollapsed && (
                 <span className="ml-4 font-medium">{item.label}</span>
               )}
-              {/* Tooltip when collapsed */}
+
               {isCollapsed && (
                 <span className="absolute left-full ml-2 px-2 py-1 bg-gray-800 text-sm
                   rounded-md opacity-0 group-hover:opacity-100 transition-opacity
