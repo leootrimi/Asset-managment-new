@@ -1,5 +1,5 @@
 import React from "react";
-import userImage from "../assets/personal-data.svg";
+import loginImage from "../assets/loginImage.png";
 import {
   Box,
   Button,
@@ -25,19 +25,22 @@ const LoginPage = () => {
             <Typography variant="body2" color="textSecondary">
               Enter your credentials to access your account
             </Typography>
-            <Stack direction={{ xs: 'column', md: 'row'}} spacing={1}>
-              <Button sx={{ borderRadius: 3 }} variant="outlined" startIcon={<Google />} fullWidth>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={1}>
+              <Button sx={{ borderRadius: 3 }} variant="outlined" startIcon={<Google />} fullWidth color="#4F959D">
                 Log in with Google
               </Button>
-              <Button sx={{ borderRadius: 3 }} variant="outlined" startIcon={<Apple />} fullWidth>
+              <Button sx={{ borderRadius: 3 }} variant="outlined" startIcon={<Apple />} fullWidth color="#4F959D">
                 Log in with Apple
               </Button>
             </Stack>
 
-
-            <Typography align="center" color="textSecondary">
-              or
-            </Typography>
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <Box sx={{ flex: 1, height: 1, bgcolor: "text.disabled" }} />
+              <Typography align="center" color="textSecondary">
+                or
+              </Typography>
+              <Box sx={{ flex: 1, height: 1, bgcolor: "text.disabled" }} />
+            </Stack>
 
             <TextField label="Email Address" variant="outlined" fullWidth />
             <TextField label="Password" type="password" variant="outlined" fullWidth />
@@ -64,7 +67,8 @@ const LoginPage = () => {
             flex={1}
             justifyContent="center"
             alignItems="center"
-            sx={{ bgcolor: "#4F959D", borderRadius: 3, p: 2, color: "white", py: 10 }}
+            sx={{ backgroundImage: "linear-gradient(to bottom, #4F959D, #2C6B73)", borderRadius: 3, p: 2, color: "white", py: 5 }}
+            spacing={1}
           >
             <Typography variant="h6" fontWeight="bold" align="center">
               The simplest way to manage your workforce
@@ -74,9 +78,9 @@ const LoginPage = () => {
             </Typography>
             <Box
               component="img"
-              src={userImage}
+              src={loginImage}
               alt="Dashboard Preview"
-              sx={{ maxWidth: 300, borderRadius: 2 }}
+              sx={{ maxWidth: 300, borderRadius: 2, borderColor: 'black', borderWidth: '1px' }}
             />
           </Stack>
         </Stack>
