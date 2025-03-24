@@ -14,7 +14,7 @@ import { Google, Apple } from "@mui/icons-material";
 
 const LoginPage = () => {
   return (
-    <Box sx={{ p: 5 }} display='flex' justifyContent='center' height='100vh' justifyItems='center'>
+    <Box sx={{ p: 5 }} display='flex' justifyContent='center' height='90vh' justifyItems='center'>
       <Paper elevation={3} sx={{ p: 2, borderRadius: 3 }}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={10} sx={{ p: 3 }} alignItems='center'>
           {/* Left Side - Login Form */}
@@ -80,7 +80,7 @@ const LoginPage = () => {
               component="img"
               src={loginImage}
               alt="Dashboard Preview"
-              sx={{ maxWidth: 300, borderRadius: 2, borderColor: 'black', borderWidth: '1px' }}
+              sx={{ borderRadius: 2, borderColor: '#2C6B73', borderWidth: '1px' }}
             />
           </Stack>
         </Stack>
