@@ -60,13 +60,13 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Typography variant="h5" sx={{ fontWeight: "bold", color: "#1f2937" }}>
+      <Typography variant="h5" sx={{ fontWeight: "bold", color: "#7e2e26" }}>
         Dashboard Overview
       </Typography>
       <Typography variant="body1" sx={{ mt: 1, color: "#6b7280" }}>
         Add more charts, tables, or widgets here to complete your dashboard.
       </Typography>
-
+      {/* Metrics Card*/}
       <Grid container spacing={3}>
         {metricsData.map((metric, index) => (
           <Grid item xs={12} sm={6} md={3} mt={2} key={index}>

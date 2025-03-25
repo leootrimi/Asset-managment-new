@@ -13,7 +13,7 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const menuItems = [
-    { icon: HomeIcon, label: 'Dashboard', path: '/' },
+    { icon: HomeIcon, label: 'Dashboard', path: '/dashboard' },
     { icon: UserIcon, label: 'Profile', path: '/profile' },
     { icon: UserGroupIcon, label: 'Employers', path: '/employers'},
     { icon: CogIcon, label: 'Settings', path: '/settings' },
@@ -33,12 +33,12 @@ const Sidebar = () => {
         <div className="p-6 pb-8 ">
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg" />
-              <h1 className="text-xl font-semibold tracking-tight text-[#205781]">Matrics.io</h1>
+              <div className="w-8 h-8 bg-gradient-to-br from-[#7e2e26] to-[#4f1d17] rounded-lg" />
+              <h1 className="text-xl font-semibold tracking-tight text-[#7e2e26]">Matrics.io</h1>
             </div>
           )}
           {isCollapsed && (
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg mx-auto" />
+            <div className="w-8 h-8 bg-gradient-to-br from-[#7e2e26] to-[#4f1d17] rounded-lg mx-auto" />
           )}
         </div>
 
@@ -48,7 +48,7 @@ const Sidebar = () => {
             <a
               key={index}
               href={item.path}
-              className="flex items-center px-6 py-4 text-[#205781] hover:bg-[#205781] 
+              className="flex items-center px-6 py-4 text-[#4f1d17] hover:bg-[#7e2e26] 
                 hover:text-white transition-all duration-200 group relative"
             >
               <item.icon className="w-6 h-6" />

@@ -8,8 +8,8 @@ const ActionCard = ({ icon, title, subtitle, path }) => (
       <Stack direction="row" alignItems="center" spacing={1}>
         <IconButton size="small">{icon}</IconButton>
         <Stack direction="column">
-          <Typography variant="body1">{title}</Typography>
-          <Typography variant="caption" sx={{ color: "gray" }}>
+          <Typography variant="body1" sx={{ color: "#4f1d17"}} >{title}</Typography>
+          <Typography variant="caption" sx={{ color: "rgba(126, 46, 38, 0.7)" }}>
             {subtitle}
           </Typography>
         </Stack>
