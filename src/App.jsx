@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Employers from './pages/Employers';
 import Appbar from './components/Appbar';
 import Login from './pages/Login';
+import Landing from './pages/Landing';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           {/* All other routes with Sidebar */}
           <Route path="/*" element={<MainLayout />} />
+          <Route path="/" element={<Landing />} />
         </Routes> </Router> </ThemeProvider>);
 }
 
@@ -36,11 +38,10 @@ function MainLayout() {
         <Appbar />
         <div className="h rounded-lg bg-[#f3f4f6]">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/user/add" element={<NewUser />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/employers" element={<Employers />} />
-            <Route path="/analytics" element={<h1>Analytics Page</h1>} />
             <Route path="/settings" element={<h1>Settings Page</h1>} />
           </Routes>
         </div>

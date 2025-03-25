@@ -7,9 +7,9 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const metricsData = [
-  { label: "Total Interaction", value: "12,045", percentage: "64%", icon: PeopleAltOutlinedIcon, color: "#A8D5BA" },
-  { label: "Revenue", value: "$56,789", percentage: "12%", icon: AttachMoneyOutlinedIcon, color: "#F8D49B" },
-  { label: "Active Sessions", value: "1,234", percentage: "28%", icon: TrendingUpOutlinedIcon, color: "#7FA1C3" }
+  { label: "Total Interaction", value: "12,045", percentage: "64%", icon: PeopleAltOutlinedIcon, color: "#4f1d17" },
+  { label: "Revenue", value: "$56,789", percentage: "12%", icon: AttachMoneyOutlinedIcon, color: "#6e2921" },
+  { label: "Active Sessions", value: "1,234", percentage: "28%", icon: TrendingUpOutlinedIcon, color: "#7e2e26" }
 ];
 
 const ItemRequestedInfo = ({ isLoading }) => {

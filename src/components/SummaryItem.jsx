@@ -6,15 +6,15 @@ import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import PercentOutlinedIcon from "@mui/icons-material/PercentOutlined";
 
 const metricsData = [
-    { label: "Total Users", value: "12,345", icon: PeopleAltOutlinedIcon, color: "#F5EDED" },
-    { label: "Revenue", value: "$56,789", icon: AttachMoneyOutlinedIcon, color: "#E2DAD6" },
-    { label: "Conversion Rate", value: "3.45%", icon: PercentOutlinedIcon, color: "#6482AD" },
-    { label: "Active Sessions", value: "1,234", icon: TrendingUpOutlinedIcon, color: "#7FA1C3" },
+    { label: "Total Users", value: "12,345", icon: PeopleAltOutlinedIcon, color: "#4f1d17" },
+    { label: "Revenue", value: "$56,789", icon: AttachMoneyOutlinedIcon, color: "#5e231c" },
+    { label: "Conversion Rate", value: "3.45%", icon: PercentOutlinedIcon, color: "#6e2921" },
+    { label: "Active Sessions", value: "1,234", icon: TrendingUpOutlinedIcon, color: "#7e2e26" },
   ];
 
 const SummaryItem = ({isLoading}) => {
   return (
-    <Paper elevation={3} sx={{ p: 2, borderRadius: 3 }}>
+    <Paper elevation={3} sx={{ p: 2, borderRadius: 3, px: 3 }}>
         { isLoading ? (
             <>
             <Skeleton variant="rectangular" width={60} height={27} sx={{ borderRadius: 2, mb: 2 }} />
@@ -34,7 +34,7 @@ const SummaryItem = ({isLoading}) => {
                     <Typography
                         key={index}
                         sx={{
-                        p: 1,
+                        p: 1.3,
                         display: "flex",
                         flexDirection: "row",
                         justifyContent: "space-between",
@@ -42,7 +42,8 @@ const SummaryItem = ({isLoading}) => {
                         borderRadius: 5,
                         color: "#fff",
                         alignItems: "center",
-                        mt: 1
+                        mt: 1,
+                        px: 2.5
                         }}
                     >
                         <Stack direction="row" sx={{ gap: 1, alignItems: "center" }}>

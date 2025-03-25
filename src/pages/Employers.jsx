@@ -5,11 +5,6 @@ import {
   Paper,
   Stack,
   Typography,
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Button
 } from "@mui/material";
 import EmployersProfileView from "../components/EmployersProfileView";
@@ -50,59 +45,48 @@ const Employers = () => {
   return (
     <Box sx={{ width: "100%", p: 4 }}>
       {/* Header with filtering */}
-      <Paper sx={{ width: "100%", p: 2, mb: 2, backgroundColor: "#205781" }}>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            label="Full name"
-            variant="outlined"
-            InputLabelProps={{ style: { color: "white" } }} // Label color
-            InputProps={{
-              style: { color: "white", borderColor: "white" }, // Text color
-            }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "white" }, // Border color
-                "&:hover fieldset": { borderColor: "#ddd" }, // Hover effect
-                "&.Mui-focused fieldset": { borderColor: "white" }, // Focus color
-              },
-            }}
-          />
-          <FormControl
-            fullWidth
-            sx={{ "& .MuiOutlinedInput-root": { color: "white" } }}
-          >
-            <Select
-              labelId="position-select-label"
+      <Paper sx={{ width: "100%", p: 2, mb: 2, backgroundColor: "#5e231c" }}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">
+          {/* Search Bar */}
+          <div className="relative w-full md:w-1/2">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-[#205781] focus:border-[#205781]
+"
+              placeholder="Search Employers..."
+              required
+            />
+          </div>
+          
+          {/* Position Selection */}
+          <div className="w-full md:w-1/3">
+            <select
+              id="positions"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3.5"
               value={position}
               onChange={(event) => setPosition(event.target.value)}
-              sx={{
-                color: "white",
-                "& .MuiOutlinedInput-notchedOutline": { borderColor: "white" },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#ddd",
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "white",
-                },
-              }}
             >
-              <MenuItem value="iOS">iOS Engineer</MenuItem>
-              <MenuItem value="Frontend">Frontend</MenuItem>
-              <MenuItem value="Backend">Backend</MenuItem>
-              <MenuItem value="Devops">DevOps</MenuItem>
-            </Select>
-          </FormControl>
+              <option value="">Choose a position</option>
+              <option value="iOS">iOS Engineer</option>
+              <option value="Frontend">Frontend Developer</option>
+              <option value="Backend">Backend Engineer</option>
+              <option value="Devops">DevOps Engineer</option>
+            </select>
+          </div>
+          
+          {/* Search Button */}
           <Button
-            variant="outlined"
+            variant="contained"
             sx={{
-              color: "white",
-              padding: "1rem",
-              px: "2.5rem",
-              borderRadius: "2rem",
-              borderColor: 'white',
-              "&:hover": { backgroundColor: "white", color: "#205781" },
+              backgroundColor: "white", color: "#205781",
+              padding: "0.8rem", px: "2.5rem", borderRadius: "2rem",
+              "&:hover": { backgroundColor: "#ddd" },
             }}
           >
             Search

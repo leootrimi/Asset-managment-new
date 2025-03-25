@@ -27,7 +27,7 @@ const NewUser = () => {
           height={130}
           borderRadius={2}
           style={{
-            backgroundColor: "#205781",
+            backgroundColor: "#5e231c",
             display: "flex",
             alignItems: "center",
           }}
