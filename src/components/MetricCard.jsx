@@ -6,7 +6,7 @@ const MetricCard = ({ isLoading, metric }) => {
   return (
     <Card
       sx={{
-        bgcolor: '#4f1d17', // ose #111827
+        bgcolor: '#4f1d17', // ose #111827 color
         borderRadius: 2,
         boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
         transition: 'transform 0.2s ease-in-out',
