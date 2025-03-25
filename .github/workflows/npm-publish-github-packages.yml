@@ -3,7 +3,7 @@ name: CI -React Vite
 on:
   push:
     branches:
-      - '*'
+      - '**'
   pull_request:
     branches: [ "develop" ]
 
