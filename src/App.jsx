@@ -11,7 +11,6 @@ import Landing from './pages/Landing';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.css';
 
-// Create a custom theme with a monospace font
 const theme = createTheme({
   typography: {
     fontFamily: '"Funnel Sans", sans-serif',
