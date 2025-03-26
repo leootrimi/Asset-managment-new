@@ -6,7 +6,8 @@ import {
   CogIcon, 
   ChevronLeftIcon, 
   ChevronRightIcon,
-  UserGroupIcon
+  UserGroupIcon,
+  TvIcon
 } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
@@ -14,8 +15,9 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: HomeIcon, label: 'Dashboard', path: '/dashboard' },
-    { icon: UserIcon, label: 'Profile', path: '/profile' },
     { icon: UserGroupIcon, label: 'Employers', path: '/employers'},
+    { icon: TvIcon, label: 'Equipments', path: '/equipments'},
+    { icon: UserIcon, label: 'Profile', path: '/profile' },
     { icon: CogIcon, label: 'Settings', path: '/settings' },
 
 
