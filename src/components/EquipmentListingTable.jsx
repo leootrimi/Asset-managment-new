@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 const EquipmentListingTable = ({ equipmentData }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [inUseFilter, setInUseFilter] = useState("all"); // Added state for in-use filter
+  const [inUseFilter, setInUseFilter] = useState("all");
 
   const filteredData = equipmentData.filter((item) => {
     // Updated filter to include tag
@@ -59,6 +59,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
             </button>
           </div>
           {/* In Use Select Dropdown */}
+          
           <div className="w-[250px]">
             <select
               className="bg-white w-full h-10 pl-3 pr-8 bg-transparent text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"

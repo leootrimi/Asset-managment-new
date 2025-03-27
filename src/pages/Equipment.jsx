@@ -10,9 +10,9 @@ const Equipment = () => {
         { tag: "91-PR01-03", type: "Mouse", name: "Logitech MX Master 3", price: 100, inUse: true, warrantyLeft: 1 },
         { tag: "91-PR01-04", type: "Keyboard", name: "Keychron K6", price: 80, inUse: false, warrantyLeft: 2 },
         { tag: "91-PR01-05", type: "Headphones", name: "Sony WH-1000XM4", price: 300, inUse: true, warrantyLeft: 2 },
-        { tag: "91-PR01-04", type: "Keyboard", name: "Keychron K6", price: 80, inUse: false, warrantyLeft: 2 },
+        { tag: "MT-PR01-04", type: "Keyboard", name: "Keychron K6", price: 80, inUse: false, warrantyLeft: 2 },
         { tag: "91-PR01-05", type: "Headphones", name: "Sony WH-1000XM4", price: 300, inUse: true, warrantyLeft: 2 },
-        { tag: "91-PR01-04", type: "Keyboard", name: "Keychron K6", price: 80, inUse: false, warrantyLeft: 2 },
+        { tag: "MT-PR01-04", type: "Keyboard", name: "Keychron K6", price: 80, inUse: false, warrantyLeft: 2 },
         { tag: "91-PR01-05", type: "Headphones", name: "Sony WH-1000XM4", price: 300, inUse: true, warrantyLeft: 2 }
       ];
 
