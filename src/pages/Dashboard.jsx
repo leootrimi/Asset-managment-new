@@ -59,7 +59,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 1 }}>
       <Typography variant="h5" sx={{ fontWeight: "bold", color: "#7e2e26" }}>
         Dashboard Overview
       </Typography>
