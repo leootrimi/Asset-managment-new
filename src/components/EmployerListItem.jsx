@@ -1,76 +1,49 @@
-import React from "react";
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
-const EmployerListItem = ({ selectedUser, onSelectUser, user }) => {
-  const isSelected = selectedUser?.id === user.id;
-
+export default function EmployerListItem({ employtersList }) {
   return (
-    <Grid item xs={12}>
-      <Paper
-        sx={{
-          p: 1.5,
-          height: "100%",
-          border: isSelected ? "2px solid #205781" : "none", 
-          borderRadius: isSelected ? "8px" : "3px", 
-          transition: "all 0.1s ease",
-        }}
-        onClick={() => onSelectUser(user)}
-      >
-        <Stack direction="row" spacing={1} fontSize={12} alignItems="baseline">
-          <Typography
-            style={{
-              backgroundColor: "rgba(126, 46, 38, 0.8)",
-              borderRadius: "50%",
-              width: "2.5em",
-              height: "2.5em",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "white",
-              fontSize: "14px",
-              fontWeight: "bold",
-            }}
-          >
-            {user.profilePicture}
-          </Typography>
-          <Stack spacing={0.5}>
-            <Stack direction="row" spacing={1}>
-              <Box sx={{ cursor: "pointer" }}>{user.name}</Box>
-              <Typography
-                style={{
-                  backgroundColor: "rgba(126, 46, 38, 0.8)",
-                  padding: "0.2em 0.4em",
-                  color: 'white'
-                }}
-                borderRadius={2}
-                fontSize={12}
-              >
-                {user.role}
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography
-                style={{
-                  backgroundColor: "rgba(126, 46, 38, 0.3)",
-                  borderRadius: "50%",
-                  width: "30px",
-                  height: "30px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "white",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                }}
-              ></Typography>
-              <Typography fontSize={12}>#{user.id}</Typography>
-              <Typography color="gray" fontSize={12}>{user.address}</Typography>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Paper>
-    </Grid>
-  );
-};
-
-export default EmployerListItem;
+    <ul
+      role="list"
+      className="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl"
+    >
+      {employtersList.map((person) => (
+        <li key={person.email} className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
+          <div className="flex min-w-0 gap-x-4">
+            <img alt="" src={person.imageUrl} className="size-12 flex-none rounded-full bg-gray-50" />
+            <div className="min-w-0 flex-auto">
+              <p className="text-sm/6 font-semibold text-gray-900">
+                <a href={person.href}>
+                  <span className="absolute inset-x-0 -top-px bottom-0" />
+                  {person.name}
+                </a>
+              </p>
+              <p className="mt-1 flex text-xs/5 text-gray-500">
+                <a href={`mailto:${person.email}`} className="relative truncate hover:underline">
+                  {person.email}
+                </a>
+              </p>
+            </div>
+          </div>
+          <div className="flex shrink-0 items-center gap-x-4">
+            <div className="hidden sm:flex sm:flex-col sm:items-end">
+              <p className="text-sm/6 text-gray-900">{person.role}</p>
+              {person.lastSeen ? (
+                <p className="mt-1 text-xs/5 text-gray-500">
+                  Last seen <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
+                </p>
+              ) : (
+                <div className="mt-1 flex items-center gap-x-1.5">
+                  <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                    <div className="size-1.5 rounded-full bg-emerald-500" />
+                  </div>
+                  <p className="text-xs/5 text-gray-500">Online</p>
+                </div>
+              )}
+            </div>
+            <ChevronRightIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
+          </div>
+        </li>
+      ))}
+    </ul>
+  )
+}

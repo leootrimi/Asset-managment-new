@@ -7,15 +7,15 @@ const EquipmentListingTable = ({ equipmentData }) => {
 
   const filteredData = equipmentData.filter((item) => {
     // Updated filter to include tag
-    const matchesSearch = 
+    const matchesSearch =
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.tag.toLowerCase().includes(searchTerm.toLowerCase());
 
     // Add in-use filter logic
-    const matchesInUse = 
-      inUseFilter === "all" || 
-      (inUseFilter === "yes" && item.inUse) || 
+    const matchesInUse =
+      inUseFilter === "all" ||
+      (inUseFilter === "yes" && item.inUse) ||
       (inUseFilter === "no" && !item.inUse);
 
     return matchesSearch && matchesInUse;
@@ -59,7 +59,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
             </button>
           </div>
           {/* In Use Select Dropdown */}
-          
+
           <div className="w-[250px]">
             <select
               className="bg-white w-full h-10 pl-3 pr-8 bg-transparent text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"

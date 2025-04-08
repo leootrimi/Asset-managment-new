@@ -31,7 +31,7 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
   { name: 'Team', href: '/employers', icon: UsersIcon, current: false },
   { name: 'Equipments', href: '/equipment', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
+  { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
   { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
 ]
@@ -101,15 +101,15 @@ export default function Example() {
                               href={item.href}
                               className={classNames(
                                 item.current
-                                  ? 'bg-gray-50 text-indigo-600'
-                                  : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                                  ? 'bg-gray-50 text-[#5e231c]'
+                                  : 'text-gray-700 hover:bg-gray-50 hover:text-[#5e231c]',
                                 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                               )}
                             >
                               <item.icon
                                 aria-hidden="true"
                                 className={classNames(
-                                  item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+                                  item.current ? 'text-[#5e231c]' : 'text-gray-400 group-hover:text-[#5e231c]',
                                   'size-6 shrink-0',
                                 )}
                               />
@@ -128,16 +128,16 @@ export default function Example() {
                               href={team.href}
                               className={classNames(
                                 team.current
-                                  ? 'bg-gray-50 text-indigo-600'
-                                  : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                                  ? 'bg-gray-50 text-[#5e231c]'
+                                  : 'text-gray-700 hover:bg-gray-50 hover:text-[#5e231c]',
                                 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                               )}
                             >
                               <span
                                 className={classNames(
                                   team.current
-                                    ? 'border-indigo-600 text-indigo-600'
-                                    : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                                    ? 'border-[#5e231c] text-[#5e231c]'
+                                    : 'border-gray-200 text-gray-400 group-hover:border-[#5e231c] group-hover:text-[#5e231c]',
                                   'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
                                 )}
                               >
@@ -152,11 +152,11 @@ export default function Example() {
                     <li className="mt-auto">
                       <a
                         href="#"
-                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#5e231c]"
                       >
                         <Cog6ToothIcon
                           aria-hidden="true"
-                          className="size-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                          className="size-6 shrink-0 text-gray-400 group-hover:text-[#5e231c]"
                         />
                         Settings
                       </a>
@@ -189,15 +189,15 @@ export default function Example() {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-gray-50 text-indigo-600'
-                              : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                              ? 'bg-gray-50 text-[#5e231c]'
+                              : 'text-gray-700 hover:bg-gray-50 hover:text-[#5e231c]',
                             'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                           )}
                         >
                           <item.icon
                             aria-hidden="true"
                             className={classNames(
-                              item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+                              item.current ? 'text-[#5e231c]' : 'text-gray-400 group-hover:text-[#5e231c]',
                               'size-6 shrink-0',
                             )}
                           />
@@ -216,16 +216,16 @@ export default function Example() {
                           href={team.href}
                           className={classNames(
                             team.current
-                              ? 'bg-gray-50 text-indigo-600'
-                              : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600',
+                              ? 'bg-gray-50 text-[#5e231c]'
+                              : 'text-gray-700 hover:bg-gray-50 hover:text-[#5e231c]',
                             'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                           )}
                         >
                           <span
                             className={classNames(
                               team.current
-                                ? 'border-indigo-600 text-indigo-600'
-                                : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                                ? 'border-[#5e231c] text-[#5e231c]'
+                                : 'border-gray-200 text-gray-400 group-hover:border-[#5e231c] group-hover:text-[#5e231c]',
                               'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium',
                             )}
                           >
@@ -240,11 +240,11 @@ export default function Example() {
                 <li className="mt-auto">
                   <a
                     href="#"
-                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
+                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#5e231c]"
                   >
                     <Cog6ToothIcon
                       aria-hidden="true"
-                      className="size-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
+                      className="size-6 shrink-0 text-gray-400 group-hover:text-[#5e231c]"
                     />
                     Settings
                   </a>
@@ -325,7 +325,7 @@ export default function Example() {
 
           <main className="py-4">
             <div className="px-2 sm:px-6 lg:px-4">
-              <Outlet /> 
+              <Outlet />
             </div>
           </main>
         </div>

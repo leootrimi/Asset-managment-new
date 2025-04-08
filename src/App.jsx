@@ -12,6 +12,8 @@ import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Equipment from './pages/Equipment';
 import EquipmentProfile from './pages/EquipmentProfile';
+import EmployersProfile from './pages/EmployersProfile';
+import CalendarEvents from './pages/CalendarEvents';
 
 import './App.css';
 
@@ -44,9 +46,11 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="user/add" element={<NewUser />} />
             <Route path="profile/:id" element={<Profile />} />
+            <Route path='employers/:id' element={<EmployersProfile />} />
             <Route path="employers" element={<Employers />} />
             <Route path="equipment" element={<Equipment />} />
             <Route path="equipment/:id" element={<EquipmentProfile />} />
+            <Route path="events" element={<CalendarEvents />} />
           </Route>
         </Routes>
       </Router>

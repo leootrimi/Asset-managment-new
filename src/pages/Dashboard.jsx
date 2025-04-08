@@ -14,10 +14,8 @@ import ItemRequestedInfo from "../components/ItemRequestedInfo";
 import AddIcon from "@mui/icons-material/Add";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 import LaptopMacOutlinedIcon from "@mui/icons-material/LaptopMacOutlined";
-import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
-import LoginPage from "./Login";
-
+import Alerts from "../Core/Alerts";
 
 
 // Sample data for the metrics
@@ -74,6 +72,7 @@ const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
+      <Alerts />
 
       <Box sx={{ flexGrow: 1, mt: 2 }}>
         <Grid container spacing={2}>
