@@ -6,13 +6,11 @@ const EquipmentListingTable = ({ equipmentData }) => {
   const [inUseFilter, setInUseFilter] = useState("all");
 
   const filteredData = equipmentData.filter((item) => {
-    // Updated filter to include tag
     const matchesSearch =
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.tag.toLowerCase().includes(searchTerm.toLowerCase());
 
-    // Add in-use filter logic
     const matchesInUse =
       inUseFilter === "all" ||
       (inUseFilter === "yes" && item.inUse) ||
@@ -23,125 +21,93 @@ const EquipmentListingTable = ({ equipmentData }) => {
 
   return (
     <Box>
-      <div className="w-full flex justify-between items-center mb-3 mt-1 pl-3">
-        <div>
-          <h3 className="text-lg font-semibold text-slate-800">Equipment Listing</h3>
-          <p className="text-slate-500">Overview of existing equipment.</p>
-        </div>
-        <div className="ml-4 flex items-center space-x-3">
-          {/* Search Input */}
-          <div className="w-full max-w-sm min-w-[200px] relative">
+      <div className="px-2 sm:px-2 lg:px-2">
+        {/* Header */}
+        <div className="sm:flex sm:items-center">
+          <div className="sm:flex-auto">
+            <h1 className="text-base font-semibold text-gray-900">Equipment</h1>
+            <p className="mt-2 text-sm text-gray-700">A list of all equipment with current status.</p>
+          </div>
+          <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex gap-3">
+            {/* Search */}
             <input
               type="text"
-              className="bg-white w-full pr-11 h-10 pl-3 p-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-              placeholder="Search for equipment..."
+              placeholder="Search equipment..."
+              className="block w-full max-w-xs rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button
-              className="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded"
-              type="button"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="3"
-                stroke="currentColor"
-                className="w-8 h-8 text-slate-600"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                />
-              </svg>
-            </button>
-          </div>
-          {/* In Use Select Dropdown */}
-
-          <div className="w-[250px]">
+            {/* Filter */}
             <select
-              className="bg-white w-full h-10 pl-3 pr-8 bg-transparent text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+              className="rounded-md border border-gray-300 px-2 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
               value={inUseFilter}
               onChange={(e) => setInUseFilter(e.target.value)}
             >
-              <option value="all">All Equipment</option>
+              <option value="all">All</option>
               <option value="yes">In Use</option>
               <option value="no">Not In Use</option>
             </select>
           </div>
         </div>
-      </div>
 
-      <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
-        <table className="w-full text-left table-auto min-w-max">
-          <thead>
-            <tr>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">Tag</p>
-              </th>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">Type</p>
-              </th>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">Name</p>
-              </th>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">Price</p>
-              </th>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">In Use</p>
-              </th>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">Warranty Left</p>
-              </th>
-              <th className="p-4 border-b border-slate-200 bg-slate-50">
-                <p className="text-sm font-normal leading-none text-slate-500">Action</p>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map((item, index) => (
-              <tr key={index} className="hover:bg-slate-50 border-b border-slate-200">
-                <td className="p-4 py-5">
-                  <p className="block font-semibold text-sm text-slate-800">{item.tag}</p>
-                </td>
-                <td className="p-4 py-5">{item.type}</td>
-                <td className="p-4 py-5">{item.name}</td>
-                <td className="p-4 py-5">${item.price}</td>
-                <td className="p-4 py-5">{item.inUse ? "Yes" : "No"}</td>
-                <td className="p-4 py-5">{item.warrantyLeft} years</td>
-                <td className="p-4 py-5">
-                  <a href="#" className="font-medium text-[#7e2e26] hover:underline">
-                    Edit
-                  </a>
-                </td>
+        {/* Table */}
+        <div className="-mx-4 mt-8 sm:-mx-0">
+          <table className="min-w-full divide-y divide-gray-300">
+            <thead>
+              <tr>
+                <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
+                  Tag
+                </th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Type</th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">In Use</th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Warranty Left</th>
+                <th className="relative py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">
+                  <span className="sr-only">Edit</span>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {filteredData.map((item, idx) => (
+                <tr key={idx}>
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                    {item.tag}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.type}</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.name}</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">${item.price}</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    {item.inUse ? "Yes" : "No"}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.warrantyLeft} years</td>
+                  <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
+                    <a href="#" className="text-indigo-600 hover:text-indigo-900">
+                      Edit<span className="sr-only">, {item.name}</span>
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <div className="flex justify-between items-center px-4 py-3">
-          <div className="text-sm text-slate-500">
-            Showing <b>1-{filteredData.length}</b> of {equipmentData.length}
-          </div>
-          <div className="flex space-x-1">
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              Prev
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
-              1
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              2
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              3
-            </button>
-            <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-              Next
-            </button>
+          {/* Footer */}
+          <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
+            <div>
+              Showing <strong>1-{filteredData.length}</strong> of {equipmentData.length}
+            </div>
+            <div className="space-x-1">
+              <button className="px-3 py-1 rounded-md border border-gray-300 text-sm text-gray-600 hover:bg-gray-50">
+                Prev
+              </button>
+              <button className="px-3 py-1 rounded-md bg-gray-900 text-white text-sm">1</button>
+              <button className="px-3 py-1 rounded-md border border-gray-300 text-sm text-gray-600 hover:bg-gray-50">
+                2
+              </button>
+              <button className="px-3 py-1 rounded-md border border-gray-300 text-sm text-gray-600 hover:bg-gray-50">
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
