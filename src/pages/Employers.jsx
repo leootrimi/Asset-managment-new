@@ -43,7 +43,7 @@ const Employers = () => {
   const [position, setPosition] = useState(null);
 
   return (
-    <Box sx={{ width: "100%", p: 4 }}>
+    <Box sx={{ width: "100%", p: 0 }}>
       {/* Header with filtering */}
       <Paper sx={{ width: "100%", p: 2, mb: 2, backgroundColor: "#5e231c" }}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems="center">

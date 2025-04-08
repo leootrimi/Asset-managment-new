@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useState } from 'react';
+
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import NewUser from './pages/NewUser';
@@ -9,7 +11,8 @@ import Appbar from './components/Appbar';
 import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Equipment from './pages/Equipment';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import EquipmentProfile from './pages/EquipmentProfile';
+
 import './App.css';
 
 const theme = createTheme({
@@ -18,34 +21,37 @@ const theme = createTheme({
   },
 });
 
+// Layout component that wraps Sidebar and renders nested routes
+function MainLayout() {
+  return (
+    <div className="h-full">
+      <Sidebar />
+    </div>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Routes>
+          {/* Public routes */}
           <Route path="/login" element={<Login />} />
-          {/* All other routes with Sidebar */}
-          <Route path="/*" element={<MainLayout />} />
           <Route path="/" element={<Landing />} />
-        </Routes> </Router> </ThemeProvider>);
+
+          {/* Protected routes inside Sidebar layout */}
+          <Route path="/" element={<MainLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="user/add" element={<NewUser />} />
+            <Route path="profile/:id" element={<Profile />} />
+            <Route path="employers" element={<Employers />} />
+            <Route path="equipment" element={<Equipment />} />
+            <Route path="equipment/:id" element={<EquipmentProfile />} />
+          </Route>
+        </Routes>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
-function MainLayout() {
-  return (
-    <div className="flex h-full">
-      <Sidebar />
-      <div className="flex-1 h-screen">
-        <Appbar />
-        <div className="h rounded-lg bg-[#f3f4f6]">
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/user/add" element={<NewUser />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/employers" element={<Employers />} />
-            <Route path="/equipments" element={<Equipment />} />
-          </Routes>
-        </div>
-      </div>
-    </div>);
-}
 export default App;
