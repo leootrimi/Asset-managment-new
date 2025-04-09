@@ -3,17 +3,16 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useState } from 'react';
 
 import Sidebar from './components/Sidebar';
-import Dashboard from './pages/Dashboard';
-import NewUser from './pages/NewUser';
-import Profile from './pages/Profile';
-import Employers from './pages/Employers';
-import Appbar from './components/Appbar';
-import Login from './pages/Login';
-import Landing from './pages/Landing';
-import Equipment from './pages/Equipment';
-import EquipmentProfile from './pages/EquipmentProfile';
-import EmployersProfile from './pages/EmployersProfile';
-import CalendarEvents from './pages/CalendarEvents';
+import Dashboard from './pages/Dashboard/Dashboard';
+import NewUser from './pages/Add New User/NewUser';
+import Profile from './pages/Profile'
+import Employers from './pages/Employers List/Employers';
+import LoginPage from './pages/Login/Login';
+import Landing from './pages/Landing Page/Landing';
+import Equipment from './pages/Equipment List/Equipment';
+import EquipmentProfile from './pages/Equipment Profile/EquipmentProfile';
+import EmployersProfile from './pages/Employer Profile/EmployersProfile'
+import CalendarEvents from './pages/Calendar Events/CalendarEvents'
 
 import './App.css';
 
@@ -38,7 +37,7 @@ function App() {
       <Router>
         <Routes>
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Landing />} />
 
           {/* Protected routes inside Sidebar layout */}

@@ -1,5 +1,5 @@
 import React from "react";
-import loginImage from "../assets/loginImage.png";
+import loginImage from "../../assets/loginImage.png";
 import {
   Box,
   Button,

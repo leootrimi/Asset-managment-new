@@ -25,7 +25,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Outlet } from 'react-router-dom';
-import Dashboard from '../pages/Dashboard';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
@@ -87,7 +86,7 @@ export default function Example() {
                 <div className="flex h-16 shrink-0 items-center">
                   <img
                     alt="Your Company"
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
+                    src="https://static.vecteezy.com/system/resources/thumbnails/007/653/739/small_2x/asset-development-app-logo-design-vector.jpg"
                     className="h-8 w-auto"
                   />
                 </div>
@@ -175,8 +174,8 @@ export default function Example() {
             <div className="flex h-16 shrink-0 items-center">
               <img
                 alt="Your Company"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
+                src="https://static.vecteezy.com/system/resources/previews/055/007/018/non_2x/data-analysis-is-at-hand-vector.jpg"
+                className="h-15 w-auto"
               />
             </div>
             <nav className="flex flex-1 flex-col">

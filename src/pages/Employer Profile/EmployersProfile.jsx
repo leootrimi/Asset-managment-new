@@ -1,23 +1,12 @@
-import {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    Popover,
-    PopoverBackdrop,
-    PopoverButton,
-    PopoverPanel,
-  } from '@headlessui/react'
+import { useState } from 'react'
   import {
-    ArrowLongLeftIcon,
     CheckIcon,
     HandThumbUpIcon,
-    HomeIcon,
-    MagnifyingGlassIcon,
     PaperClipIcon,
     QuestionMarkCircleIcon,
     UserIcon,
   } from '@heroicons/react/20/solid'
+  import DeleteAlert from '../../Core/DeleteAlert'
   
   const user = {
     name: 'Whitney Francis',
@@ -25,22 +14,6 @@ import {
     imageUrl:
       'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
   }
-  const navigation = [
-    { name: 'Dashboard', href: '#' },
-    { name: 'Jobs', href: '#' },
-    { name: 'Applicants', href: '#' },
-    { name: 'Company', href: '#' },
-  ]
-  const breadcrumbs = [
-    { name: 'Jobs', href: '#', current: false },
-    { name: 'Front End Developer', href: '#', current: false },
-    { name: 'Applicants', href: '#', current: true },
-  ]
-  const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
-  ]
   const attachments = [
     { name: 'resume_front_end_developer.pdf', href: '#' },
     { name: 'coverletter_front_end_developer.pdf', href: '#' },
@@ -119,8 +92,12 @@ import {
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
   }
+
   
   export default function EmployersProfile() {
+
+  const [showModal, setShowModal] = useState(false);
+
     return (
       <>
         <div className="min-h-full">
@@ -149,10 +126,12 @@ import {
               <div className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
                 <button
                   type="button"
+                  onClick={() => setShowModal(true)}
                   className="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-red-700 shadow-sm ring-1 ring-inset ring-red-500 hover:bg-red-100"
                 >
                   Delete
                 </button>
+                <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} />
                 <button
                   type="button"
                   className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"

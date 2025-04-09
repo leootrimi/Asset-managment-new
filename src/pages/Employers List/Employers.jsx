@@ -7,9 +7,9 @@ import {
   Typography,
   Button
 } from "@mui/material";
-import EmployerListItem from "../components/EmployerListItem";
-import SearchField from "../Core/SearchField";
-import SelectMenu from "../Core/SelectMenu";
+import EmployerListItem from "../../components/EmployerListItem";
+import EmployersFilterSection from "./Components/EmployersFilterSection";
+
 const Employers = () => {
   const mockData = [
     {
@@ -77,15 +77,12 @@ const Employers = () => {
   return (
     <Box sx={{ width: "100%", p: 0 }}>
       {/* Header with filtering */}
-      <div className="header-filter bg-white shadow-sm ring-1 sm:rounded-xl p-3">
-        <SearchField />
-        <SelectMenu />
-      </div>
+      <EmployersFilterSection />
+
 
       {/* Main content layout */}
       <Grid container spacing={2} mt={1}>
-        {/* Left section (User list) */}
-        <Grid item xs={selectedUser ? 3 : 12}>
+        <Grid item xs={12}>
           <Stack spacing={1}>
             <EmployerListItem
               employtersList={mockData}

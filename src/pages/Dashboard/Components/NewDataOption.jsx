@@ -6,19 +6,21 @@ import {
     TableCellsIcon,
     ViewColumnsIcon,
   } from '@heroicons/react/24/outline'
-  
+
   const items = [
     {
       title: 'Create an Employer',
       description: 'Make sure to have all neccessary data filled in.',
       icon: UserIcon,
       background: 'bg-pink-500',
+      path: '/user/add'
     },
     {
       title: 'Create an Event',
       description: 'Stay on top of your deadlines, or don’t — it’s up to you.',
       icon: CalendarIcon,
       background: 'bg-yellow-500',
+      path: '/events'
     },
     {
       title: 'Create an Equipment',
@@ -68,7 +70,7 @@ import {
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">
-                    <a href="#" className="focus:outline-none">
+                    <a href={item.path} className="focus:outline-none">
                       <span aria-hidden="true" className="absolute inset-0" />
                       <span>{item.title}</span>
                       <span aria-hidden="true"> &rarr;</span>

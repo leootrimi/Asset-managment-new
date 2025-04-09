@@ -1,14 +1,13 @@
-'use employer'
 
 import { Fragment, useState } from 'react'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import NewDataOption from '../components/NewDataOption'
+import NewDataOption from './Components/NewDataOption';
+import RecentAction from './Components/RecentAction';
+import Alerts from '../../Core/Alerts';
+import StatsHeader from './Components/StatsHeader';
 import {
   ArrowDownCircleIcon,
   ArrowPathIcon,
   ArrowUpCircleIcon,
-  Bars3Icon,
-  EllipsisHorizontalIcon,
   PlusSmallIcon,
 } from '@heroicons/react/20/solid'
 
@@ -116,8 +115,7 @@ export default function Dashboard() {
 
   return (
     <>
-      
-
+    <Alerts />
       <main>
         <div className="relative isolate overflow-hidden pt-1">
           {/* Secondary navigation */}
@@ -142,45 +140,8 @@ export default function Dashboard() {
           </header>
 
           {/* Stats */}
-          <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
-            <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
-              {stats.map((stat, statIdx) => (
-                <div
-                  key={stat.name}
-                  className={classNames(
-                    statIdx % 2 === 1 ? 'sm:border-l' : statIdx === 2 ? 'lg:border-l' : '',
-                    'flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 border-t border-gray-900/5 px-4 py-5 sm:px-6 lg:border-t-0 xl:px-8',
-                  )}
-                >
-                  <dt className="text-sm/6 font-medium text-gray-500">{stat.name}</dt>
-                  <dd
-                    className={classNames(
-                      stat.changeType === 'negative' ? 'text-rose-600' : 'text-gray-700',
-                      'text-xs font-medium',
-                    )}
-                  >
-                    {stat.change}
-                  </dd>
-                  <dd className="w-full flex-none text-3xl/10 font-medium tracking-tight text-gray-900">
-                    {stat.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+                <StatsHeader stats = {stats} />
 
-          <div
-            aria-hidden="true"
-            className="absolute left-0 top-full -z-10 mt-96 origin-top-left translate-y-40 -rotate-90 transform-gpu opacity-20 blur-3xl sm:left-1/2 sm:-ml-96 sm:-mt-10 sm:translate-y-0 sm:rotate-0 sm:transform-gpu sm:opacity-50"
-          >
-            <div
-              style={{
-                clipPath:
-                  'polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)',
-              }}
-              className="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#FF80B5] to-[#9089FC]"
-            />
-          </div>
         </div>
           <NewDataOption />
 
@@ -273,79 +234,7 @@ export default function Dashboard() {
           </div>
 
           {/* Recent employer list*/}
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-              <div className="flex items-center justify-between">
-                <h2 className="text-base/7 font-semibold text-gray-900">Recent clients</h2>
-                <a href="#" className="text-sm/6 font-semibold text-indigo-600 hover:text-indigo-500">
-                  View all<span className="sr-only">, clients</span>
-                </a>
-              </div>
-              <ul role="list" className="mt-6 grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8">
-                {clients.map((employer) => (
-                  <li key={employer.id} className="overflow-hidden rounded-xl border border-gray-200">
-                    <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                      <img
-                        alt={employer.name}
-                        src={employer.imageUrl}
-                        className="size-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
-                      />
-                      <div className="text-sm/6 font-medium text-gray-900">{employer.name}</div>
-                      <Menu as="div" className="relative ml-auto">
-                        <MenuButton className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
-                          <span className="sr-only">Open options</span>
-                          <EllipsisHorizontalIcon aria-hidden="true" className="size-5" />
-                        </MenuButton>
-                        <MenuItems
-                          transition
-                          className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-                        >
-                          <MenuItem>
-                            <a
-                              href="#"
-                              className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
-                            >
-                              View<span className="sr-only">, {employer.name}</span>
-                            </a>
-                          </MenuItem>
-                          <MenuItem>
-                            <a
-                              href="#"
-                              className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
-                            >
-                              Edit<span className="sr-only">, {employer.name}</span>
-                            </a>
-                          </MenuItem>
-                        </MenuItems>
-                      </Menu>
-                    </div>
-                    <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm/6">
-                      <div className="flex justify-between gap-x-4 py-3">
-                        <dt className="text-gray-500">Last invoice</dt>
-                        <dd className="text-gray-700">
-                          <time dateTime={employer.lastInvoice.dateTime}>{employer.lastInvoice.date}</time>
-                        </dd>
-                      </div>
-                      <div className="flex justify-between gap-x-4 py-3">
-                        <dt className="text-gray-500">Amount</dt>
-                        <dd className="flex items-start gap-x-2">
-                          <div className="font-medium text-gray-900">{employer.lastInvoice.equipment}</div>
-                          <div
-                            className={classNames(
-                              statuses[employer.lastInvoice.status],
-                              'rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset',
-                            )}
-                          >
-                            {employer.lastInvoice.status}
-                          </div>
-                        </dd>
-                      </div>
-                    </dl>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+            <RecentAction clients={clients} />
         </div>
       </main>
     </>
