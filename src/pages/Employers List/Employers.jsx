@@ -7,7 +7,7 @@ import {
   Typography,
   Button
 } from "@mui/material";
-import EmployerListItem from "../../components/EmployerListItem";
+import EmployerListItem from "./Components/EmployerListItem";
 import EmployersFilterSection from "./Components/EmployersFilterSection";
 
 const Employers = () => {
@@ -18,7 +18,6 @@ const Employers = () => {
       role: 'iOS Engineer',
       imageUrl:
         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
       lastSeen: '3h ago',
       lastSeenDateTime: '2023-01-23T13:23Z',
     },
@@ -28,7 +27,6 @@ const Employers = () => {
       role: 'Co-Founder / CTO',
       imageUrl:
         'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
       lastSeen: '3h ago',
       lastSeenDateTime: '2023-01-23T13:23Z',
     },
@@ -38,7 +36,6 @@ const Employers = () => {
       role: 'Business Relations',
       imageUrl:
         'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
       lastSeen: null,
     },
     {
@@ -47,7 +44,6 @@ const Employers = () => {
       role: 'Front-end Developer',
       imageUrl:
         'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
       lastSeen: '3h ago',
       lastSeenDateTime: '2023-01-23T13:23Z',
     },
@@ -67,7 +63,6 @@ const Employers = () => {
       role: 'Director of Product',
       imageUrl:
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      href: '#',
       lastSeen: null,
     },
   ]

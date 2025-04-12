@@ -13,6 +13,8 @@ import Equipment from './pages/Equipment List/Equipment';
 import EquipmentProfile from './pages/Equipment Profile/EquipmentProfile';
 import EmployersProfile from './pages/Employer Profile/EmployersProfile'
 import CalendarEvents from './pages/Calendar Events/CalendarEvents'
+import Documents from './pages/Documents/Documents';
+import Reports from './pages/Reports/Reports';
 
 import './App.css';
 
@@ -50,6 +52,8 @@ function App() {
             <Route path="equipment" element={<Equipment />} />
             <Route path="equipment/:id" element={<EquipmentProfile />} />
             <Route path="events" element={<CalendarEvents />} />
+            <Route path="documents" element={<Documents />} />
+            <Route path="reports" element={<Reports />} />
           </Route>
         </Routes>
       </Router>

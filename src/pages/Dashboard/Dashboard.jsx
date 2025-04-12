@@ -1,7 +1,7 @@
 
 import { Fragment, useState } from 'react'
 import NewDataOption from './Components/NewDataOption';
-import RecentAction from './Components/RecentAction';
+import RecentAction from './Components/RecentActivity';
 import Alerts from '../../Core/Alerts';
 import StatsHeader from './Components/StatsHeader';
 import {
@@ -23,9 +23,9 @@ const stats = [
   { name: 'Expenses', value: '$30,156.00', change: '+10.18%', changeType: 'negative' },
 ]
 const statuses = {
-  Paid: 'text-green-700 bg-green-50 ring-green-600/20',
+  Available: 'text-green-700 bg-green-50 ring-green-600/20',
   Withdraw: 'text-gray-600 bg-gray-50 ring-gray-500/10',
-  Overdue: 'text-red-700 bg-red-50 ring-red-600/10',
+  Using: 'text-red-700 bg-red-50 ring-red-600/10',
 }
 const days = [
   {
@@ -38,7 +38,7 @@ const days = [
         href: '#',
         equipment: 'Macbook Air M1',
         type: 'Laptop',
-        status: 'Paid',
+        status: 'Available',
         employer: 'Leotrim Halimi',
         job: 'iOS Engineer',
         icon: ArrowUpCircleIcon,
@@ -49,7 +49,7 @@ const days = [
         href: '#',
         equipment: 'Lenovo IdeaPad',
         type: 'Laptop',
-        status: 'Withdraw',
+        status: 'Using',
         employer: 'Tom Cook',
         job: 'Backend Engineer',
         icon: ArrowDownCircleIcon,
@@ -60,7 +60,7 @@ const days = [
         href: '#',
         equipment: 'Dell CM12E',
         type: 'Desktop',
-        status: 'Overdue',
+        status: 'Withdraw',
         employer: 'John Doe',
         job: 'AEM Developer',
         icon: ArrowPathIcon,
@@ -77,7 +77,7 @@ const days = [
         href: '#',
         equipment: 'Apple Headphones',
         type: 'Headphones',
-        status: 'Paid',
+        status: 'Available',
         employer: 'Savy Alman',
         job: 'Android Engineer',
         icon: ArrowUpCircleIcon,

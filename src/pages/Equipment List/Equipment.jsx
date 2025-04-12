@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid } from "@mui/material";
-import EquipmentListingTable from "../../components/EquipmentListingTable";
+import EquipmentListingTable from "./Components/EquipmentListingTable";
 
 const Equipment = () => {
 

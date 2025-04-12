@@ -6,13 +6,13 @@ export default function EmployerListItem({ employtersList }) {
       role="list"
       className="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl"
     >
-      {employtersList.map((person) => (
+      {employtersList.map((person, index) => (
         <li key={person.email} className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
           <div className="flex min-w-0 gap-x-4">
             <img alt="" src={person.imageUrl} className="size-12 flex-none rounded-full bg-gray-50" />
             <div className="min-w-0 flex-auto">
               <p className="text-sm/6 font-semibold text-gray-900">
-                <a href={person.href}>
+                <a href={`/employers/${index}`}>
                   <span className="absolute inset-x-0 -top-px bottom-0" />
                   {person.name}
                 </a>

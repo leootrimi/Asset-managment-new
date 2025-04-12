@@ -3,7 +3,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 
 
-export default function RecentAction ({clients}) {
+export default function RecentActivity({clients}) {
 
     const statuses = {
         Paid: 'text-green-700 bg-green-50 ring-green-600/20',

@@ -64,7 +64,7 @@ import {
             <li key={itemIdx} className="flow-root">
               <div className="relative -m-2 flex items-center space-x-4 rounded-xl p-2 focus-within:ring-2 focus-within:ring-indigo-500 hover:bg-gray-50">
                 <div
-                  className={classNames(item.background, 'flex size-16 shrink-0 items-center justify-center rounded-lg')}
+                  className={classNames(item.background, 'flex size-12 shrink-0 items-center justify-center rounded-lg')}
                 >
                   <item.icon aria-hidden="true" className="size-6 text-white" />
                 </div>
