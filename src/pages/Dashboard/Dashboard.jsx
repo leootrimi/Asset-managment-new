@@ -120,7 +120,7 @@ export default function Dashboard() {
         <div className="relative isolate overflow-hidden pt-1">
           {/* Secondary navigation */}
           <header className="pb-4 pt-1 sm:pb-6">
-            <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
+            <div className="mx-auto flex max-w-full flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
               <h1 className="text-base/7 font-semibold text-gray-900">Cashflow</h1>
               <div className="order-last flex w-full gap-x-8 text-sm/6 font-semibold sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:text-sm/7">
                 {secondaryNavigation.map((item) => (
@@ -148,13 +148,13 @@ export default function Dashboard() {
         <div className="space-y-16 py-5 xl:space-y-5">
           {/* Recent activity table */}
           <div>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
               <h2 className="mx-auto max-w-2xl text-base font-semibold text-gray-900 lg:mx-0 lg:max-w-none">
                 Recent activity
               </h2>
             </div>
             <div className="mt-3 overflow-hidden border-t border-gray-100">
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-full px-4 sm:px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
                   <table className="w-full text-left">
                     <thead className="sr-only">

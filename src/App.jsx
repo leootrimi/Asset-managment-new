@@ -15,6 +15,8 @@ import EmployersProfile from './pages/Employer Profile/EmployersProfile'
 import CalendarEvents from './pages/Calendar Events/CalendarEvents'
 import Documents from './pages/Documents/Documents';
 import Reports from './pages/Reports/Reports';
+import NewEquipment from './pages/Add New Equipment/NewEquipment';
+import RequestsMade from './pages/Requests Made/RequestsMade';
 
 import './App.css';
 
@@ -54,6 +56,8 @@ function App() {
             <Route path="events" element={<CalendarEvents />} />
             <Route path="documents" element={<Documents />} />
             <Route path="reports" element={<Reports />} />
+            <Route path="equpiment/add" element={<NewEquipment />} />
+            <Route path="requests" element={<RequestsMade />} />
           </Route>
         </Routes>
       </Router>

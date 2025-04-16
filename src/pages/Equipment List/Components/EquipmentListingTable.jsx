@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Box } from "@mui/material";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import RoundedButton from "../../../Core/RoundedButton";
 
 const EquipmentListingTable = ({ equipmentData }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,7 +30,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
             <h1 className="text-base font-semibold text-gray-900">Equipment</h1>
             <p className="mt-2 text-sm text-gray-700">A list of all equipment with current status.</p>
           </div>
-          <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex gap-3">
+          <div className="mt-4 sm:ml-16 sm:mt-0 flex flex-col sm:flex-row gap-3">
             {/* Search */}
             <input
               type="text"
@@ -39,7 +41,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
             />
             {/* Filter */}
             <select
-              className="rounded-md border border-gray-300 px-2 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
+              className="rounded-md border max-w-xs w-full border-gray-300 px-2 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
               value={inUseFilter}
               onChange={(e) => setInUseFilter(e.target.value)}
             >
@@ -47,6 +49,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
               <option value="yes">In Use</option>
               <option value="no">Not In Use</option>
             </select>
+            <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} />
           </div>
         </div>
 
