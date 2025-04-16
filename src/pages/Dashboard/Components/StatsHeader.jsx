@@ -8,7 +8,7 @@ function classNames(...classes) {
 export default function StatsHeader({ stats }) {
     return (
         <div className="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
-            <dl className="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
+            <dl className="mx-auto grid max-w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
                 {stats.map((stat, statIdx) => (
                     <div
                         key={stat.name}

@@ -22,6 +22,7 @@ import {
   HomeIcon,
   UsersIcon,
   XMarkIcon,
+  ArrowDownOnSquareStackIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Outlet } from 'react-router-dom';
@@ -33,6 +34,7 @@ const navigation = [
   { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon, current: false },
   { name: 'Reports', href: '/reports', icon: ChartPieIcon, current: false },
+  { name: 'Requests', href: '/requests', icon: ArrowDownOnSquareStackIcon, current: false },
 ]
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
