@@ -2,28 +2,14 @@ import { useState } from 'react';
 import { DragDropContext } from '@hello-pangea/dnd';
 import Column from './Components/Column';
 import RequestModal from './Components/RequestModal';
+import initialRequests from './Components/initialRequests';
 
-const initialRequests = {
-  waiting: [
-    { id: 'req-001', equipment: 'Dell XPS 13', requestedBy: 'John Doe', date: '2025-04-10' },
-    { id: 'req-002', equipment: 'Logitech Mouse', requestedBy: 'Jane Smith', date: '2025-04-12' },
-  ],
-  inProgress: [
-    { id: 'req-003', equipment: 'Jabra Headphones', requestedBy: 'IT Dept', date: '2025-04-08' },
-  ],
-  approved: [
-    { id: 'req-004', equipment: 'HP Monitor', requestedBy: 'Alice Brown', date: '2025-04-05' },
-  ],
-  rejected: [
-    { id: 'req-005', equipment: 'Apple MacBook Air', requestedBy: 'Bob Wilson', date: '2025-04-11' },
-  ],
-};
 
 export default function RequestsMade() {
   const [requests, setRequests] = useState(initialRequests);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
-
+  
   const onDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
@@ -33,11 +19,11 @@ export default function RequestsMade() {
       ? sourceItems
       : [...(requests[destination.droppableId] || [])];
 
-    const [movedItem] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, movedItem);
-
-    setRequests((prev) => ({
-      ...prev,
+      
+      const [movedItem] = sourceItems.splice(source.index, 1);
+      destItems.splice(destination.index, 0, movedItem);
+      setRequests((prev) => ({
+        ...prev,
       [source.droppableId]: sourceItems,
       [destination.droppableId]: destItems,
     }));
