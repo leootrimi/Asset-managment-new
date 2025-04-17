@@ -1,40 +1,65 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
-import Sidebar from './components/Sidebar';
-import Dashboard from './pages/Dashboard';
-import NewUser from './pages/NewUser';
-import Appbar from './components/Appbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useState } from 'react';
+
+import Sidebar from './components/Sidebar';
+import Dashboard from './pages/Dashboard/Dashboard';
+import NewUser from './pages/Add New User/NewUser';
+import Profile from './pages/Profile'
+import Employers from './pages/Employers List/Employers';
+import LoginPage from './pages/Login/Login';
+import Landing from './pages/Landing Page/Landing';
+import Equipment from './pages/Equipment List/Equipment';
+import EquipmentProfile from './pages/Equipment Profile/EquipmentProfile';
+import EmployersProfile from './pages/Employer Profile/EmployersProfile'
+import CalendarEvents from './pages/Calendar Events/CalendarEvents'
+import Documents from './pages/Documents/Documents';
+import Reports from './pages/Reports/Reports';
+import NewEquipment from './pages/Add New Equipment/NewEquipment';
+import RequestsMade from './pages/Requests Made/RequestsMade';
+
 import './App.css';
 
-// Create a custom theme with a monospace font
 const theme = createTheme({
   typography: {
-    fontFamily: '"Funnel Sans", sans-serif',  
+    fontFamily: '"Funnel Sans", sans-serif',
   },
 });
 
-function App() {
-
+// Layout component that wraps Sidebar and renders nested routes
+function MainLayout() {
   return (
-    <ThemeProvider theme={theme}> {/* Apply the custom theme */}
+    <div className="h-full">
+      <Sidebar />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider theme={theme}>
       <Router>
-        <div className="flex h-full">
-          <Sidebar />
-          <div className="flex-1">
-            <Appbar />
-            <div className="h rounded-lg bg-[#f3f4f6]">
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/user/add" element={<NewUser />} />
-                <Route path="/products" element={<h1>Products Page</h1>} />
-                <Route path="/customers" element={<h1>Customers Page</h1>} />
-                <Route path="/analytics" element={<h1>Analytics Page</h1>} />
-                <Route path="/settings" element={<h1>Settings Page</h1>} />
-              </Routes>
-            </div>
-          </div>
-        </div>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<Landing />} />
+
+          {/* Protected routes inside Sidebar layout */}
+          <Route path="/" element={<MainLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="user/add" element={<NewUser />} />
+            <Route path="profile/:id" element={<Profile />} />
+            <Route path='employers/:id' element={<EmployersProfile />} />
+            <Route path="employers" element={<Employers />} />
+            <Route path="equipment" element={<Equipment />} />
+            <Route path="equipment/:id" element={<EquipmentProfile />} />
+            <Route path="events" element={<CalendarEvents />} />
+            <Route path="documents" element={<Documents />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="equpiment/add" element={<NewEquipment />} />
+            <Route path="requests" element={<RequestsMade />} />
+          </Route>
+        </Routes>
       </Router>
     </ThemeProvider>
   );
