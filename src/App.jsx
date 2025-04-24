@@ -14,9 +14,9 @@ import EquipmentProfile from './pages/Equipment Profile/EquipmentProfile';
 import EmployersProfile from './pages/Employer Profile/EmployersProfile'
 import CalendarEvents from './pages/Calendar Events/CalendarEvents'
 import Documents from './pages/Documents/Documents';
-import Reports from './pages/Reports/Reports';
 import NewEquipment from './pages/Add New Equipment/NewEquipment';
 import RequestsMade from './pages/Requests Made/RequestsMade';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import './App.css';
 
@@ -25,6 +25,7 @@ const theme = createTheme({
     fontFamily: '"Funnel Sans", sans-serif',
   },
 });
+
 
 // Layout component that wraps Sidebar and renders nested routes
 function MainLayout() {
@@ -36,6 +37,10 @@ function MainLayout() {
 }
 
 function App() {
+
+  const { user, isAuthenticated, isLoading, error } = useAuth0();
+
+  console.log(isAuthenticated);
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -55,7 +60,6 @@ function App() {
             <Route path="equipment/:id" element={<EquipmentProfile />} />
             <Route path="events" element={<CalendarEvents />} />
             <Route path="documents" element={<Documents />} />
-            <Route path="reports" element={<Reports />} />
             <Route path="equpiment/add" element={<NewEquipment />} />
             <Route path="requests" element={<RequestsMade />} />
           </Route>
