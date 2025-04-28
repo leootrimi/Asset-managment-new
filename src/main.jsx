@@ -1,17 +1,20 @@
 import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react'
 import { Auth0Provider } from '@auth0/auth0-react'
 import './index.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
+  <StrictMode>
   <Auth0Provider
-    domain='dev-r3vhddtfi6bcxq12.us.auth0.com'
-    clientId='uezGiGVAcfwgJZllm1Xd2fTq3cOO0RTA'
+    domain={import.meta.env.VITE_DOMAIN_URL}
+    clientId={import.meta.env.VITE_CLIENT_ID}
     authorizationParams={{
-      audience: `https://dev-r3vhddtfi6bcxq12.us.auth0.com/api/v2/`,
+      audience: import.meta.env.VITE_AUDIENCE,
       redirect_uri: window.location.origin
     }}
   > 
     <App />
     </Auth0Provider>
+    </StrictMode>
 )

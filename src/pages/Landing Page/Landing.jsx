@@ -16,41 +16,35 @@ export default function Landing() {
   const { loginWithRedirect } = useAuth0();
   const { logout } = useAuth0();
   const { user, isAuthenticated, isLoading, error, getAccessTokenSilently } = useAuth0();
-  
 
-useEffect(() => {
-  const getUserMetadata = async () => {
-    const domain = "dev-r3vhddtfi6bcxq12.us.auth0.com";
-    if (!localStorage.getItem('accessToken')) {
-    try {
-      const accessToken = await getAccessTokenSilently({
-        authorizationParams: {
-          audience: `https://${domain}/api/v2/`,
-          scope: "read:users",
-        },
-      });
 
-      console.log("accessToken", accessToken);
-      
-      
-      localStorage.setItem('accessToken', accessToken)
+  useEffect(() => {
+    const getUserMetadata = async () => {
+      if (!localStorage.getItem('accessToken')) {
+        try {
+          const accessToken = await getAccessTokenSilently({
+            authorizationParams: {
+              audience: `https://${import.meta.env.VITE_DOMAIN_URL}/api/v2/`,
+              scope: "read:users",
+            },
+          });
+          localStorage.setItem('accessToken', accessToken)
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
+    };
 
-    } catch (e) {
-      console.log(e.message);
-    }
-  }
-  };
-
-  getUserMetadata();
-}, [getAccessTokenSilently, user?.sub]);
+    getUserMetadata();
+  }, [getAccessTokenSilently, user?.sub]);
   
 
   if (error) {
     return <div>{error.message}</div>;
   }
-if (isLoading) {
-  return <div>Loading...</div>;
-}
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white">
@@ -82,19 +76,26 @@ if (isLoading) {
                 {item.name}
               </a>
             ))}
+
+            {
+            isAuthenticated && (
+              <a key='Dashobard' href='/dashboard' className="text-sm/6 font-semibold text-gray-900">
+                Dashboard
+              </a>
+            )}
           </div>
 
           {
-            !isAuthenticated ? (              
+            !isAuthenticated ? (
               <div className="hidden lg:flex lg:flex-1 lg:justify-end text-sm/6 font-semibold text-gray-900" onClick={() => loginWithRedirect()}>
                 Log in <span aria-hidden="true">&rarr;</span>
               </div>
             ) :
-            (
-              <div className="hidden lg:flex lg:flex-1 lg:justify-end text-sm/6 font-semibold text-gray-900" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} >
-              Log out <span aria-hidden="true">&rarr;</span>
-            </div>
-            )
+              (
+                <div className="hidden lg:flex lg:flex-1 lg:justify-end text-sm/6 font-semibold text-gray-900" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} >
+                  Log out <span aria-hidden="true">&rarr;</span>
+                </div>
+              )
           }
 
         </nav>

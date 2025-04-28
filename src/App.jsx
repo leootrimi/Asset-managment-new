@@ -17,6 +17,7 @@ import Documents from './pages/Documents/Documents';
 import NewEquipment from './pages/Add New Equipment/NewEquipment';
 import RequestsMade from './pages/Requests Made/RequestsMade';
 import { useAuth0 } from '@auth0/auth0-react';
+import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
 
 import './App.css';
 
@@ -26,8 +27,6 @@ const theme = createTheme({
   },
 });
 
-
-// Layout component that wraps Sidebar and renders nested routes
 function MainLayout() {
   return (
     <div className="h-full">
@@ -37,10 +36,6 @@ function MainLayout() {
 }
 
 function App() {
-
-  const { user, isAuthenticated, isLoading, error } = useAuth0();
-
-  console.log(isAuthenticated);
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -51,6 +46,7 @@ function App() {
 
           {/* Protected routes inside Sidebar layout */}
           <Route path="/" element={<MainLayout />}>
+            <Route element={<AuthenticationGuard />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="user/add" element={<NewUser />} />
             <Route path="profile/:id" element={<Profile />} />
@@ -62,6 +58,7 @@ function App() {
             <Route path="documents" element={<Documents />} />
             <Route path="equpiment/add" element={<NewEquipment />} />
             <Route path="requests" element={<RequestsMade />} />
+          </Route>
           </Route>
         </Routes>
       </Router>
