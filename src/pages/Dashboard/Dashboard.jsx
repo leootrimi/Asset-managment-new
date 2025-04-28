@@ -1,9 +1,10 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import NewDataOption from './Components/NewDataOption';
 import RecentAction from './Components/RecentActivity';
 import Alerts from '../../Core/Alerts';
 import StatsHeader from './Components/StatsHeader';
+import { apiRequest } from '../../services/ApiCalls';
 import {
   ArrowDownCircleIcon,
   ArrowPathIcon,
@@ -113,6 +114,17 @@ function classNames(...classes) {
 export default function Dashboard() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+
+    const fetchData = async () => {
+      const data = await apiRequest({endpoint: '/users', token: token});
+    }
+    if (token) {
+      fetchData()
+    }
+
+  }, []);
   return (
     <>
     <Alerts />
