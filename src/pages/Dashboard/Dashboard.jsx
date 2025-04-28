@@ -119,7 +119,6 @@ export default function Dashboard() {
 
     const fetchData = async () => {
       const data = await apiRequest({endpoint: '/users', token: token});
-      console.log('data', data);
     }
     if (token) {
       fetchData()
