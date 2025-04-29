@@ -20,7 +20,6 @@ export default function Landing() {
 
   useEffect(() => {
     const getUserMetadata = async () => {
-      if (!localStorage.getItem('accessToken')) {
         try {
           const accessToken = await getAccessTokenSilently({
             authorizationParams: {
@@ -32,7 +31,6 @@ export default function Landing() {
         } catch (e) {
           console.log(e.message);
         }
-      }
     };
 
     getUserMetadata();
