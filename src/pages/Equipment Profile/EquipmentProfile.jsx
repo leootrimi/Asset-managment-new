@@ -139,15 +139,12 @@ export default function EquipmentProfile() {
                 />
                 <h1>
                   <div className="text-sm/6 text-gray-500">
-                    Invoice <span className="text-gray-700">#00011</span>
+                    Tag <span className="text-gray-700">#00011</span>
                   </div>
-                  <div className="mt-1 text-base font-semibold text-gray-900">Tuple, Inc</div>
+                  <div className="mt-1 text-base font-semibold text-gray-900">MacBook Air M2</div>
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
-                <button type="button" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
-                  Copy URL
-                </button>
                 <a href="#" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
                   Edit
                 </a>
@@ -191,7 +188,7 @@ export default function EquipmentProfile() {
           </div>
         </header>
 
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
             {/* Invoice summary */}
             <div className="lg:col-start-3 lg:row-end-1">
@@ -242,7 +239,7 @@ export default function EquipmentProfile() {
 
             {/* Invoice */}
             <div className="-mx-4 px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-2 lg:row-span-2 lg:row-end-2 xl:px-16 xl:pb-20 xl:pt-16">
-              <h2 className="text-base font-semibold text-gray-900">Invoice</h2>
+              <h2 className="text-base font-semibold text-gray-900">Equipment Details</h2>
               <dl className="mt-6 grid grid-cols-1 text-sm/6 sm:grid-cols-2">
                 <div className="sm:pr-4">
                   <dt className="inline text-gray-500">Issued on</dt>{' '}
