@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import EquipmentListingTable from "./Components/EquipmentListingTable";
+import { apiRequest } from "../../services/ApiCalls";
 
 const Equipment = () => {
 
@@ -16,12 +18,27 @@ const Equipment = () => {
         { tag: "91-PR01-05", type: "Headphones", name: "Sony WH-1000XM4", price: 300, inUse: true, warrantyLeft: 2 }
       ];
 
+      const [equipments, setEquipments] = useState([])
+
+      useEffect(() => {
+        const token = localStorage.getItem('accessToken')
+
+        const fetchEquipments = async () => {
+            const data = await apiRequest({endpoint: '/equipments', token: token })
+            setEquipments(data)
+
+        }
+
+        if(token) {
+            fetchEquipments()
+        }
+      }, []);
 
     return (
         <Box p={2}>
             <Grid container direction='column'>
                 <Grid item xs={12}>
-                    <EquipmentListingTable equipmentData={sampleData} />
+                    <EquipmentListingTable equipmentData={equipments} />
                 </Grid>
                 <Grid item xs={12}>
                 </Grid>
