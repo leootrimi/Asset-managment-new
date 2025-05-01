@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useParams } from "react-router-dom";
 import {
   Dialog,
   DialogPanel,
@@ -28,8 +29,8 @@ import {
   UserCircleIcon,
   XMarkIcon as XMarkIconMini,
 } from '@heroicons/react/20/solid'
-import { BellIcon, XMarkIcon as XMarkIconOutline } from '@heroicons/react/24/outline'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import { apiRequest } from '../../services/ApiCalls'
 
 const navigation = [
   { name: 'Home', href: '#' },
