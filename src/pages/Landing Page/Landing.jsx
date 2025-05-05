@@ -21,12 +21,7 @@ export default function Landing() {
   useEffect(() => {
     const getUserMetadata = async () => {
         try {
-          const accessToken = await getAccessTokenSilently({
-            authorizationParams: {
-              audience: `https://${import.meta.env.VITE_DOMAIN_URL}/api/v2/`,
-              scope: "read:users",
-            },
-          });
+          const accessToken = await getAccessTokenSilently();
           localStorage.setItem('accessToken', accessToken)
         } catch (e) {
           console.log(e.message);
