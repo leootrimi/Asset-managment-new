@@ -13,7 +13,7 @@ export default function EmployerListItem({ employtersList }) {
             <img alt="" src={imgURL} className="size-12 flex-none rounded-full bg-gray-50" />
             <div className="min-w-0 flex-auto">
               <p className="text-sm/6 font-semibold text-gray-900">
-                <a href={`/employers/${index}`}>
+                <a href={`/employers/${person._id}`}>
                   <span className="absolute inset-x-0 -top-px bottom-0" />
                   {person.firstName + " " + person.lastName}
                 </a>
