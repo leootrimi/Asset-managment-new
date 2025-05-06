@@ -12,6 +12,7 @@ import {
 } from '@heroicons/react/20/solid'
 import DeleteAlert from '../../Core/DeleteAlert'
 import LoadingView from '../../Core/LoadingView'
+import ProfileField from './Components/ProfileField'
 
 const user = {
   name: 'Whitney Francis',
@@ -26,7 +27,7 @@ const attachments = [
 const eventTypes = {
   leave: { icon: ArrowRightEndOnRectangleIcon, bgColorClass: 'bg-red-500' },
   join: { icon: ArrowLeftEndOnRectangleIcon, bgColorClass: 'bg-green-500' },
-  home: { icon: HomeIcon, bgColorClass: 'bg-blue-500'},
+  home: { icon: HomeIcon, bgColorClass: 'bg-blue-500' },
   sick: { icon: HeartIcon, bgColorClass: 'bg-orange-500' }
 }
 const timeline = [
@@ -94,10 +95,21 @@ function classNames(...classes) {
 
 export default function EmployersProfile() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [isEditEnabled, setEditEnable] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const { id } = useParams();
+
+  const [updatedUserData, setUpdatedUserData] = useState({
+    position: userProfile?.position || "",
+    level: userProfile?.level || "",
+    email: userProfile?.email || "",
+    salary: userProfile?.salary || "",
+    country: userProfile?.country || "",
+    city: userProfile?.city || "",
+    phoneNumber: userProfile?.phoneNumber || "",
+  })
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken")
@@ -106,6 +118,7 @@ export default function EmployersProfile() {
       try {
         const response = await apiRequest({ endpoint: `/users/${id}` })
         setUserProfile(response)
+        setUpdatedUserData(response)
       } catch (err) {
         console.error("Error fetching user profile", err)
       } finally {
@@ -120,7 +133,6 @@ export default function EmployersProfile() {
       fetchUserProfile()
     } else {
       setLoading(false)
-      console.log('did not call')
     }
   }, [id])
 
@@ -133,17 +145,26 @@ export default function EmployersProfile() {
   function onDeleteUser() {
     setLoading(true)
     try {
-    const response = apiRequest({ endpoint: '/users', method: 'DELETE', body: { _id: id}})
+      const response = apiRequest({ endpoint: '/users', method: 'DELETE', body: { _id: id } })
     } catch (err) {
       console.log(err);
     } finally {
       // Testing only
       setTimeout(() => {
         setLoading(false)
-        navigate('/employers', { replace: true})
+        navigate('/employers', { replace: true })
       }, 1000)
     }
   }
+
+  const userProfileOnChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedUserData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
 
   return (
     <>
@@ -185,6 +206,7 @@ export default function EmployersProfile() {
               <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={onDeleteUser} />
               <button
                 type="button"
+                onClick={() => setEditEnable(!isEditEnabled)}
                 className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Edit
@@ -205,38 +227,70 @@ export default function EmployersProfile() {
                   </div>
                   <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Working as</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.position}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Position level</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.level}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.email}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Salary per year</dt>
-                        <dd className="mt-1 text-sm text-gray-900">$12,000</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Country</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.country}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">City</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.city}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                        { userProfile.phoneNumber ?
-                        <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd> : 
-                        <dd className="mt-1 text-sm text-gray-400 italic">No phone number associated with this user</dd>
-                        }
-                        
-                      </div>
+                      <ProfileField
+                        label="Working as"
+                        name="position"
+                        value={updatedUserData.position}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="e.g. Head of Engineering"
+                      />
+
+                      <ProfileField
+                        label="Position level"
+                        name="position"
+                        value={updatedUserData.level}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. Junior"
+                      />
+
+
+                      <ProfileField
+                        label="Email address"
+                        name="email"
+                        value={updatedUserData.email}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. example@ex.yo"
+                      />
+
+                      <ProfileField
+                        label="Salary per year"
+                        name="salary"
+                        value='$12,000'
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. $1,000"
+                      />
+
+                      <ProfileField
+                        label="Country"
+                        name="country"
+                        value={updatedUserData.country}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. Kosovo"
+                      />
+
+                      <ProfileField
+                        label="City"
+                        name="city"
+                        value={updatedUserData.city}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. Prishtina"
+                      />
+
+                      <ProfileField
+                        label="Phone"
+                        name="phone"
+                        value={updatedUserData.phoneNumber}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. +383 43 974 385"
+                      />
+
                       <div className="sm:col-span-2">
                         <dt className="text-sm font-medium text-gray-500">Attachments</dt>
                         <dd className="mt-1 text-sm text-gray-900">
@@ -284,7 +338,7 @@ export default function EmployersProfile() {
                     </div>
                     <div className="px-4 py-6 sm:px-6">
                       <ul role="list" className="space-y-8">
-                        { Array.isArray(comments) && comments.length >0 ? comments.map((comment) => (
+                        {Array.isArray(comments) && comments.length > 0 ? comments.map((comment) => (
                           <li key={comment.id}>
                             <div className="flex space-x-3">
                               <div className="shrink-0">
