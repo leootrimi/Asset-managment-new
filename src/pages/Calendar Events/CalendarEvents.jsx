@@ -1,5 +1,3 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, EllipsisHorizontalIcon } from '@heroicons/react/20/solid'
 import { useEffect, useRef, useState } from 'react'
 import { apiRequest } from '../../services/ApiCalls'
 
@@ -160,7 +158,7 @@ export default function CalendarEvents() {
                                     value={newEvent.title}
                                     onChange={handleInputChange}
                                     required
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    className="mt-1 p-1.5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 />
                             </div>
                             <div>
@@ -174,7 +172,7 @@ export default function CalendarEvents() {
                                     value={newEvent.date}
                                     onChange={handleInputChange}
                                     required
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    className="mt-1 p-1.5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 />
                             </div>
                             <div>
@@ -188,7 +186,7 @@ export default function CalendarEvents() {
                                     value={newEvent.startTime}
                                     onChange={handleInputChange}
                                     required
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    className="mt-1 p-1.5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 />
                             </div>
                             <div>
@@ -202,7 +200,7 @@ export default function CalendarEvents() {
                                     value={newEvent.endTime}
                                     onChange={handleInputChange}
                                     required
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                    className="mt-1 p-1.5 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 />
                             </div>
                             <div>
