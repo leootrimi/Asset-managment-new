@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { apiRequest } from '../../services/ApiCalls'
 import {
-  CheckIcon,
-  HandThumbUpIcon,
   PaperClipIcon,
   QuestionMarkCircleIcon,
-  UserIcon,
+  ArrowRightEndOnRectangleIcon,
+  ArrowLeftEndOnRectangleIcon,
+  HomeIcon,
+  HeartIcon
 } from '@heroicons/react/20/solid'
 import DeleteAlert from '../../Core/DeleteAlert'
+import LoadingView from '../../Core/LoadingView'
 
 const user = {
   name: 'Whitney Francis',
@@ -21,47 +23,40 @@ const attachments = [
   { name: 'coverletter_front_end_developer.pdf', href: '#' },
 ]
 const eventTypes = {
-  applied: { icon: UserIcon, bgColorClass: 'bg-gray-400' },
-  advanced: { icon: HandThumbUpIcon, bgColorClass: 'bg-blue-500' },
-  completed: { icon: CheckIcon, bgColorClass: 'bg-green-500' },
+  leave: { icon: ArrowRightEndOnRectangleIcon, bgColorClass: 'bg-red-500' },
+  join: { icon: ArrowLeftEndOnRectangleIcon, bgColorClass: 'bg-green-500' },
+  home: { icon: HomeIcon, bgColorClass: 'bg-blue-500'},
+  sick: { icon: HeartIcon, bgColorClass: 'bg-orange-500' }
 }
 const timeline = [
   {
-    id: 1,
-    type: eventTypes.applied,
-    content: 'Applied to',
-    target: 'Front End Developer',
-    date: 'Sep 20',
-    datetime: '2020-09-20',
-  },
-  {
     id: 2,
-    type: eventTypes.advanced,
-    content: 'Advanced to phone screening by',
+    type: eventTypes.leave,
+    content: 'Left office at ',
     target: 'Bethany Blake',
     date: 'Sep 22',
     datetime: '2020-09-22',
   },
   {
     id: 3,
-    type: eventTypes.completed,
-    content: 'Completed phone screening with',
+    type: eventTypes.join,
+    content: 'Joined office at',
     target: 'Martha Gardner',
     date: 'Sep 28',
     datetime: '2020-09-28',
   },
   {
     id: 4,
-    type: eventTypes.advanced,
-    content: 'Advanced to interview by',
+    type: eventTypes.sick,
+    content: 'Called out sick ',
     target: 'Bethany Blake',
     date: 'Sep 30',
     datetime: '2020-09-30',
   },
   {
     id: 5,
-    type: eventTypes.completed,
-    content: 'Completed interview with',
+    type: eventTypes.home,
+    content: 'Working from home ',
     target: 'Katherine Snyder',
     date: 'Oct 4',
     datetime: '2020-10-04',
@@ -113,7 +108,10 @@ export default function EmployersProfile() {
       } catch (err) {
         console.error("Error fetching user profile", err)
       } finally {
-        setLoading(false) // 🔵 Hide loading spinner
+        // For testing only
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
       }
     }
 
@@ -127,15 +125,7 @@ export default function EmployersProfile() {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <svg className="animate-spin h-10 w-10 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          <p className="mt-4 text-sm text-gray-600">Loading profile...</p>
-        </div>
-      </div>
+      <LoadingView />
     )
   }
 
@@ -163,7 +153,7 @@ export default function EmployersProfile() {
                     : "Name not available"}
                 </h1>
                 <p className="text-sm font-medium text-gray-500">
-                  {userProfile?.position ? userProfile.position : "Not available"}
+                  {userProfile?.position ? `${userProfile.position} ` : "Not available"}
                   since <time dateTime="2020-08-25">August 25, 2020</time>
                 </p>
               </div>
@@ -204,24 +194,32 @@ export default function EmployersProfile() {
                         <dd className="mt-1 text-sm text-gray-900">{userProfile.position}</dd>
                       </div>
                       <div className="sm:col-span-1">
+                        <dt className="text-sm font-medium text-gray-500">Position level</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{userProfile.level}</dd>
+                      </div>
+                      <div className="sm:col-span-1">
                         <dt className="text-sm font-medium text-gray-500">Email address</dt>
                         <dd className="mt-1 text-sm text-gray-900">{userProfile.email}</dd>
                       </div>
                       <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Salary expectation</dt>
-                        <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
+                        <dt className="text-sm font-medium text-gray-500">Salary per year</dt>
+                        <dd className="mt-1 text-sm text-gray-900">$12,000</dd>
+                      </div>
+                      <div className="sm:col-span-1">
+                        <dt className="text-sm font-medium text-gray-500">Country</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{userProfile.country}</dd>
+                      </div>
+                      <div className="sm:col-span-1">
+                        <dt className="text-sm font-medium text-gray-500">City</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{userProfile.city}</dd>
                       </div>
                       <div className="sm:col-span-1">
                         <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                        <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd>
-                      </div>
-                      <div className="sm:col-span-2">
-                        <dt className="text-sm font-medium text-gray-500">About</dt>
-                        <dd className="mt-1 text-sm text-gray-900">
-                          Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.
-                          Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia
-                          proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
-                        </dd>
+                        { userProfile.phoneNumber ?
+                        <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd> : 
+                        <dd className="mt-1 text-sm text-gray-400 italic">No phone number associated with this user</dd>
+                        }
+                        
                       </div>
                       <div className="sm:col-span-2">
                         <dt className="text-sm font-medium text-gray-500">Attachments</dt>
@@ -270,7 +268,7 @@ export default function EmployersProfile() {
                     </div>
                     <div className="px-4 py-6 sm:px-6">
                       <ul role="list" className="space-y-8">
-                        {comments.map((comment) => (
+                        { Array.isArray(comments) && comments.length >0 ? comments.map((comment) => (
                           <li key={comment.id}>
                             <div className="flex space-x-3">
                               <div className="shrink-0">
@@ -299,7 +297,7 @@ export default function EmployersProfile() {
                               </div>
                             </div>
                           </li>
-                        ))}
+                        )) : <dd className="mt-1 flex justify-center text-sm text-gray-600">There are no current notes for this user</dd>}
                       </ul>
                     </div>
                   </div>
@@ -332,7 +330,7 @@ export default function EmployersProfile() {
                                 aria-hidden="true"
                                 className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
                               />
-                              <span>Some HTML is okay.</span>
+                              <span>Provide some neccessary information to save.</span>
                             </a>
                             <button
                               type="submit"
@@ -402,7 +400,7 @@ export default function EmployersProfile() {
                     type="button"
                     className="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-500 ring-1 ring-inset ring-blue-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >
-                    Advance to offer
+                    View activity from last month
                   </button>
                 </div>
               </div>
