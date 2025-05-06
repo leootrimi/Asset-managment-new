@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { apiRequest } from '../../services/ApiCalls'
 import {
@@ -92,7 +93,7 @@ function classNames(...classes) {
 
 
 export default function EmployersProfile() {
-
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -127,6 +128,21 @@ export default function EmployersProfile() {
     return (
       <LoadingView />
     )
+  }
+
+  function onDeleteUser() {
+    setLoading(true)
+    try {
+    const response = apiRequest({ endpoint: '/users', method: 'DELETE', body: { _id: id}})
+    } catch (err) {
+      console.log(err);
+    } finally {
+      // Testing only
+      setTimeout(() => {
+        setLoading(false)
+        navigate('/employers', { replace: true})
+      }, 1000)
+    }
   }
 
   return (
@@ -166,7 +182,7 @@ export default function EmployersProfile() {
               >
                 Delete
               </button>
-              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} />
+              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={onDeleteUser} />
               <button
                 type="button"
                 className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
