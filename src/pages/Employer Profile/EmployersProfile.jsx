@@ -14,6 +14,7 @@ import DeleteAlert from '../../Core/DeleteAlert'
 import DiscardChanges from '../../Core/DiscardChanges'
 import LoadingView from '../../Core/LoadingView'
 import ProfileField from './Components/ProfileField'
+import Alert from '../../Core/Alerts'
 
 const user = {
   name: 'Whitney Francis',
@@ -98,6 +99,8 @@ export default function EmployersProfile() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isEditEnabled, setEditEnable] = useState(false);
+  const [errorOcurred, setErrorOcurred] = useState(false);
+  const [successUpdateAlert, setSuccessUpdateAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
@@ -159,6 +162,25 @@ export default function EmployersProfile() {
     }
   }
 
+  async function updateUserProfile() {
+    setLoading(true)
+    try {
+      const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedUserData } })
+      setSuccessUpdateAlert(true)
+    } catch (err) {
+      console.log(err);
+      setErrorOcurred(true)
+      setUpdatedUserData(userProfile)
+    } finally {
+      setLoading(false)
+      setEditEnable(false)
+      setTimeout(() => {
+        setErrorOcurred(false)
+        setSuccessUpdateAlert(false)
+      }, 2000)
+    }
+  }
+
   const userProfileOnChange = (e) => {
     const { name, value } = e.target;
     setUpdatedUserData((prev) => ({
@@ -178,7 +200,7 @@ export default function EmployersProfile() {
       setEditEnable(true);
     }
   }
-  
+
 
   function hasUserProfileChanged(originalProfile, changedProfile) {
     return userProfile !== updatedUserData
@@ -196,10 +218,31 @@ export default function EmployersProfile() {
 
   return (
     <>
-    {
-      showDiscardModal && 
-      <DiscardChanges discardProfileChanges={discardProfileChanges} cancelDiscardModal={cancelDiscardModal} />
-    }
+      {
+        showDiscardModal &&
+        <DiscardChanges discardProfileChanges={discardProfileChanges} cancelDiscardModal={cancelDiscardModal} />
+      }
+      {
+        errorOcurred &&
+        <Alert
+          type='error'
+          title='Please try again later'
+          message='An error ocurred while trying to process the request'
+          show={errorOcurred}
+          setShow={setErrorOcurred}
+        />
+      }
+
+      {
+        successUpdateAlert &&
+        <Alert
+          type='success'
+          title='User Updated'
+          message='You successfully updated user details'
+          show={successUpdateAlert}
+          setShow={setSuccessUpdateAlert}
+        />
+      }
       <div className="min-h-full">
         <main className="py-10">
           {/* Page header */}
@@ -243,6 +286,16 @@ export default function EmployersProfile() {
               >
                 Edit
               </button>
+              {isEditEnabled &&
+                <button
+                  type="button"
+                  onClick={updateUserProfile}
+                  className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                >
+                  Save changes
+                </button>
+              }
+
             </div>
           </div>
 
