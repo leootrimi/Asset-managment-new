@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { apiRequest } from '../../services/ApiCalls'
 import {
-  CheckIcon,
-  HandThumbUpIcon,
   PaperClipIcon,
   QuestionMarkCircleIcon,
-  UserIcon,
+  ArrowRightEndOnRectangleIcon,
+  ArrowLeftEndOnRectangleIcon,
+  HomeIcon,
+  HeartIcon
 } from '@heroicons/react/20/solid'
 import DeleteAlert from '../../Core/DeleteAlert'
+import DiscardChanges from '../../Core/DiscardChanges'
+import LoadingView from '../../Core/LoadingView'
+import ProfileField from './Components/ProfileField'
+import Alert from '../../Core/Alerts'
 
 const user = {
   name: 'Whitney Francis',
@@ -21,47 +27,40 @@ const attachments = [
   { name: 'coverletter_front_end_developer.pdf', href: '#' },
 ]
 const eventTypes = {
-  applied: { icon: UserIcon, bgColorClass: 'bg-gray-400' },
-  advanced: { icon: HandThumbUpIcon, bgColorClass: 'bg-blue-500' },
-  completed: { icon: CheckIcon, bgColorClass: 'bg-green-500' },
+  leave: { icon: ArrowRightEndOnRectangleIcon, bgColorClass: 'bg-red-500' },
+  join: { icon: ArrowLeftEndOnRectangleIcon, bgColorClass: 'bg-green-500' },
+  home: { icon: HomeIcon, bgColorClass: 'bg-blue-500' },
+  sick: { icon: HeartIcon, bgColorClass: 'bg-orange-500' }
 }
 const timeline = [
   {
-    id: 1,
-    type: eventTypes.applied,
-    content: 'Applied to',
-    target: 'Front End Developer',
-    date: 'Sep 20',
-    datetime: '2020-09-20',
-  },
-  {
     id: 2,
-    type: eventTypes.advanced,
-    content: 'Advanced to phone screening by',
+    type: eventTypes.leave,
+    content: 'Left office at ',
     target: 'Bethany Blake',
     date: 'Sep 22',
     datetime: '2020-09-22',
   },
   {
     id: 3,
-    type: eventTypes.completed,
-    content: 'Completed phone screening with',
+    type: eventTypes.join,
+    content: 'Joined office at',
     target: 'Martha Gardner',
     date: 'Sep 28',
     datetime: '2020-09-28',
   },
   {
     id: 4,
-    type: eventTypes.advanced,
-    content: 'Advanced to interview by',
+    type: eventTypes.sick,
+    content: 'Called out sick ',
     target: 'Bethany Blake',
     date: 'Sep 30',
     datetime: '2020-09-30',
   },
   {
     id: 5,
-    type: eventTypes.completed,
-    content: 'Completed interview with',
+    type: eventTypes.home,
+    content: 'Working from home ',
     target: 'Katherine Snyder',
     date: 'Oct 4',
     datetime: '2020-10-04',
@@ -97,11 +96,25 @@ function classNames(...classes) {
 
 
 export default function EmployersProfile() {
-
-  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [isEditEnabled, setEditEnable] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
+  const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
   const { id } = useParams();
+
+  const [updatedUserData, setUpdatedUserData] = useState({
+    position: userProfile?.position || "",
+    level: userProfile?.level || "",
+    email: userProfile?.email || "",
+    salary: userProfile?.salary || "",
+    country: userProfile?.country || "",
+    city: userProfile?.city || "",
+    phoneNumber: userProfile?.phoneNumber || "",
+  })
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken")
@@ -110,10 +123,14 @@ export default function EmployersProfile() {
       try {
         const response = await apiRequest({ endpoint: `/users/${id}` })
         setUserProfile(response)
+        setUpdatedUserData(response)
       } catch (err) {
         console.error("Error fetching user profile", err)
       } finally {
-        setLoading(false) // 🔵 Hide loading spinner
+        // For testing only
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000)
       }
     }
 
@@ -121,26 +138,128 @@ export default function EmployersProfile() {
       fetchUserProfile()
     } else {
       setLoading(false)
-      console.log('did not call')
     }
   }, [id])
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <svg className="animate-spin h-10 w-10 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-          </svg>
-          <p className="mt-4 text-sm text-gray-600">Loading profile...</p>
-        </div>
-      </div>
+      <LoadingView />
     )
   }
 
+  function onDeleteUser() {
+    setLoading(true)
+    try {
+      const response = apiRequest({ endpoint: '/users', method: 'DELETE', body: { _id: id } })
+    } catch (err) {
+      console.log(err);
+    } finally {
+      // Testing only
+      setTimeout(() => {
+        setLoading(false)
+        navigate('/employers', { replace: true })
+      }, 1000)
+    }
+  }
+
+  async function updateUserProfile() {
+    setLoading(true)
+    if (!hasUserProfileChanged(userProfile, updatedUserData)) {
+      setAlert({
+        show: true,
+        type: 'error',
+        title: 'Please try again later',
+        message: 'An error ocurred while trying to process the request',
+      })
+      setLoading(false)
+      return
+    }
+    try {
+      const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedUserData } })
+      setAlert({
+        show: true,
+        type: 'success',
+        title: 'User Updated',
+        message: 'You successfully updated user details',
+      })
+    } catch (err) {
+      console.log(err);
+      setErrorOcurred(true)
+      setUpdatedUserData(userProfile)
+      setAlert({
+        show: true,
+        type: 'error',
+        title: 'Please try again later',
+        message: 'An error ocurred while trying to process the request',
+      })
+
+    } finally {
+      setLoading(false)
+      setEditEnable(false)
+      setTimeout(() => {
+        setErrorOcurred(false)
+        setSuccessUpdateAlert(false)
+      }, 2000)
+    }
+  }
+
+  const userProfileOnChange = (e) => {
+    const { name, value } = e.target;
+    const newData = {
+      ...updatedUserData,
+      [name]: value,
+    };
+  
+    setUpdatedUserData(newData);
+    setSaveButtonEnabled(hasUserProfileChanged(userProfile, newData));
+  };
+  
+
+  function enableEditingUserProfile() {
+    if (isEditEnabled) {
+      if (hasUserProfileChanged(userProfile, updatedUserData)) {
+        setShowDiscardModal(true);
+      } else {
+        setEditEnable(false);
+      }
+    } else {
+      setEditEnable(true);
+    }
+  }
+
+
+  function hasUserProfileChanged(original, updated) {
+    return Object.keys(original).some(
+      key => original[key] !== updated[key]
+    );
+  }  
+
+  function discardProfileChanges() {
+    setUpdatedUserData(userProfile)
+    setShowDiscardModal(false)
+  }
+
+  function cancelDiscardModal() {
+    setShowDiscardModal(false)
+  }
+
+
   return (
     <>
+      {
+        showDiscardModal &&
+        <DiscardChanges discardProfileChanges={discardProfileChanges} cancelDiscardModal={cancelDiscardModal} />
+      }
+      {alert.show && (
+        <Alert
+          type={alert.type}
+          title={alert.title}
+          message={alert.message}
+          show={alert.show}
+          setShow={(value) => setAlert({ ...alert, show: value })}
+        />
+      )}
+
       <div className="min-h-full">
         <main className="py-10">
           {/* Page header */}
@@ -163,7 +282,7 @@ export default function EmployersProfile() {
                     : "Name not available"}
                 </h1>
                 <p className="text-sm font-medium text-gray-500">
-                  {userProfile?.position ? userProfile.position : "Not available"}
+                  {userProfile?.position ? `${userProfile.position} ` : "Not available"}
                   since <time dateTime="2020-08-25">August 25, 2020</time>
                 </p>
               </div>
@@ -176,13 +295,25 @@ export default function EmployersProfile() {
               >
                 Delete
               </button>
-              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} />
+              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={onDeleteUser} />
               <button
                 type="button"
+                onClick={enableEditingUserProfile}
                 className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Edit
               </button>
+              {isEditEnabled &&
+                <button
+                  type="button"
+                  onClick={updateUserProfile}
+                  disabled={!saveButtonEnabled}
+                  className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Save changes
+                </button>
+              }
+
             </div>
           </div>
 
@@ -199,30 +330,70 @@ export default function EmployersProfile() {
                   </div>
                   <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Working as</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.position}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{userProfile.email}</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Salary expectation</dt>
-                        <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
-                      </div>
-                      <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                        <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd>
-                      </div>
-                      <div className="sm:col-span-2">
-                        <dt className="text-sm font-medium text-gray-500">About</dt>
-                        <dd className="mt-1 text-sm text-gray-900">
-                          Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat.
-                          Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia
-                          proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.
-                        </dd>
-                      </div>
+                      <ProfileField
+                        label="Working as"
+                        name="position"
+                        value={updatedUserData.position}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="e.g. Head of Engineering"
+                      />
+
+                      <ProfileField
+                        label="Position level"
+                        name="level"
+                        value={updatedUserData.level}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. Junior"
+                      />
+
+
+                      <ProfileField
+                        label="Email address"
+                        name="email"
+                        value={updatedUserData.email}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. example@ex.yo"
+                      />
+
+                      <ProfileField
+                        label="Salary per year"
+                        name="salary"
+                        value='$12,000'
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. $1,000"
+                      />
+
+                      <ProfileField
+                        label="Country"
+                        name="country"
+                        value={updatedUserData.country}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. Kosovo"
+                      />
+
+                      <ProfileField
+                        label="City"
+                        name="city"
+                        value={updatedUserData.city}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. Prishtina"
+                      />
+
+                      <ProfileField
+                        label="Phone"
+                        name="phone"
+                        value={updatedUserData.phoneNumber}
+                        isEditEnabled={isEditEnabled}
+                        userProfileOnChange={userProfileOnChange}
+                        placeholder="eg. +383 43 974 385"
+                      />
+
                       <div className="sm:col-span-2">
                         <dt className="text-sm font-medium text-gray-500">Attachments</dt>
                         <dd className="mt-1 text-sm text-gray-900">
@@ -270,7 +441,7 @@ export default function EmployersProfile() {
                     </div>
                     <div className="px-4 py-6 sm:px-6">
                       <ul role="list" className="space-y-8">
-                        {comments.map((comment) => (
+                        {Array.isArray(comments) && comments.length > 0 ? comments.map((comment) => (
                           <li key={comment.id}>
                             <div className="flex space-x-3">
                               <div className="shrink-0">
@@ -299,7 +470,7 @@ export default function EmployersProfile() {
                               </div>
                             </div>
                           </li>
-                        ))}
+                        )) : <dd className="mt-1 flex justify-center text-sm text-gray-600">There are no current notes for this user</dd>}
                       </ul>
                     </div>
                   </div>
@@ -332,7 +503,7 @@ export default function EmployersProfile() {
                                 aria-hidden="true"
                                 className="size-5 shrink-0 text-gray-400 group-hover:text-gray-500"
                               />
-                              <span>Some HTML is okay.</span>
+                              <span>Provide some neccessary information to save.</span>
                             </a>
                             <button
                               type="submit"
@@ -402,7 +573,7 @@ export default function EmployersProfile() {
                     type="button"
                     className="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-500 ring-1 ring-inset ring-blue-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                   >
-                    Advance to offer
+                    View activity from last month
                   </button>
                 </div>
               </div>
