@@ -11,6 +11,7 @@ import {
   HeartIcon
 } from '@heroicons/react/20/solid'
 import DeleteAlert from '../../Core/DeleteAlert'
+import DiscardChanges from '../../Core/DiscardChanges'
 import LoadingView from '../../Core/LoadingView'
 import ProfileField from './Components/ProfileField'
 
@@ -98,6 +99,7 @@ export default function EmployersProfile() {
   const [loading, setLoading] = useState(true);
   const [isEditEnabled, setEditEnable] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
   const { id } = useParams();
 
@@ -167,16 +169,37 @@ export default function EmployersProfile() {
 
   function enableEditingUserProfile() {
     if (isEditEnabled) {
-      setUpdatedUserData(userProfile)
-      setEditEnable(false)
-      return
+      if (hasUserProfileChanged(userProfile, updatedUserData)) {
+        setShowDiscardModal(true);
+      } else {
+        setEditEnable(false);
+      }
+    } else {
+      setEditEnable(true);
     }
-    setEditEnable(true)
+  }
+  
+
+  function hasUserProfileChanged(originalProfile, changedProfile) {
+    return userProfile !== updatedUserData
+  }
+
+  function discardProfileChanges() {
+    setUpdatedUserData(userProfile)
+    setShowDiscardModal(false)
+  }
+
+  function cancelDiscardModal() {
+    setShowDiscardModal(false)
   }
 
 
   return (
     <>
+    {
+      showDiscardModal && 
+      <DiscardChanges discardProfileChanges={discardProfileChanges} cancelDiscardModal={cancelDiscardModal} />
+    }
       <div className="min-h-full">
         <main className="py-10">
           {/* Page header */}
@@ -247,7 +270,7 @@ export default function EmployersProfile() {
 
                       <ProfileField
                         label="Position level"
-                        name="position"
+                        name="level"
                         value={updatedUserData.level}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
