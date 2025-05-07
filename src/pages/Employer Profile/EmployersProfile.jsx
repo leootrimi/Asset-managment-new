@@ -99,11 +99,11 @@ export default function EmployersProfile() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [isEditEnabled, setEditEnable] = useState(false);
-  const [errorOcurred, setErrorOcurred] = useState(false);
-  const [successUpdateAlert, setSuccessUpdateAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
+  const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
   const { id } = useParams();
 
   const [updatedUserData, setUpdatedUserData] = useState({
@@ -164,13 +164,35 @@ export default function EmployersProfile() {
 
   async function updateUserProfile() {
     setLoading(true)
+    if (!hasUserProfileChanged(userProfile, updatedUserData)) {
+      setAlert({
+        show: true,
+        type: 'error',
+        title: 'Please try again later',
+        message: 'An error ocurred while trying to process the request',
+      })
+      setLoading(false)
+      return
+    }
     try {
       const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedUserData } })
-      setSuccessUpdateAlert(true)
+      setAlert({
+        show: true,
+        type: 'success',
+        title: 'User Updated',
+        message: 'You successfully updated user details',
+      })
     } catch (err) {
       console.log(err);
       setErrorOcurred(true)
       setUpdatedUserData(userProfile)
+      setAlert({
+        show: true,
+        type: 'error',
+        title: 'Please try again later',
+        message: 'An error ocurred while trying to process the request',
+      })
+
     } finally {
       setLoading(false)
       setEditEnable(false)
@@ -183,11 +205,15 @@ export default function EmployersProfile() {
 
   const userProfileOnChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedUserData((prev) => ({
-      ...prev,
+    const newData = {
+      ...updatedUserData,
       [name]: value,
-    }));
+    };
+  
+    setUpdatedUserData(newData);
+    setSaveButtonEnabled(hasUserProfileChanged(userProfile, newData));
   };
+  
 
   function enableEditingUserProfile() {
     if (isEditEnabled) {
@@ -202,9 +228,11 @@ export default function EmployersProfile() {
   }
 
 
-  function hasUserProfileChanged(originalProfile, changedProfile) {
-    return userProfile !== updatedUserData
-  }
+  function hasUserProfileChanged(original, updated) {
+    return Object.keys(original).some(
+      key => original[key] !== updated[key]
+    );
+  }  
 
   function discardProfileChanges() {
     setUpdatedUserData(userProfile)
@@ -222,27 +250,16 @@ export default function EmployersProfile() {
         showDiscardModal &&
         <DiscardChanges discardProfileChanges={discardProfileChanges} cancelDiscardModal={cancelDiscardModal} />
       }
-      {
-        errorOcurred &&
+      {alert.show && (
         <Alert
-          type='error'
-          title='Please try again later'
-          message='An error ocurred while trying to process the request'
-          show={errorOcurred}
-          setShow={setErrorOcurred}
+          type={alert.type}
+          title={alert.title}
+          message={alert.message}
+          show={alert.show}
+          setShow={(value) => setAlert({ ...alert, show: value })}
         />
-      }
+      )}
 
-      {
-        successUpdateAlert &&
-        <Alert
-          type='success'
-          title='User Updated'
-          message='You successfully updated user details'
-          show={successUpdateAlert}
-          setShow={setSuccessUpdateAlert}
-        />
-      }
       <div className="min-h-full">
         <main className="py-10">
           {/* Page header */}
@@ -290,7 +307,8 @@ export default function EmployersProfile() {
                 <button
                   type="button"
                   onClick={updateUserProfile}
-                  className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                  disabled={!saveButtonEnabled}
+                  className="inline-flex items-center justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Save changes
                 </button>
