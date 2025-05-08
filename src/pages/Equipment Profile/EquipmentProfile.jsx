@@ -109,9 +109,52 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
+function getStatusClasses(status) {
+  const map = {
+    'Available': 'bg-green-50 text-green-600 ring-green-600/20',
+    'Already in use': 'bg-yellow-50 text-yellow-600 ring-yellow-600/20',
+  };
+  return map[status] || map['Already in use'];
+}
+
+
+function isEquipmentAssigned(employer) {
+  if (!employer) {
+    return "Not Assigned"
+  } else {
+    return employer
+  }
+}
+
+
+function equipmentStatus(employer) {
+  if (!employer) {
+    return "Available"
+  } else {
+    return 'Already in use'
+  }
+}
+
+
 export default function EquipmentProfile() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selected, setSelected] = useState(moods[5])
+  const [equipmentsProfile, setEquipmentsProfile] = useState();
+  const { id } = useParams()
+
+  useEffect(() => {
+    async function fetchEquipmentsProfile() {
+      try {
+        const response = await apiRequest({ endpoint: `/equipments/${id}` });
+        setEquipmentsProfile(response)
+        console.log(response);
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchEquipmentsProfile()
+  }, [])
 
   return (
     <>
@@ -140,9 +183,9 @@ export default function EquipmentProfile() {
                 />
                 <h1>
                   <div className="text-sm/6 text-gray-500">
-                    Tag <span className="text-gray-700">#00011</span>
+                    Tag <span className="text-gray-700">#{equipmentsProfile?.tag}</span>
                   </div>
-                  <div className="mt-1 text-base font-semibold text-gray-900">MacBook Air M2</div>
+                  <div className="mt-1 text-base font-semibold text-gray-900">{equipmentsProfile?.name}</div>
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
@@ -198,20 +241,34 @@ export default function EquipmentProfile() {
                 <dl className="flex flex-wrap">
                   <div className="flex-auto pl-6 pt-6">
                     <dt className="text-sm/6 font-semibold text-gray-900">Amount</dt>
-                    <dd className="mt-1 text-base font-semibold text-gray-900">$10,560.00</dd>
+                    <dd className="mt-1 text-base font-semibold text-gray-900">${equipmentsProfile?.price}</dd>
                   </div>
                   <div className="flex-none self-end px-6 pt-4">
                     <dt className="sr-only">Status</dt>
-                    <dd className="rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
-                      Paid
+
+                    <dd className={`rounded-md px-2 py-1.5 text-xs font-medium ring-1 ring-inset ${equipmentsProfile?.assignedTo?.fullName
+                      ? getStatusClasses(equipmentStatus(equipmentsProfile.assignedTo.fullName))
+                      : getStatusClasses(equipmentStatus(undefined))
+                      }`}>
+                      {equipmentsProfile?.assignedTo?.fullName
+                        ? equipmentStatus(equipmentsProfile.assignedTo.fullName)
+                        : equipmentStatus(undefined)
+                      }
                     </dd>
+
+
                   </div>
                   <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6">
                     <dt className="flex-none">
                       <span className="sr-only">Client</span>
                       <UserCircleIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
                     </dt>
-                    <dd className="text-sm/6 font-medium text-gray-900">Alex Curren</dd>
+                    <dd className="text-sm/6 font-medium text-gray-900">
+                      {equipmentsProfile?.assignedTo?.fullName
+                        ? isEquipmentAssigned(equipmentsProfile.assignedTo.fullName)
+                        : isEquipmentAssigned('')}
+                    </dd>
+
                   </div>
                   <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
                     <dt className="flex-none">
@@ -219,7 +276,7 @@ export default function EquipmentProfile() {
                       <CalendarDaysIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
                     </dt>
                     <dd className="text-sm/6 text-gray-500">
-                      <time dateTime="2023-01-31">January 31, 2023</time>
+                      <time dateTime="2023-01-31">{equipmentsProfile?.assignedDate}</time>
                     </dd>
                   </div>
                   <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
@@ -245,13 +302,26 @@ export default function EquipmentProfile() {
                 <div className="sm:pr-4">
                   <dt className="inline text-gray-500">Issued on</dt>{' '}
                   <dd className="inline text-gray-700">
-                    <time dateTime="2023-23-01">January 23, 2023</time>
+                    <time dateTime={equipmentsProfile?.createdAt}>
+                      {equipmentsProfile?.createdAt ? new Date(equipmentsProfile.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      }) : 'No date available'}
+                    </time>
+
                   </dd>
                 </div>
                 <div className="mt-2 sm:mt-0 sm:pl-4">
                   <dt className="inline text-gray-500">Due on</dt>{' '}
                   <dd className="inline text-gray-700">
-                    <time dateTime="2023-31-01">January 31, 2023</time>
+                    <time dateTime={equipmentsProfile?.updatedAt}>
+                      {equipmentsProfile?.createdAt ? new Date(equipmentsProfile.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      }) : 'No date available'}
+                    </time>
                   </dd>
                 </div>
                 <div className="mt-6 border-t border-gray-900/5 pt-6 sm:pr-4">

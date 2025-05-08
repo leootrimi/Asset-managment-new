@@ -26,6 +26,8 @@ const Equipment = () => {
         const fetchEquipments = async () => {
             const data = await apiRequest({endpoint: '/equipments', token: token })
             setEquipments(data)
+            console.log(data);
+            
 
         }
 
