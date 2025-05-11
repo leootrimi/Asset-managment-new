@@ -15,9 +15,8 @@ import EmployersProfile from './pages/Employer Profile/EmployersProfile'
 import CalendarEvents from './pages/Calendar Events/CalendarEvents'
 import Documents from './pages/Documents/Documents';
 import NewEquipment from './pages/Add New Equipment/NewEquipment';
-import RequestsMade from './pages/Requests Made/RequestsMade';
-import { useAuth0 } from '@auth0/auth0-react';
 import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
+import RequestBoard from './pages/Requests Made/Request-board';
 
 import './App.css';
 
@@ -57,7 +56,7 @@ function App() {
             <Route path="events" element={<CalendarEvents />} />
             <Route path="documents" element={<Documents />} />
             <Route path="equpiment/add" element={<NewEquipment />} />
-            <Route path="requests" element={<RequestsMade />} />
+            <Route path="requests" element={<RequestBoard />} />
           </Route>
           </Route>
         </Routes>
