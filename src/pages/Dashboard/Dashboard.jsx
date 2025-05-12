@@ -2,7 +2,6 @@
 import { Fragment, useEffect, useState } from 'react'
 import NewDataOption from './Components/NewDataOption';
 import RecentAction from './Components/RecentActivity';
-import Alerts from '../../Core/Alerts';
 import StatsHeader from './Components/StatsHeader';
 import { apiRequest } from '../../services/ApiCalls';
 import {

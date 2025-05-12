@@ -16,25 +16,20 @@ const Equipment = () => {
         { tag: "91-PR01-05", type: "Headphones", name: "Sony WH-1000XM4", price: 300, inUse: true, warrantyLeft: 2 },
         { tag: "MT-PR01-04", type: "Keyboard", name: "Keychron K6", price: 80, inUse: false, warrantyLeft: 2 },
         { tag: "91-PR01-05", type: "Headphones", name: "Sony WH-1000XM4", price: 300, inUse: true, warrantyLeft: 2 }
-      ];
+    ];
 
-      const [equipments, setEquipments] = useState([])
+    const [equipments, setEquipments] = useState([])
 
-      useEffect(() => {
-        const token = localStorage.getItem('accessToken')
-
+    useEffect(() => {
         const fetchEquipments = async () => {
-            const data = await apiRequest({endpoint: '/equipments', token: token })
+            const data = await apiRequest({ endpoint: '/equipments' })
             setEquipments(data)
             console.log(data);
             
 
         }
-
-        if(token) {
-            fetchEquipments()
-        }
-      }, []);
+        fetchEquipments()
+    }, []);
 
     return (
         <Box p={2}>
