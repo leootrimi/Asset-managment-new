@@ -17,17 +17,12 @@ const Employers = () => {
   const [users, setUsers] = useState([]);
   
   useEffect(() => {
-    const token = localStorage.getItem('accessToken')
-
     const fetchData = async () => {
-      const data = await apiRequest({endpoint: '/users', token: token});
+      const data = await apiRequest({endpoint: '/users'});
       console.log(data);
       setUsers(data)
     }
-    if (token) {
       fetchData()
-    }
-
   }, []);
 
   return (

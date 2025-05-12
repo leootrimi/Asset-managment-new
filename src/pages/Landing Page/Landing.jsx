@@ -17,21 +17,6 @@ export default function Landing() {
   const { logout } = useAuth0();
   const { user, isAuthenticated, isLoading, error, getAccessTokenSilently } = useAuth0();
 
-
-  useEffect(() => {
-    const getUserMetadata = async () => {
-        try {
-          const accessToken = await getAccessTokenSilently();
-          localStorage.setItem('accessToken', accessToken)
-        } catch (e) {
-          console.log(e.message);
-        }
-    };
-
-    getUserMetadata();
-  }, [getAccessTokenSilently, user?.sub]);
-  
-
   if (error) {
     return <div>{error.message}</div>;
   }
