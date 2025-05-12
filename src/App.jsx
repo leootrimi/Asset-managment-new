@@ -17,6 +17,7 @@ import Documents from './pages/Documents/Documents';
 import NewEquipment from './pages/Add New Equipment/NewEquipment';
 import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
 import RequestBoard from './pages/Requests Made/Request-board';
+import ReportsPage from './pages/Reports/ReportsPage';
 
 import './App.css';
 
@@ -57,6 +58,7 @@ function App() {
             <Route path="documents" element={<Documents />} />
             <Route path="equpiment/add" element={<NewEquipment />} />
             <Route path="requests" element={<RequestBoard />} />
+            <Route path="reports" element={<ReportsPage />} />
           </Route>
           </Route>
         </Routes>
