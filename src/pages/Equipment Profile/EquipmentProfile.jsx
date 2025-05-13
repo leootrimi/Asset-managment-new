@@ -29,6 +29,7 @@ import {
 } from '@heroicons/react/20/solid'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { apiRequest } from '../../services/ApiCalls'
+import Alert from '../../Core/Alerts';
 
 const invoice = {
   subTotal: '$8,800.00',
@@ -125,14 +126,17 @@ export default function EquipmentProfile() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedUser, setSelectedUser] = useState(null)
   const [users, setUsers] = useState([])
+  const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
   const { id } = useParams()
 
   useEffect(() => {
+    console.log(alert);
+    
     async function fetchEquipmentsProfile() {
       try {
         const [equipmentResponse, employersResponse] = await Promise.all([
           apiRequest({ endpoint: `/equipments/${id}` }),
-          apiRequest({endpoint: '/users'}),
+          apiRequest({ endpoint: '/users' }),
         ]);
         setEquipmentsProfile(equipmentResponse);
         setUpdatedProfile(equipmentResponse);
@@ -145,20 +149,49 @@ export default function EquipmentProfile() {
     fetchEquipmentsProfile()
   }, [])
 
+  function editProfileButton() {
+    setUpdateEnabled(!updateEnabled)
+  }
+  
   async function saveUpdatedProfile() {
     try {
-      const response = await apiRequest({ endpoint: `/equipments/${id}`, method: 'PUT', body: selectedUser})
+      const response = await apiRequest({ endpoint: `/equipmments/${id}`, method: 'PUT', body: selectedUser })
+      setEquipmentsProfile( prev => ({
+        ...prev,
+        assignedTo: selectedUser
+      }))
+      setUpdateEnabled(!updateEnabled)
     } catch (err) {
-      console.log(err);
+      setAlert({
+        show: true,
+        type: 'error',
+        title: 'Please try again later',
+        message: 'An error ocurred while trying to process the request',
+      })
+      setUpdateEnabled(!updateEnabled)
+    } finally {
+      setTimeout(() => {
+        setAlert({
+          show: false
+        })
+      }, 2000)
     }
   }
 
   const filteredUsers = (users || []).filter(user =>
     `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-  );  
+  );
 
   return (
     <>
+      {alert.show && (
+        <Alert
+          type={alert.type}
+          title={alert.title}
+          message={alert.message}
+          show={alert.show}
+        />
+      )}
       <main>
         <header className="relative isolate pt-5">
           <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
@@ -190,12 +223,12 @@ export default function EquipmentProfile() {
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
-                <a onClick={() => { setUpdateEnabled(!updateEnabled) }} className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
+                <button onClick={editProfileButton} className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
                   Edit
-                </a>
+                </button>
                 {updateEnabled &&
                   <a
-                  onClick={saveUpdatedProfile()}
+                    onClick={saveUpdatedProfile}
                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Save
@@ -268,9 +301,9 @@ export default function EquipmentProfile() {
                       <UserCircleIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
                     </dt>
                     {updateEnabled ? (
-                      <Listbox value={selectedUser}   onChange={(user) => {setSelectedUser(user)}}>
+                      <Listbox value={selectedUser} onChange={(user) => { setSelectedUser(user) }}>
                         <div className="relative">
-                          <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pl-3 pr-2 text-left text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                          <ListboxButton className="grid min-w-[250px] w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pl-3 pr-2 text-left text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                             <span className="col-start-1 row-start-1 truncate pr-6">
                               {selectedUser?.fullName || 'Select a user'}
                             </span>
@@ -284,7 +317,7 @@ export default function EquipmentProfile() {
                             {users.map((user) => (
                               <ListboxOption
                                 key={user._id}
-                                value={{id: user._id, fullName: `${user.firstName} ${user.lastName}`}}
+                                value={{ id: user._id, fullName: `${user.firstName} ${user.lastName}` }}
                                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none flex"
                               >
                                 <span className="block truncate font-normal group-data-[selected]:font-semibold">
