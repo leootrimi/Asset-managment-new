@@ -8,17 +8,12 @@ const port = '3000';
     return tokens.body.access_token
   }
 
-function getRefreshToken() {
-  const refreshTokenKey = '@@auth0spajs@@::uezGiGVAcfwgJZllm1Xd2fTq3cOO0RTA::https://dev-r3vhddtfi6bcxq12.us.auth0.com/api/v2/::openid profile email offline_access read:users';
-  const storedTokens = localStorage.getItem(refreshTokenKey);
-  const tokens = JSON.parse(storedTokens);
-  return tokens.body.refresh_token;
-}
-
-function storeTokens({ access_token, refresh_token }) {
-  if (access_token) localStorage.setItem('access_token', access_token);
-  if (refresh_token) localStorage.setItem('refresh_token', refresh_token);
-}
+  function getIdToken() {
+    const idTokenKey = '@@auth0spajs@@::uezGiGVAcfwgJZllm1Xd2fTq3cOO0RTA::@@user@@';
+    const storedToken = localStorage.getItem(idTokenKey);
+    const token = JSON.parse(storedToken);
+    return token.id_token;
+  }
 
 export async function apiRequest({
   endpoint,
@@ -32,11 +27,12 @@ export async function apiRequest({
       'Content-Type': 'application/json',
       ...customHeaders,
     };
-
+    
     if (token || getAccessToken()) {
       console.log(token);
       
       headers['Authorization'] = `Bearer ${token || getAccessToken()}`;
+      headers['id-token'] = getIdToken();
     }
     const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
       method,

@@ -24,9 +24,10 @@ import {
   HeartIcon,
   PaperClipIcon,
   UserCircleIcon,
+  CheckIcon,
   XMarkIcon as XMarkIconMini,
 } from '@heroicons/react/20/solid'
-import { CheckCircleIcon } from '@heroicons/react/24/solid'
+import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
 import { apiRequest } from '../../services/ApiCalls'
 
 const invoice = {
@@ -68,8 +69,7 @@ const invoice = {
     },
   ],
 }
-let activity = [
-]
+
 const moods = [
   { name: 'Excited', value: 'excited', icon: FireIcon, iconColor: 'text-white', bgColor: 'bg-red-500' },
   { name: 'Loved', value: 'loved', icon: HeartIcon, iconColor: 'text-white', bgColor: 'bg-pink-400' },
@@ -120,22 +120,42 @@ export default function EquipmentProfile() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selected, setSelected] = useState(moods[5])
   const [equipmentsProfile, setEquipmentsProfile] = useState();
+  const [updatedProfile, setUpdatedProfile] = useState();
+  const [updateEnabled, setUpdateEnabled] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedUser, setSelectedUser] = useState(null)
+  const [users, setUsers] = useState([])
   const { id } = useParams()
 
   useEffect(() => {
     async function fetchEquipmentsProfile() {
       try {
-        const response = await apiRequest({ endpoint: `/equipments/${id}` });
-        setEquipmentsProfile(response)
-        activity = response.activity
-        console.log(activity);
-
+        const [equipmentResponse, employersResponse] = await Promise.all([
+          apiRequest({ endpoint: `/equipments/${id}` }),
+          apiRequest({endpoint: '/users'}),
+        ]);
+        setEquipmentsProfile(equipmentResponse);
+        setUpdatedProfile(equipmentResponse);
+        setUsers(employersResponse);
+        console.log(employersResponse);
       } catch (error) {
         console.log(error);
       }
     }
     fetchEquipmentsProfile()
   }, [])
+
+  async function saveUpdatedProfile() {
+    try {
+      const response = await apiRequest({ endpoint: `/equipments/${id}`, method: 'PUT', body: selectedUser})
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const filteredUsers = (users || []).filter(user =>
+    `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );  
 
   return (
     <>
@@ -170,15 +190,18 @@ export default function EquipmentProfile() {
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
-                <a href="#" className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
+                <a onClick={() => { setUpdateEnabled(!updateEnabled) }} className="hidden text-sm/6 font-semibold text-gray-900 sm:block">
                   Edit
                 </a>
-                <a
-                  href="#"
-                  className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  Send
-                </a>
+                {updateEnabled &&
+                  <a
+                  onClick={saveUpdatedProfile()}
+                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Save
+                  </a>
+                }
+
 
                 <Menu as="div" className="relative sm:hidden">
                   <MenuButton className="-m-3 block p-3">
@@ -239,16 +262,50 @@ export default function EquipmentProfile() {
 
 
                   </div>
-                  <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6">
+                  <div className="mt-6 flex w-full flex-none text-center gap-x-4 border-t border-gray-900/5 px-6 pt-6">
                     <dt className="flex-none">
                       <span className="sr-only">Client</span>
                       <UserCircleIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
                     </dt>
-                    <dd className="text-sm/6 font-medium text-gray-900">
-                      {equipmentsProfile?.assignedTo?.fullName
-                        ? isEquipmentAssigned(equipmentsProfile.assignedTo.fullName)
-                        : isEquipmentAssigned('')}
-                    </dd>
+                    {updateEnabled ? (
+                      <Listbox value={selectedUser}   onChange={(user) => {setSelectedUser(user)}}>
+                        <div className="relative">
+                          <ListboxButton className="grid w-full cursor-default grid-cols-1 rounded-md bg-white py-1.5 pl-3 pr-2 text-left text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                            <span className="col-start-1 row-start-1 truncate pr-6">
+                              {selectedUser?.fullName || 'Select a user'}
+                            </span>
+                            <ChevronUpDownIcon
+                              aria-hidden="true"
+                              className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                            />
+                          </ListboxButton>
+
+                          <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                            {users.map((user) => (
+                              <ListboxOption
+                                key={user._id}
+                                value={{id: user._id, fullName: `${user.firstName} ${user.lastName}`}}
+                                className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none flex"
+                              >
+                                <span className="block truncate font-normal group-data-[selected]:font-semibold">
+                                  {`${user.firstName} ${user.lastName}`}
+                                </span>
+
+                                <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-[&:not([data-selected])]:hidden group-data-[focus]:text-white">
+                                  <CheckIcon aria-hidden="true" className="size-5" />
+                                </span>
+                              </ListboxOption>
+                            ))}
+                          </ListboxOptions>
+                        </div>
+                      </Listbox>
+                    ) : (
+                      <dd className="text-sm/6 font-medium text-gray-900">
+                        {equipmentsProfile?.assignedTo?.fullName
+                          ? isEquipmentAssigned(equipmentsProfile.assignedTo.fullName)
+                          : isEquipmentAssigned('')}
+                      </dd>
+                    )}
 
                   </div>
                   <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
@@ -306,23 +363,23 @@ export default function EquipmentProfile() {
                   </dd>
                 </div>
                 <div className="mt-6 border-t border-gray-900/5 pt-6 sm:pr-4">
-                  <dt className="font-semibold text-gray-900">From</dt>
+                  <dt className="font-semibold text-gray-900">Bought in</dt>
                   <dd className="mt-2 text-gray-500">
                     <span className="font-medium text-gray-900">Acme, Inc.</span>
                     <br />
-                    7363 Cynthia Pass
+                    7363 Gjirafa Inc.
                     <br />
-                    Toronto, ON N3Y 4H8
+                    Magjistralja Prishtinë, Ferizaj
                   </dd>
                 </div>
                 <div className="mt-8 sm:mt-6 sm:border-t sm:border-gray-900/5 sm:pl-4 sm:pt-6">
-                  <dt className="font-semibold text-gray-900">To</dt>
+                  <dt className="font-semibold text-gray-900">Using in</dt>
                   <dd className="mt-2 text-gray-500">
-                    <span className="font-medium text-gray-900">Tuple, Inc</span>
+                    <span className="font-medium text-gray-900">Matrics Blockchain</span>
                     <br />
-                    886 Walter Street
+                    1752, Pejton
                     <br />
-                    New York, NY 12345
+                    Kosovë, Prishtinë 11000
                   </dd>
                 </div>
               </dl>
@@ -412,15 +469,15 @@ export default function EquipmentProfile() {
               </table>
             </div>
 
-            <div className="lg:col-start-3">
+            <div className="lg:col-start-3 rounded shadow-sm ring-1 ring-gray-900/5 p-6">
               {/* Activity feed */}
               <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
-              <ul role="list" className="mt-6 space-y-6">
-                {activity.map((activityItem, activityItemIdx) => (
-                  <li key={activityItem.id} className="relative flex gap-x-4">
+              <ul role="list" className="mt-3 space-y-6">
+                {equipmentsProfile?.activity && equipmentsProfile.activity.map((activityItem, activityItemIdx) => (
+                  <li key={activityItem._id} className="relative flex gap-x-4">
                     <div
                       className={classNames(
-                        activityItemIdx === activity.length - 1 ? 'h-6' : '-bottom-6',
+                        activityItemIdx === equipmentsProfile.activity.length - 1 ? 'h-6' : '-bottom-6',
                         'absolute left-0 top-0 flex w-6 justify-center',
                       )}
                     >
@@ -442,7 +499,7 @@ export default function EquipmentProfile() {
               </ul>
 
               {/* New comment form */}
-              <div className="mt-6 flex gap-x-3">
+              <div className="mt-6 flex gap-x-3 relative">
                 <img
                   alt=""
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -540,6 +597,9 @@ export default function EquipmentProfile() {
                     </button>
                   </div>
                 </form>
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/60 backdrop-blur-[1.5px] rounded-lg p-2">
+                  <span className="text-gray-700 font-semibold text-sm sm:text-base">💡 Feature coming soon...</span>
+                </div>
               </div>
             </div>
           </div>
