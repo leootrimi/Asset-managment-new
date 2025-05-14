@@ -24,6 +24,8 @@ const Equipment = () => {
         const fetchEquipments = async () => {
             const data = await apiRequest({ endpoint: '/equipments' })
             setEquipments(data)
+            console.log(data);
+            
 
         }
         fetchEquipments()

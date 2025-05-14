@@ -117,8 +117,6 @@ export default function EmployersProfile() {
   })
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken")
-
     async function fetchUserProfile() {
       try {
         const response = await apiRequest({ endpoint: `/users/${id}` })
@@ -134,11 +132,7 @@ export default function EmployersProfile() {
       }
     }
 
-    if (token && id) {
       fetchUserProfile()
-    } else {
-      setLoading(false)
-    }
   }, [id])
 
   if (loading) {
