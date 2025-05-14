@@ -155,11 +155,17 @@ export default function EquipmentProfile() {
   
   async function saveUpdatedProfile() {
     try {
-      const response = await apiRequest({ endpoint: `/equipmments/${id}`, method: 'PUT', body: selectedUser })
+      const response = await apiRequest({ endpoint: `/equipments/${id}`, method: 'PUT', body: selectedUser })
       setEquipmentsProfile( prev => ({
         ...prev,
         assignedTo: selectedUser
       }))
+      setAlert({
+        show: true,
+        type: 'success',
+        title: 'User Updated',
+        message: 'You successfully updated user details',
+      })
       setUpdateEnabled(!updateEnabled)
     } catch (err) {
       setAlert({
