@@ -14,9 +14,10 @@ import EquipmentProfile from './pages/Equipment Profile/EquipmentProfile';
 import EmployersProfile from './pages/Employer Profile/EmployersProfile'
 import CalendarEvents from './pages/Calendar Events/CalendarEvents'
 import Documents from './pages/Documents/Documents';
-import Reports from './pages/Reports/Reports';
 import NewEquipment from './pages/Add New Equipment/NewEquipment';
-import RequestsMade from './pages/Requests Made/RequestsMade';
+import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
+import RequestBoard from './pages/Requests Made/Request-board';
+import ReportsPage from './pages/Reports/ReportsPage';
 
 import './App.css';
 
@@ -26,7 +27,6 @@ const theme = createTheme({
   },
 });
 
-// Layout component that wraps Sidebar and renders nested routes
 function MainLayout() {
   return (
     <div className="h-full">
@@ -46,6 +46,7 @@ function App() {
 
           {/* Protected routes inside Sidebar layout */}
           <Route path="/" element={<MainLayout />}>
+            <Route element={<AuthenticationGuard />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="user/add" element={<NewUser />} />
             <Route path="profile/:id" element={<Profile />} />
@@ -55,9 +56,10 @@ function App() {
             <Route path="equipment/:id" element={<EquipmentProfile />} />
             <Route path="events" element={<CalendarEvents />} />
             <Route path="documents" element={<Documents />} />
-            <Route path="reports" element={<Reports />} />
             <Route path="equpiment/add" element={<NewEquipment />} />
-            <Route path="requests" element={<RequestsMade />} />
+            <Route path="requests" element={<RequestBoard />} />
+            <Route path="reports" element={<ReportsPage />} />
+          </Route>
           </Route>
         </Routes>
       </Router>

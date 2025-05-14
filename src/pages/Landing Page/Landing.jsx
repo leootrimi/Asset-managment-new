@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-// import { Dialog, DialogPanel } from '@headlessui/react'
+import { useState, useEffect } from 'react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -13,6 +13,16 @@ const navigation = [
 
 export default function Landing() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { loginWithRedirect } = useAuth0();
+  const { logout } = useAuth0();
+  const { user, isAuthenticated, isLoading, error, getAccessTokenSilently } = useAuth0();
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white">
@@ -44,12 +54,28 @@ export default function Landing() {
                 {item.name}
               </a>
             ))}
+
+            {
+            isAuthenticated && (
+              <a key='Dashobard' href='/dashboard' className="text-sm/6 font-semibold text-gray-900">
+                Dashboard
+              </a>
+            )}
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="/login" className="text-sm/6 font-semibold text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
+
+          {
+            !isAuthenticated ? (
+              <div className="hidden lg:flex lg:flex-1 lg:justify-end text-sm/6 font-semibold text-gray-900" onClick={() => loginWithRedirect({ scope: 'openid profile email offline_access' })}>
+                Log in <span aria-hidden="true">&rarr;</span>
+              </div>
+            ) :
+              (
+                <div className="hidden lg:flex lg:flex-1 lg:justify-end text-sm/6 font-semibold text-gray-900" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })} >
+                  Log out <span aria-hidden="true">&rarr;</span>
+                </div>
+              )
+          }
+
         </nav>
       </header>
 

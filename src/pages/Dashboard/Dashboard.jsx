@@ -1,9 +1,9 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import NewDataOption from './Components/NewDataOption';
 import RecentAction from './Components/RecentActivity';
-import Alerts from '../../Core/Alerts';
 import StatsHeader from './Components/StatsHeader';
+import { apiRequest } from '../../services/ApiCalls';
 import {
   ArrowDownCircleIcon,
   ArrowPathIcon,
@@ -112,10 +112,31 @@ function classNames(...classes) {
 
 export default function Dashboard() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showSucessAlert, setShowSucessAler] = useState(false)
 
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+
+    const fetchData = async () => {
+      const data = await apiRequest({ endpoint: '/users', token: token });
+    }
+    if (token) {
+      fetchData()
+    }
+
+  }, []);
   return (
     <>
-    <Alerts />
+      {showSucessAlert &&
+        <Alert
+          type='error'
+          title='An error ocurred while trying to process the request'
+          message='Please try again later'
+          show={errorOcurred}
+          setShow={setErrorOcurred}
+        />
+      }
+
       <main>
         <div className="relative isolate overflow-hidden pt-1">
           {/* Secondary navigation */}
@@ -140,10 +161,10 @@ export default function Dashboard() {
           </header>
 
           {/* Stats */}
-                <StatsHeader stats = {stats} />
+          <StatsHeader stats={stats} />
 
         </div>
-          <NewDataOption />
+        <NewDataOption />
 
         <div className="space-y-16 py-5 xl:space-y-5">
           {/* Recent activity table */}
@@ -234,7 +255,7 @@ export default function Dashboard() {
           </div>
 
           {/* Recent employer list*/}
-            <RecentAction clients={clients} />
+          <RecentAction clients={clients} />
         </div>
       </main>
     </>
