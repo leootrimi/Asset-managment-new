@@ -25,7 +25,7 @@ import {
   ArrowDownOnSquareStackIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'
 
 const navigation = [
@@ -53,6 +53,7 @@ function classNames(...classes) {
 
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const navigate = useNavigate();
   const { logout } = useAuth0();
   return (
     <>
@@ -166,7 +167,9 @@ export default function Example() {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-            <div className="flex h-16 shrink-0 items-center">
+            <div 
+            onClick={() => navigate('/your-work')}
+            className="flex h-16 shrink-0 items-center">
               <img
                 alt="Your Company"
                 src="https://static.vecteezy.com/system/resources/previews/055/007/018/non_2x/data-analysis-is-at-hand-vector.jpg"
