@@ -18,6 +18,7 @@ import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
 import RequestBoard from './pages/Requests Made/Request-board';
 import ReportsPage from './pages/Reports/ReportsPage';
 import EmployerDashboard from './pages/Employer Dashboard/EmployerDashboard';
+import YourWork from './pages/your-work/Your-work';
 
 import './App.css';
 
@@ -43,6 +44,7 @@ function App() {
           {/* Public routes */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Landing />} />
+          <Route path='/your-work' element={<YourWork />}/>
 
           {/* Protected routes inside Sidebar layout */}
           <Route path="/" element={<MainLayout />}>
