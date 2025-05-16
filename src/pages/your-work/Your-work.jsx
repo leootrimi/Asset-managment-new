@@ -197,7 +197,9 @@ export default function YourWork() {
                         <div className="h-px bg-gray-300"></div>
                         <RecentProjects />
                         <div className="w-full h-1/2 rounded-2xl hover:shadow-lg hover:cursor-pointer transition-shadow duration-200">
-                        <div className="w-full flex justify-center items-center h-full rounded-2xl border border-dashed border-gray-400 bg-gray-50 py-6 md:py-0">
+                        <div 
+                        onClick={() => setShowModal(true)}
+                        className="w-full flex justify-center items-center h-full rounded-2xl border border-dashed border-gray-400 bg-gray-50 py-6 md:py-0">
                                 <div className="flex flex-col justify-center items-center w-1/3 gap-5">
                                     <div className="flex gap-2 items-center mr-4">
                                         <PlusIcon className='size-6' />
