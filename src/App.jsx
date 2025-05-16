@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useState } from 'react';
 
 import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -18,6 +17,7 @@ import NewEquipment from './pages/Add New Equipment/NewEquipment';
 import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
 import RequestBoard from './pages/Requests Made/Request-board';
 import ReportsPage from './pages/Reports/ReportsPage';
+import EmployerDashboard from './pages/Employer Dashboard/EmployerDashboard';
 import YourWork from './pages/your-work/Your-work';
 
 import './App.css';
@@ -50,6 +50,7 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route element={<AuthenticationGuard />}>
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path='/dashboard/employer' element={<EmployerDashboard />}/>
             <Route path="user/add" element={<NewUser />} />
             <Route path="profile/:id" element={<Profile />} />
             <Route path='employers/:id' element={<EmployersProfile />} />
