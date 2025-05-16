@@ -11,7 +11,7 @@ createRoot(document.getElementById('root')).render(
     clientId={import.meta.env.VITE_CLIENT_ID}
     authorizationParams={{
       audience: import.meta.env.VITE_AUDIENCE,
-      redirect_uri: 'http://localhost:5173/your-work',
+      redirect_uri: `${window.location.origin}/your-work`,
       scope: "openid profile email offline_access read:users"
     }}
     useRefreshTokens={true}
