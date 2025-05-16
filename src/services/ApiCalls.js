@@ -21,15 +21,16 @@
     try {
       const payloadBase64Url = storedToken.split('.')[1];
       const payloadBase64 = payloadBase64Url
-        .replace(/-/g, '+')   // base64url to base64
-        .replace(/_/g, '/')   // base64url to base64
+        .replace(/-/g, '+')
+        .replace(/_/g, '/') 
         .padEnd(payloadBase64Url.length + (4 - payloadBase64Url.length % 4) % 4, '=');
   
       const decodedPayload = atob(payloadBase64);
       const payload = JSON.parse(decodedPayload);
   
       const roles = payload["https:/assets.com/roles"] || [];
-      return roles;
+      const name = payload["name"]      
+      return { roles, name };
     } catch (err) {
       console.error("Error parsing ID token:", err);
       return [];

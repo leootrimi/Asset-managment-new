@@ -27,7 +27,7 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'
-
+import { getUserRolesFromIdToken } from '../services/ApiCalls'
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
   { name: 'Team', href: '/employers', icon: UsersIcon, current: false },
@@ -55,6 +55,7 @@ export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const navigate = useNavigate();
   const { logout } = useAuth0();
+  const { roles, name } = getUserRolesFromIdToken()
   return (
     <>
       <div>
@@ -295,7 +296,7 @@ export default function Example() {
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                        Tom Cook
+                        {name}
                       </span>
                       <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                     </span>
