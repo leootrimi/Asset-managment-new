@@ -3,7 +3,8 @@ import { Fragment, useEffect, useState } from 'react'
 import NewDataOption from './Components/NewDataOption';
 import RecentAction from './Components/RecentActivity';
 import StatsHeader from './Components/StatsHeader';
-import { apiRequest } from '../../services/ApiCalls';
+import { apiRequest, getUserRolesFromIdToken } from '../../services/ApiCalls';
+import { Roles } from '../../services/Roles';
 import {
   ArrowDownCircleIcon,
   ArrowPathIcon,
@@ -113,10 +114,12 @@ function classNames(...classes) {
 export default function Dashboard() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showSucessAlert, setShowSucessAler] = useState(false)
-
+  const [isAdmin, setIsAdmin] = useState(false) 
+  const role = getUserRolesFromIdToken()
   useEffect(() => {
     const token = localStorage.getItem('accessToken')
 
+    
     const fetchData = async () => {
       const data = await apiRequest({ endpoint: '/users', token: token });
     }
@@ -161,7 +164,9 @@ export default function Dashboard() {
           </header>
 
           {/* Stats */}
+          { role == Roles.ADMIN &&
           <StatsHeader stats={stats} />
+        }
 
         </div>
         <NewDataOption />
