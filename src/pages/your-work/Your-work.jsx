@@ -6,6 +6,7 @@ import { Bars3Icon, ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outlin
 import RecentProjects from './Components/RecentProjects'
 import ProductCard from './Components/ProductCard'
 import ProjectModal from './New Project/ProjectModal'
+import YourWorkSkeleton from './Loading Skeleton/YourWorkSkeleton'
 
 export default function YourWork() {
     const { isAuthenticated, isLoading, error, loginWithRedirect, logout } = useAuth0()
@@ -48,7 +49,7 @@ export default function YourWork() {
         return <div>{error.message}</div>
     }
     if (isLoading) {
-        return <div>Loading...</div>
+        return <YourWorkSkeleton />
     }
 
     return (
