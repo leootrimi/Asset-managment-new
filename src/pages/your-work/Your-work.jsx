@@ -5,11 +5,13 @@ import { useAuth0 } from '@auth0/auth0-react'
 import { Bars3Icon, ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outline'
 import RecentProjects from './Components/RecentProjects'
 import ProductCard from './Components/ProductCard'
+import ProjectModal from './New Project/ProjectModal'
 
 export default function YourWork() {
     const { isAuthenticated, isLoading, error, loginWithRedirect, logout } = useAuth0()
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     const dropdownRef = useRef(null)
 
     // Sample dropdown items
@@ -19,7 +21,6 @@ export default function YourWork() {
         { name: 'Project 3', href: '#project3' },
     ]
 
-    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -102,7 +103,9 @@ export default function YourWork() {
                             )}
                         </div>
 
-                        <div className="bg-blue-500 px-2 py-1 rounded text-white text-sm font-semibold hover: cursor-pointer hover:shadow-md">
+                        <div 
+                        onClick={() => setShowModal(true)}
+                        className="bg-blue-500 px-2 py-1.5 rounded text-white text-sm font-semibold hover: cursor-pointer hover:shadow-md">
                             Create
                         </div>
                     </div>
@@ -214,6 +217,7 @@ export default function YourWork() {
                         <ProductCard />
                     </div>
                 </div>
+                {showModal && <ProjectModal onClose={() => setShowModal(false)} />}
             </main>
         </div>
     )
