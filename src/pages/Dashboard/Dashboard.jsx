@@ -117,7 +117,6 @@ export default function Dashboard() {
   const [showSucessAlert, setShowSucessAler] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false) 
   const role = getUserRolesFromIdToken()
-  console.log(role);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken')

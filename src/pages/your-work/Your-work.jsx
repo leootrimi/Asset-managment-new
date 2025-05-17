@@ -22,7 +22,7 @@ export default function YourWork() {
         async function fetchProjects() {
             try {
                 console.log('Fetching projects for user.sub:', user?.sub);
-                const response = await apiRequest({ endpoint: `/projects?ownerId=${user?.sub}` });
+                const response = await apiRequest({ endpoint: `/projects/owner?ownerId=${user?.sub}` });
                 console.log('Projects response:', response);
                 setProjects(response);
             } catch (error) {
