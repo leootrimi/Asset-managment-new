@@ -1,29 +1,38 @@
-import { useState } from "react"
-import { X, Minimize, Maximize, MoreVertical } from "lucide-react"
+import { useState } from "react";
+import { X, Minimize, Maximize, MoreVertical } from "lucide-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { apiRequest } from "../../../services/ApiCalls";
 
 export default function ProjectModal({ onClose, onSubmit }) {
+  const { user } = useAuth0();
+
   const [formData, setFormData] = useState({
-    name: "",
-    code: "",
+    company: "",
     sector: "",
     address: "",
     city: "",
     country: "",
-    contact_name: "",
-    contact_email: "",
+    owner: user.name,
+    ownerId: user.sub,
+    contact_email: user.email,
     contact_phone: "",
-    start_date: "",
-    status: "Active",
   })
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    console.log(formData);
+    
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    onSubmit(formData)
+    try {
+      const response = await apiRequest({endpoint: '/projects', method: 'POST', body: formData})
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -63,9 +72,9 @@ export default function ProjectModal({ onClose, onSubmit }) {
                 </label>
                 <input
                   type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
+                  id="company"
+                  name="company"
+                  value={formData.company}
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 bg-[#2a2a2a] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -74,22 +83,6 @@ export default function ProjectModal({ onClose, onSubmit }) {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label htmlFor="code" className="block text-sm font-medium">
-                    Code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="code"
-                    name="code"
-                    value={formData.code}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-3 py-2 bg-[#2a2a2a] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="e.g. 91L-001"
-                  />
-                </div>
-
                 <div className="space-y-2">
                   <label htmlFor="sector" className="block text-sm font-medium">
                     Sector <span className="text-red-500">*</span>
@@ -173,14 +166,14 @@ export default function ProjectModal({ onClose, onSubmit }) {
               <h3 className="text-lg font-medium">Contact Information</h3>
 
               <div className="space-y-2">
-                <label htmlFor="contact_name" className="block text-sm font-medium">
-                  Contact Name <span className="text-red-500">*</span>
+                <label htmlFor="owner" className="block text-sm font-medium">
+                  Project Owner <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  id="contact_name"
-                  name="contact_name"
-                  value={formData.contact_name}
+                  id="owner"
+                  name="owner"
+                  value={formData.owner}
                   onChange={handleChange}
                   required
                   className="w-full px-3 py-2 bg-[#2a2a2a] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -220,42 +213,6 @@ export default function ProjectModal({ onClose, onSubmit }) {
                     placeholder="e.g. +49 123 456789"
                   />
                 </div>
-              </div>
-            </div>
-
-            {/* Additional Information */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label htmlFor="start_date" className="block text-sm font-medium">
-                  Start Date <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  id="start_date"
-                  name="start_date"
-                  value={formData.start_date}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 bg-[#2a2a2a] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="status" className="block text-sm font-medium">
-                  Status <span className="text-red-500">*</span>
-                </label>
-                <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-3 py-2 bg-[#2a2a2a] border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
-                >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                  <option value="Pending">Pending</option>
-                </select>
               </div>
             </div>
           </form>

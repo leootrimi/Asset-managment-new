@@ -7,6 +7,7 @@ import RecentProjects from './Components/RecentProjects'
 import ProductCard from './Components/ProductCard'
 import ProjectModal from './New Project/ProjectModal'
 import YourWorkSkeleton from './Loading Skeleton/YourWorkSkeleton'
+import { apiRequest } from '../../services/ApiCalls'
 
 export default function YourWork() {
     const { isAuthenticated, isLoading, error, loginWithRedirect, logout } = useAuth0()
@@ -14,13 +15,28 @@ export default function YourWork() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const dropdownRef = useRef(null)
+    const { user } = useAuth0();
+    const [project, setProjects] = useState([]);
 
-    // Sample dropdown items
     const dropdownItems = [
         { name: 'Project 1', href: '#project1' },
         { name: 'Project 2', href: '#project2' },
         { name: 'Project 3', href: '#project3' },
     ]
+
+
+    useEffect(() => {
+        async function fetchProjects() {
+            try {
+                const response = await apiRequest({ endpoint: `/projects/owner?ownerId=${user?.sub}` })
+                setProjects(response)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchProjects();
+    }, [user])
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -34,7 +50,6 @@ export default function YourWork() {
         }
     }, [])
 
-    // Smooth scrolling handler (for dropdown items, similar to your Landing component)
     const handleScroll = (e, href) => {
         e.preventDefault()
         const targetId = href.replace('#', '')
@@ -42,7 +57,7 @@ export default function YourWork() {
         if (targetElement) {
             targetElement.scrollIntoView({ behavior: 'smooth' })
         }
-        setIsDropdownOpen(false) // Close dropdown after scrolling
+        setIsDropdownOpen(false)
     }
 
     if (error) {
@@ -70,7 +85,7 @@ export default function YourWork() {
                                 />
                             </a>
                         </div>
-                        <div className="text-sm font-semibold text-gray-900">Sephylis HR</div>
+                        <div className="text-sm font-semibold text-gray-900">PrimeNest</div>
 
                         <div className="w-px h-8 bg-gray-400"></div>
 
@@ -104,9 +119,9 @@ export default function YourWork() {
                             )}
                         </div>
 
-                        <div 
-                        onClick={() => setShowModal(true)}
-                        className="bg-blue-500 px-2 py-1.5 rounded text-white text-sm font-semibold hover: cursor-pointer hover:shadow-md">
+                        <div
+                            onClick={() => setShowModal(true)}
+                            className="bg-blue-500 px-2 py-1.5 rounded text-white text-sm font-semibold hover: cursor-pointer hover:shadow-md">
                             Create
                         </div>
                     </div>
@@ -196,11 +211,11 @@ export default function YourWork() {
                             Your Work
                         </h1>
                         <div className="h-px bg-gray-300"></div>
-                        <RecentProjects />
+                        <RecentProjects projects={project} />
                         <div className="w-full h-1/2 rounded-2xl hover:shadow-lg hover:cursor-pointer transition-shadow duration-200">
-                        <div 
-                        onClick={() => setShowModal(true)}
-                        className="w-full flex justify-center items-center h-full rounded-2xl border border-dashed border-gray-400 bg-gray-50 py-6 md:py-0">
+                            <div
+                                onClick={() => setShowModal(true)}
+                                className="w-full flex justify-center items-center h-full rounded-2xl border border-dashed border-gray-400 bg-gray-50 py-6 md:py-0">
                                 <div className="flex flex-col justify-center items-center w-1/3 gap-5">
                                     <div className="flex gap-2 items-center mr-4">
                                         <PlusIcon className='size-6' />

@@ -55,7 +55,8 @@ export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const navigate = useNavigate();
   const { logout } = useAuth0();
-  const { roles, name } = getUserRolesFromIdToken()
+  const { user} = useAuth0();
+  
   return (
     <>
       <div>
@@ -296,7 +297,7 @@ export default function Example() {
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                        {name}
+                        {user?.name ? user?.name : '' }
                       </span>
                       <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                     </span>

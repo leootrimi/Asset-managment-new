@@ -1,47 +1,5 @@
 import { useNavigate } from "react-router-dom";
-export default function RecentProjects() {
-  const projects = [
-    {
-      id: 1,
-      title: "Service Management HUB",
-      icon: "🏢",
-      openItems: 3,
-      boards: 5,
-      bgColor: "bg-green-50",
-    },
-    {
-      id: 2,
-      title: "Loyalty",
-      icon: "📝",
-      openItems: 0,
-      boards: 7,
-      bgColor: "bg-blue-50",
-    },
-    {
-      id: 3,
-      title: "Commerce Hub",
-      icon: "🏷️",
-      openItems: 0,
-      boards: 5,
-      bgColor: "bg-yellow-50",
-    },
-    {
-      id: 4,
-      title: "Creative",
-      icon: "🖼️",
-      openItems: 0,
-      boards: 2,
-      bgColor: "bg-red-50",
-    },
-    {
-      id: 5,
-      title: "Sustainment",
-      icon: "☁️",
-      openItems: 0,
-      boards: 4,
-      bgColor: "bg-purple-50",
-    },
-  ]
+export default function RecentProjects({projects}) {
 
   return (
     <div className="font-sans py-2">
@@ -54,7 +12,7 @@ export default function RecentProjects() {
 
       <div className="flex gap-4 overflow-x-auto">
         {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+          <ProjectCard key={project._id} project={project} />
         ))}
       </div>
     </div>
@@ -65,25 +23,37 @@ function ProjectCard({ project }) {
 
   const navigate = useNavigate();
 
+  const icons = ["🏢", "🏗️", "🏬", "🏛️", "🏠", "🏭", "🏣"];
+  const bgColors = ['bg-red-50', 'bg-blue-50', 'bg-green-50', 'bg-yellow-50'];
   const hoverBorderMap = {
-    'bg-purple-50': 'hover:border-purple-600',
-    'bg-blue-50': 'hover:border-blue-600',
-    'bg-green-50': 'hover:border-green-600',
-    'bg-yellow-50': 'hover:border-yellow-600',
-    'bg-red-50': 'hover:border-red-600',
+    'bg-red-500': 'hover:border-red-700',
+    'bg-blue-500': 'hover:border-blue-700',
+    'bg-green-500': 'hover:border-green-700',
+    'bg-yellow-500': 'hover:border-yellow-700',
   };
+
+  function getRandomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function getRandomIcon() {
+    return icons[Math.floor(Math.random() * icons.length)];
+  }  
+  
+  const randomBgColor = getRandomItem(bgColors);
+  const randomHoverClass = hoverBorderMap[randomBgColor] || '';
 
   return (
     <div
-    onClick={() => navigate('/dashboard?company=styples')}
-     className={`${project.bgColor} ${hoverBorderMap[project.bgColor] || ''} rounded-lg border border-gray-200 w-[280px] min-w-[280px] overflow-hidden shadow-sm hover: cursor-pointer`}>
+    onClick={() => navigate(`/dashboard?company=${project.company}`)}
+     className={`${randomBgColor} ${hoverBorderMap[randomBgColor] || ''} rounded-lg border border-gray-200 w-[280px] min-w-[280px] overflow-hidden shadow-sm hover: cursor-pointer`}>
       <div className="p-4">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-8 h-8 bg-white rounded flex items-center justify-center text-xl shadow-sm">
-            {project.icon}
+            {getRandomIcon()}
           </div>
           <div>
-            <h3 className="m-0 text-base font-semibold text-blue-900">{project.title}</h3>
+            <h3 className="m-0 text-base font-semibold text-blue-900">{project.company}</h3>
             <p className="mt-1 mb-0 text-sm text-gray-600">Company-managed software</p>
           </div>
         </div>
