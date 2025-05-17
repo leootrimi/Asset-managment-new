@@ -1,70 +1,56 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useRef } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
-import { Bars3Icon, ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outline'
-import RecentProjects from './Components/RecentProjects'
-import ProductCard from './Components/ProductCard'
-import ProjectModal from './New Project/ProjectModal'
-import YourWorkSkeleton from './Loading Skeleton/YourWorkSkeleton'
-import { apiRequest } from '../../services/ApiCalls'
+import { useState, useEffect, useRef } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Bars3Icon, PlusIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import RecentProjects from './Components/RecentProjects';
+import ProductCard from './Components/ProductCard';
+import ProjectModal from './New Project/ProjectModal';
+import YourWorkSkeleton from './Loading Skeleton/YourWorkSkeleton';
+import { apiRequest } from '../../services/ApiCalls';
 
 export default function YourWork() {
-    const { isAuthenticated, isLoading, error, loginWithRedirect, logout } = useAuth0()
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [showModal, setShowModal] = useState(false)
-    const dropdownRef = useRef(null)
-    const { user } = useAuth0();
+    const { isAuthenticated, isLoading, error, loginWithRedirect, logout, user } = useAuth0();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [project, setProjects] = useState([]);
-
-    const dropdownItems = [
-        { name: 'Project 1', href: '#project1' },
-        { name: 'Project 2', href: '#project2' },
-        { name: 'Project 3', href: '#project3' },
-    ]
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
 
     useEffect(() => {
         async function fetchProjects() {
             try {
-                const response = await apiRequest({ endpoint: `/projects/owner?ownerId=${user?.sub}` })
-                setProjects(response)
+                console.log('Fetching projects for user.sub:', user?.sub);
+                const response = await apiRequest({ endpoint: `/projects?ownerId=${user?.sub}` });
+                console.log('Projects response:', response);
+                setProjects(response);
             } catch (error) {
-                console.log(error);
+                console.error('Error fetching projects:', error);
             }
         }
-
-        fetchProjects();
-    }, [user])
+        if (user?.sub) {
+            fetchProjects();
+        }
+    }, [user]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsDropdownOpen(false)
+                setIsDropdownOpen(false);
             }
-        }
-        document.addEventListener('mousedown', handleClickOutside)
+        };
+        document.addEventListener('mousedown', handleClickOutside);
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [])
-
-    const handleScroll = (e, href) => {
-        e.preventDefault()
-        const targetId = href.replace('#', '')
-        const targetElement = document.getElementById(targetId)
-        if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth' })
-        }
-        setIsDropdownOpen(false)
-    }
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     if (error) {
-        return <div>{error.message}</div>
+        return <div>{error.message}</div>;
     }
     if (isLoading) {
-        return <YourWorkSkeleton />
+        return <YourWorkSkeleton />;
     }
 
     return (
@@ -86,9 +72,7 @@ export default function YourWork() {
                             </a>
                         </div>
                         <div className="text-sm font-semibold text-gray-900">PrimeNest</div>
-
                         <div className="w-px h-8 bg-gray-400"></div>
-
                         <div className="relative" ref={dropdownRef}>
                             <div
                                 className="flex gap-x-1 items-center cursor-pointer"
@@ -103,29 +87,18 @@ export default function YourWork() {
                             {isDropdownOpen && (
                                 <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md border border-gray-200 z-10">
                                     <ul className="py-1">
-                                        {dropdownItems.map((item) => (
-                                            <li key={item.name}>
-                                                <a
-                                                    href={item.href}
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                    onClick={(e) => handleScroll(e, item.href)}
-                                                >
-                                                    {item.name}
-                                                </a>
-                                            </li>
-                                        ))}
+                                        <li className="px-4 py-2 text-sm text-gray-500">No projects available</li>
                                     </ul>
                                 </div>
                             )}
                         </div>
-
                         <div
                             onClick={() => setShowModal(true)}
-                            className="bg-blue-500 px-2 py-1.5 rounded text-white text-sm font-semibold hover: cursor-pointer hover:shadow-md">
+                            className="bg-blue-500 px-2 py-1.5 rounded text-white text-sm font-semibold hover:cursor-pointer hover:shadow-md"
+                        >
                             Create
                         </div>
                     </div>
-
                     {!isAuthenticated ? (
                         <div
                             className="hidden lg:flex lg:flex-1 lg:justify-end text-sm/6 font-semibold text-gray-900 cursor-pointer"
@@ -143,7 +116,6 @@ export default function YourWork() {
                             Log out <span aria-hidden="true">→</span>
                         </div>
                     )}
-
                     <div className="flex lg:hidden">
                         <button
                             type="button"
@@ -155,10 +127,8 @@ export default function YourWork() {
                         </button>
                     </div>
                 </nav>
-                {/* Mobile menu placeholder - implement as needed */}
                 {mobileMenuOpen && (
                     <div className="lg:hidden">
-                        {/* Add mobile menu content here, e.g., a list of links including Projects dropdown */}
                         <div className="fixed inset-0 z-50 bg-white p-6">
                             <button
                                 type="button"
@@ -170,32 +140,36 @@ export default function YourWork() {
                             <ul className="mt-4 space-y-4">
                                 <li>
                                     <div
-                                        className="flex gap-x-1 items-center cursor-pointer"
-                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        onClick={() => {
+                                            setShowModal(true);
+                                            setMobileMenuOpen(false);
+                                        }}
+                                        className="text-sm font-semibold text-gray-900"
                                     >
-                                        <div className="text-sm font-semibold text-gray-900">Projects</div>
-                                        <ChevronDownIcon
-                                            className={`size-3 text-gray-900 transition-transform ${isDropdownOpen ? 'rotate-180' : ''
-                                                }`}
-                                        />
+                                        Create
                                     </div>
-                                    {isDropdownOpen && (
-                                        <ul className="mt-2 pl-4 space-y-2">
-                                            {dropdownItems.map((item) => (
-                                                <li key={item.name}>
-                                                    <a
-                                                        href={item.href}
-                                                        className="block text-sm text-gray-700 hover:bg-gray-100"
-                                                        onClick={(e) => {
-                                                            handleScroll(e, item.href)
-                                                            setMobileMenuOpen(false)
-                                                        }}
-                                                    >
-                                                        {item.name}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                </li>
+                                <li>
+                                    {!isAuthenticated ? (
+                                        <div
+                                            className="text-sm font-semibold text-gray-900 cursor-pointer"
+                                            onClick={() => {
+                                                loginWithRedirect({ scope: 'openid profile email offline_access' });
+                                                setMobileMenuOpen(false);
+                                            }}
+                                        >
+                                            Log in
+                                        </div>
+                                    ) : (
+                                        <div
+                                            className="text-sm font-semibold text-gray-900 cursor-pointer"
+                                            onClick={() => {
+                                                logout({ logoutParams: { returnTo: window.location.origin } });
+                                                setMobileMenuOpen(false);
+                                            }}
+                                        >
+                                            Log out
+                                        </div>
                                     )}
                                 </li>
                             </ul>
@@ -207,19 +181,18 @@ export default function YourWork() {
             <main className="relative isolate px-6 pt-14 lg:px-8">
                 <div id="project1" className="h-screen py-3 bg-gray-5 flex flex-col md:flex-row">
                     <div className="flex flex-col w-full md:w-3/4 p-4 gap-3">
-                        <h1 className='flex text-xl font-medium'>
-                            Your Work
-                        </h1>
+                        <h1 className="flex text-xl font-medium">Your Work</h1>
                         <div className="h-px bg-gray-300"></div>
                         <RecentProjects projects={project} />
                         <div className="w-full h-1/2 rounded-2xl hover:shadow-lg hover:cursor-pointer transition-shadow duration-200">
                             <div
                                 onClick={() => setShowModal(true)}
-                                className="w-full flex justify-center items-center h-full rounded-2xl border border-dashed border-gray-400 bg-gray-50 py-6 md:py-0">
+                                className="w-full flex justify-center items-center h-full rounded-2xl border border-dashed border-gray-400 bg-gray-50 py-6 md:py-0"
+                            >
                                 <div className="flex flex-col justify-center items-center w-1/3 gap-5">
                                     <div className="flex gap-2 items-center mr-4">
-                                        <PlusIcon className='size-6' />
-                                        <h1 className='text-blue-900 text-xl font-semibold m-0'>New Project</h1>
+                                        <PlusIcon className="size-6" />
+                                        <h1 className="text-blue-900 text-xl font-semibold m-0">New Project</h1>
                                     </div>
                                     <div className="h-2 rounded-2xl bg-gray-300 w-full"></div>
                                     <div className="h-2 rounded-2xl bg-gray-300 w-1/2"></div>
@@ -238,5 +211,5 @@ export default function YourWork() {
                 {showModal && <ProjectModal onClose={() => setShowModal(false)} />}
             </main>
         </div>
-    )
+    );
 }

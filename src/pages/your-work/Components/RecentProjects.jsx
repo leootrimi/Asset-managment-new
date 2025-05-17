@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
-export default function RecentProjects({projects}) {
+import { memo } from 'react';
+
+function RecentProjects({projects}) {
 
   return (
     <div className="font-sans py-2">
@@ -18,6 +20,8 @@ export default function RecentProjects({projects}) {
     </div>
   )
 }
+
+export default memo(RecentProjects);
 
 function ProjectCard({ project }) {
 
