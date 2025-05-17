@@ -1,4 +1,6 @@
 
+const baseUrl = 'http://localhost'
+const port = '3000';
   function getAccessToken() {
     const accessTokenKey = import.meta.env.VITE_ACCESS_TOKEN_KEY;
     const storedTokens = localStorage.getItem(accessTokenKey);
@@ -58,8 +60,8 @@ export async function apiRequest({
       headers['id-token'] = getIdToken();
     }
     //For local testing
-    // const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
+      // const response = await fetch(`${import.meta.env.VITE_BASE_URL}${endpoint}`, {
       method,
       headers,
       body: body ? JSON.stringify(body) : null,
