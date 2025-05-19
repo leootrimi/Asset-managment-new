@@ -9,21 +9,25 @@ import {
 } from "@mui/material";
 import EmployerListItem from "./Components/EmployerListItem";
 import EmployersFilterSection from "./Components/EmployersFilterSection";
-import { apiRequest } from "../../services/ApiCalls";
+import useEmployerStore from "../../stores/employersStore";
+import ApiErrorScreen from "../../Core/ApiErrorScreen";
+import EmployersSkeleton from "./Skeleton/EmployersSkeleton";
 
 const Employers = () => {
 
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [users, setUsers] = useState([]);
+  const { employers, loading, error, fetchEmployers } = useEmployerStore();
   
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await apiRequest({endpoint: '/users'});
-      console.log(data);
-      setUsers(data)
-    }
-      fetchData()
+    fetchEmployers();
   }, []);
+
+  if (loading) {
+    return <EmployersSkeleton />
+  }
+
+  if (error) {
+    return <ApiErrorScreen />
+  }
 
   return (
     <Box sx={{ width: "100%", p: 0 }}>
@@ -36,7 +40,7 @@ const Employers = () => {
         <Grid item xs={12}>
           <Stack spacing={1}>
             <EmployerListItem
-              employtersList={users}
+              employtersList={employers}
             />
           </Stack>
         </Grid>
