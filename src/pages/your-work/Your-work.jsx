@@ -7,30 +7,20 @@ import RecentProjects from './Components/RecentProjects';
 import ProductCard from './Components/ProductCard';
 import ProjectModal from './New Project/ProjectModal';
 import YourWorkSkeleton from './Loading Skeleton/YourWorkSkeleton';
-import { apiRequest } from '../../services/ApiCalls';
+import { useProjectStore } from '../../stores/projectStore';
+import ApiErrorScreen from '../../Core/ApiErrorScreen';
 
 export default function YourWork() {
-    const { isAuthenticated, isLoading, error, loginWithRedirect, logout, user } = useAuth0();
+    const { isAuthenticated, isLoading, loginWithRedirect, logout, user } = useAuth0();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    const [project, setProjects] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-
+    const { projects, fetchProjects, loading, error } = useProjectStore();
 
     useEffect(() => {
-        async function fetchProjects() {
-            try {
-                console.log('Fetching projects for user.sub:', user?.sub);
-                const response = await apiRequest({ endpoint: `/projects/owner?ownerId=${user?.sub}` });
-                console.log('Projects response:', response);
-                setProjects(response);
-            } catch (error) {
-                console.error('Error fetching projects:', error);
-            }
-        }
         if (user?.sub) {
-            fetchProjects();
+            fetchProjects(user.sub);
         }
     }, [user]);
 
@@ -47,9 +37,9 @@ export default function YourWork() {
     }, []);
 
     if (error) {
-        return <div>{error.message}</div>;
+        return <ApiErrorScreen />;
     }
-    if (isLoading) {
+    if (loading) {
         return <YourWorkSkeleton />;
     }
 
@@ -183,7 +173,7 @@ export default function YourWork() {
                     <div className="flex flex-col w-full md:w-3/4 p-4 gap-3">
                         <h1 className="flex text-xl font-medium">Your Work</h1>
                         <div className="h-px bg-gray-300"></div>
-                        <RecentProjects projects={project} />
+                        <RecentProjects projects={projects} />
                         <div className="w-full h-1/2 rounded-2xl hover:shadow-lg hover:cursor-pointer transition-shadow duration-200">
                             <div
                                 onClick={() => setShowModal(true)}
