@@ -70,7 +70,7 @@ export default function Landing() {
 
             {
               isAuthenticated && (
-                <a key='Dashobard' section='/dashboard' className="text-sm/6 font-semibold text-gray-900">
+                <a key='Dashobard' href='/dashboard' className="text-sm/6 font-semibold text-gray-900">
                   Dashboard
                 </a>
               )}

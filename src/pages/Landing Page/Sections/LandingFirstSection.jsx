@@ -26,10 +26,11 @@ export default function LandingFirstSection() {
                 </div>
                 <div className="text-center">
                     <h1 className="text-5xl font-semibold tracking-tight text-balance text-gray-900 sm:text-6xl">
-                        Platform to enhance managment experience
+                        Empower Your Team with PrimeNest
                     </h1>
                     <p className="mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8">
-                        Streamline your workflows, reduce manual effort, and gain full visibility over your assets—all in one intuitive platform designed to boost productivity and control.
+                        Simplify equipment tracking, streamline asset requests, and stay on top of user assignments —
+                        all in one intuitive dashboard designed for modern organizations.
                     </p>
                     <div className="mt-10 flex items-center justify-center gap-x-6">
                         <a
