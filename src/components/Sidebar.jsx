@@ -25,8 +25,9 @@ import {
   ArrowDownOnSquareStackIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'
+import { useProjectStore } from '../stores/projectStore'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
@@ -53,7 +54,11 @@ function classNames(...classes) {
 
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const navigate = useNavigate();
   const { logout } = useAuth0();
+  const { user} = useAuth0();
+  const selectedProject = useProjectStore((state) => state.selectedProject);
+  
   return (
     <>
       <div>
@@ -166,12 +171,15 @@ export default function Example() {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-            <div className="flex h-16 shrink-0 items-center">
+            <div 
+            onClick={() => navigate('/your-work')}
+            className="flex h-16 shrink-0 items-center">
               <img
                 alt="Your Company"
                 src="https://static.vecteezy.com/system/resources/previews/055/007/018/non_2x/data-analysis-is-at-hand-vector.jpg"
                 className="h-15 w-auto"
               />
+              <h1 className='text-lg font-bold'>{selectedProject}</h1>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -292,7 +300,7 @@ export default function Example() {
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                        Tom Cook
+                        {user?.name ? user?.name : '' }
                       </span>
                       <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                     </span>
