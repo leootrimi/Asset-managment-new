@@ -27,7 +27,8 @@ import {
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'
-import { getUserRolesFromIdToken } from '../services/ApiCalls'
+import { useProjectStore } from '../stores/projectStore'
+
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
   { name: 'Team', href: '/employers', icon: UsersIcon, current: false },
@@ -56,6 +57,7 @@ export default function Example() {
   const navigate = useNavigate();
   const { logout } = useAuth0();
   const { user} = useAuth0();
+  const selectedProject = useProjectStore((state) => state.selectedProject);
   
   return (
     <>
@@ -177,6 +179,7 @@ export default function Example() {
                 src="https://static.vecteezy.com/system/resources/previews/055/007/018/non_2x/data-analysis-is-at-hand-vector.jpg"
                 className="h-15 w-auto"
               />
+              <h1 className='text-lg font-bold'>{selectedProject}</h1>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">

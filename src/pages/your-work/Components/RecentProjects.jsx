@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { memo } from 'react';
+import { useProjectStore } from "../../../stores/projectStore";
 
 function RecentProjects({projects}) {
 
@@ -26,6 +27,7 @@ export default memo(RecentProjects);
 function ProjectCard({ project }) {
 
   const navigate = useNavigate();
+  const setSelectedProject = useProjectStore((state) => state.setSelectedProject);
 
   const icons = ["🏢", "🏗️", "🏬", "🏛️", "🏠", "🏭", "🏣"];
   const bgColors = ['bg-red-50', 'bg-blue-50', 'bg-green-50', 'bg-yellow-50'];
@@ -47,9 +49,14 @@ function ProjectCard({ project }) {
   const randomBgColor = getRandomItem(bgColors);
   const randomHoverClass = hoverBorderMap[randomBgColor] || '';
 
+  function navigateToProject() {
+    setSelectedProject(project.company)
+    navigate(`/dashboard?company=${project.company}`)
+  }
+
   return (
     <div
-    onClick={() => navigate(`/dashboard?company=${project.company}`)}
+    onClick={navigateToProject}
      className={`${randomBgColor} ${hoverBorderMap[randomBgColor] || ''} rounded-lg border border-gray-200 w-[280px] min-w-[280px] overflow-hidden shadow-sm hover: cursor-pointer`}>
       <div className="p-4">
         <div className="flex items-center gap-3 mb-2">
