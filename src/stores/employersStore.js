@@ -12,8 +12,8 @@ const useEmployerStore = create((set) => ({
         try {
             const response = await apiRequest({ endpoint: '/users'});
             set({ employers: response, loading: false})
-        } catch (err) {
-            set({ error: err.message, loading: false})
+        } catch (error) {
+            set({ error: error.message, loading: false})
         }
     }
 }))

@@ -113,23 +113,8 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showSucessAlert, setShowSucessAler] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false) 
   const role = getUserRolesFromIdToken()
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken')
-
-    
-    const fetchData = async () => {
-      const data = await apiRequest({ endpoint: '/users', token: token });
-    }
-    if (token) {
-      fetchData()
-    }
-
-  }, []);
   return (
     <>
       {showSucessAlert &&

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import EquipmentListingTable from "./Components/EquipmentListingTable";
 import useEquipmentStore from "../../stores/equipmentsStore";
 import ApiErrorScreen from "../../Core/ApiErrorScreen";
+import EmployersSkeleton from "../Employers List/Skeleton/EmployersSkeleton"
 
 const Equipment = () => {
 
@@ -11,6 +12,9 @@ const Equipment = () => {
         fetchEquipments()
     }, []);
 
+    if (loading) {
+        return <EmployersSkeleton />
+    }
     if (error) {
         return <ApiErrorScreen />
     }
