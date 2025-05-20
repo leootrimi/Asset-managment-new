@@ -18,4 +18,4 @@ const useEmployerStore = create((set) => ({
     }
 }))
 
-export default useEmployerStore
+export default useEmployerStore;
