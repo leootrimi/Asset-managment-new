@@ -7,13 +7,13 @@ export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemai
 
   return (
     <>
-      <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:translate-y-[-4px]">
+      <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:translate-y-[-4px] flex flex-col min-h-[300px]">
         <div
           className={`absolute top-0 left-0 right-0 h-1.5 ${color} transform origin-left transition-transform duration-300 group-hover:scale-x-100`}
           style={{ transform: 'scaleX(0.7)' }}
         ></div>
 
-        <div className="p-6">
+        <div className="p-6 flex flex-col flex-grow">
           <div className={`inline-flex items-center justify-center p-3 rounded-lg ${color.replace('bg-', 'bg-opacity-10 text-').replace('-500', '-600')} mb-4`}>
             <Icon size={24} />
           </div>
@@ -35,7 +35,7 @@ export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemai
 
           <button 
             onClick={() => setIsModalOpen(true)}
-            className={`w-full inline-flex items-center justify-center px-4 py-2 rounded-md font-medium ${color.replace('bg-', 'text-white bg-')} hover:bg-opacity-90 transition-colors duration-200`}
+            className={`mt-auto w-full inline-flex items-center justify-center px-4 py-2 rounded-md font-medium ${color.replace('bg-', 'text-white bg-')} hover:bg-opacity-90 transition-colors duration-200`}
           >
             Request Leave
             <svg 
@@ -49,7 +49,7 @@ export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemai
               strokeLinejoin="round"
             >
               <path d="M5 12h14"></path>
-              <path d="m12 5 7 7-7 7"></path>
+              <path d="M12 5l7 7-7 7"></path>
             </svg>
           </button>
         </div>
