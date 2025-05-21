@@ -7,9 +7,9 @@ import { Footer } from './components/Footer';
 export const RequestDayOff = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      {/* <Header /> */}
       <main className="flex-grow">
-        <HeroSection />
+        {/* <HeroSection /> */}
         <LeaveTypeCards />
       </main>
       <Footer />
