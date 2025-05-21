@@ -144,7 +144,7 @@ export default function Dashboard() {
 
       {        
         role.roles == Roles.ADMIN ? (
-          <main>
+          <main className='px-2'>
           <div className="relative isolate overflow-hidden pt-1">
             {/* Secondary navigation */}
             <header className="pb-4 pt-1 sm:pb-6">

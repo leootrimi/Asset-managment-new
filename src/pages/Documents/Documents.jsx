@@ -6,8 +6,7 @@ import ExportFile from "./Components/ExportFile";
 import { PlusIcon, FunnelIcon, AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 export default function Documents() {
     return (
-        <>
-            <main>
+            <main className="px-2">
                 <div className="space-y-6 p-3">
                     <h1 className="text-2xl font-medium text-gray-900">Documents</h1>
                     <div className="w-full border-t border-gray-300" />
@@ -112,6 +111,5 @@ export default function Documents() {
                     <FilesTableView />
                 </div>
             </main>
-        </>
     );
 };

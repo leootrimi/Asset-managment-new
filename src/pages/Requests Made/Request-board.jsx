@@ -25,7 +25,7 @@ export default function RequestBoard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-6 py-4">
       <div className="flex flex-col space-y-6">
         <header className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
           <div>
