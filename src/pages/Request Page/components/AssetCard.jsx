@@ -5,7 +5,7 @@ export const AssetCard = ({ icon: Icon, title, description, color }) => {
     <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300 hover:translate-y-[-4px]">
       <div
         className={`absolute top-0 left-0 right-0 h-1.5 ${color} transform origin-left transition-transform duration-300 group-hover:scale-x-100`}
-        style={{ transform: 'scaleX(0.7)' }}
+        style={{ transform: 'scaleX(0.8)' }}
       ></div>
 
       <div className="p-6">
