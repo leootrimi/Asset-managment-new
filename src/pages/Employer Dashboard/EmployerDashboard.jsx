@@ -1,6 +1,27 @@
-import { Search, Calendar, List, FileText, Users, MoreHorizontal, Plus } from "lucide-react"
+import { useState } from "react";
+import { Search, Calendar, List, FileText, Users, MoreHorizontal, Plus, HomeIcon, ThermometerIcon, TreePalmIcon, GemIcon } from "lucide-react"
+import { Laptop, Mouse, Headphones, Monitor } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
 
 export default function Dashboard() {
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const cardStates = [
+    { title: 'Work from home', days: 5, description: 'Days remaining' },
+    { title: 'Holidays', days: 10, description: 'Days remaining' },
+    { title: 'Sick leave', days: 3, description: 'Days available' },
+  ];
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? cardStates.length - 1 : prevIndex - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === cardStates.length - 1 ? 0 : prevIndex + 1));
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <div className="flex flex-col md:flex-row">
@@ -58,15 +79,39 @@ export default function Dashboard() {
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center space-x-4 overflow-hidden">
-              <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center shadow text-blue-600 font-bold text-xl">
-                <h1 className="text-4xl text-gray-500">5</h1>
+              {/* Left Chevron */}
+              <button
+                onClick={handlePrev}
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none"
+                aria-label="Previous card"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              {/* Main Content */}
+              <div className="flex items-center space-x-4">
+                <div className="bg-white rounded-full w-20 h-20 ml-2 flex items-center justify-center shadow text-blue-600 font-bold text-xl">
+                  <h1 className="text-4xl text-gray-500">{cardStates[currentIndex].days}</h1>
+                </div>
+
+                <div>
+                  <h3 className="text-lg text-white font-semibold text-gray-800">
+                    {cardStates[currentIndex].title}
+                  </h3>
+                  <p className="text-sm text-gray-50">{cardStates[currentIndex].description}</p>
+                </div>
               </div>
 
-              <div>
-                <h3 className="text-lg text-white font-semibold text-gray-800">Work from home</h3>
-                <p className="text-sm text-gray-50">Days remaining</p>
-              </div>
+              {/* Right Chevron */}
+              <button
+                onClick={handleNext}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none"
+                aria-label="Next card"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
 
+              {/* Background Lines */}
               <svg
                 className="absolute right-4 top-4 h-full w-1/2 opacity-60 pointer-events-none"
                 viewBox="0 0 100 100"
@@ -106,19 +151,31 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Quick Links */}
               <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
-                <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Quick Links</h3>
+                <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Holidays choice</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-pink-100 rounded flex items-center justify-center">
-                      <span className="text-pink-500 text-xs">Dr</span>
+                      <HomeIcon className="size-4 text-pink-800" />
                     </div>
-                    <span className="text-gray-700">Dribbble</span>
+                    <span className="text-gray-700">Work from home</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-red-100 rounded flex items-center justify-center">
+                      <ThermometerIcon className="size-4 text-red-800" />
+                    </div>
+                    <span className="text-gray-700">Out sick leave</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center">
-                      <span className="text-blue-500 text-xs">Be</span>
+                      <TreePalmIcon className="size-4 text-blue-800" />
                     </div>
-                    <span className="text-gray-700">Behance</span>
+                    <span className="text-gray-700">Days off work</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-100 rounded flex items-center justify-center">
+                      <GemIcon className="size-4 text-green-800" />
+                    </div>
+                    <span className="text-gray-700">Wedding leave</span>
                   </div>
                 </div>
               </div>
@@ -126,19 +183,37 @@ export default function Dashboard() {
 
               {/* Files */}
               <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
-                <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Quick Access</h3>
+                <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Equipment findings</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-green-100 rounded flex items-center justify-center">
-                      <FileText size={14} className="text-green-500" />
-                    </div>
-                    <span className="text-gray-700">Q3 Gameplan</span>
-                  </div>
+
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-gray-100 rounded flex items-center justify-center">
-                      <FileText size={14} className="text-gray-500" />
+                      <Laptop className="w-4 h-4 text-gray-800" />
                     </div>
-                    <span className="text-gray-400">Spreadsheet</span>
+                    <span className="text-gray-700">Laptop</span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-yellow-100 rounded flex items-center justify-center">
+                      <Mouse className="w-4 h-4 text-yellow-800" />
+                    </div>
+                    <span className="text-gray-700">Mouse</span>
+                  </div>
+
+                  {/* Headphones */}
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-purple-100 rounded flex items-center justify-center">
+                      <Headphones className="w-4 h-4 text-purple-800" />
+                    </div>
+                    <span className="text-gray-700">Headphones</span>
+                  </div>
+
+                  {/* Monitor */}
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-green-100 rounded flex items-center justify-center">
+                      <Monitor className="w-4 h-4 text-green-800" />
+                    </div>
+                    <span className="text-gray-700">Monitor</span>
                   </div>
                 </div>
               </div>
