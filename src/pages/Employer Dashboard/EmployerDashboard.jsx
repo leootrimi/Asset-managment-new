@@ -1,4 +1,3 @@
-"use client"
 import { Search, Calendar, List, FileText, Users, MoreHorizontal, Plus } from "lucide-react"
 
 export default function Dashboard() {
@@ -50,7 +49,7 @@ export default function Dashboard() {
                 className="w-full border rounded-full py-2 pl-10 pr-4 text-gray-700"
               />
             </div>
-            <button className="bg-black text-white rounded-full px-4 py-2 flex items-center justify-center gap-1">
+            <button className="bg-gray-700 text-white rounded-full px-4 py-2 flex items-center justify-center gap-1">
               <Plus size={16} />
               <span>Add People</span>
             </button>
@@ -58,14 +57,14 @@ export default function Dashboard() {
 
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center space-x-4 overflow-hidden">
+            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center space-x-4 overflow-hidden">
               <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center shadow text-blue-600 font-bold text-xl">
-                <h1 className="text-4xl">5</h1>
+                <h1 className="text-4xl text-gray-500">5</h1>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-800">Work from home</h3>
-                <p className="text-sm text-gray-600">Days remaining</p>
+                <h3 className="text-lg text-white font-semibold text-gray-800">Work from home</h3>
+                <p className="text-sm text-gray-50">Days remaining</p>
               </div>
 
               <svg
@@ -73,17 +72,18 @@ export default function Dashboard() {
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
               >
-                <line x1="0" y1="100" x2="100" y2="0" stroke="#3b82f6" strokeWidth="4" />
-                <line x1="20" y1="100" x2="100" y2="20" stroke="#3b82f6" strokeWidth="4" />
+                <line x1="0" y1="100" x2="100" y2="0" stroke="#f5f5f5" strokeWidth="4" />
+                <line x1="20" y1="100" x2="100" y2="20" stroke="#f5f5f5" strokeWidth="4" />
               </svg>
             </div>
 
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-green-50 to-green-200 flex flex-col sm:flex-row justify-between items-center gap-4 overflow-hidden">
+            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex flex-col sm:flex-row items-center gap-4 overflow-hidden">
               {/* Left section */}
+              <h1 className="text-3xl text-white font-semibold">05<span className="text-sm">h</span> 23<span className="text-sm">min</span></h1>
               <div className="text-center sm:text-left">
-                <h3 className="text-xl font-semibold text-gray-800">You’re checked in</h3>
-                <p className="text-gray-600 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
-                <button className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md shadow-sm">
+                <h3 className="text-xl text-white font-semibold text-gray-800">You’re checked in</h3>
+                <p className="text-gray-50 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
+                <button className="mt-4 bg-white hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-sm">
                   Check Out
                 </button>
               </div>
@@ -93,8 +93,8 @@ export default function Dashboard() {
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
               >
-                <line x1="0" y1="100" x2="100" y2="0" stroke="#2f855a" strokeWidth="4" />
-                <line x1="20" y1="100" x2="100" y2="20" stroke="#2f855a" strokeWidth="4" />
+                <line x1="0" y1="100" x2="100" y2="0" stroke="#f5f5f5" strokeWidth="4" />
+                <line x1="20" y1="100" x2="100" y2="20" stroke="#f5f5f5" strokeWidth="4" />
               </svg>
             </div>
 
