@@ -47,7 +47,6 @@ export default function CalendarEvents() {
         fetchEvents()
     }, [])
 
-    // Scroll to current time
     useEffect(() => {
         const startHour = 9
         const endHour = 18
