@@ -62,7 +62,6 @@ export default function EmployersProfile() {
   }
 
   async function updateUserProfile() {
-    setLoading(true)
     if (!hasUserProfileChanged(employerProfile, updatedProfile)) {
       setAlert({
         show: true,
@@ -93,10 +92,8 @@ export default function EmployersProfile() {
       })
 
     } finally {
-      setLoading(false)
       setEditEnable(false)
       setTimeout(() => {
-        setErrorOcurred(false)
         setSuccessUpdateAlert(false)
       }, 2000)
     }
