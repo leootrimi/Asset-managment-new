@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Search, Calendar, List, FileText, Users, MoreHorizontal, Plus, HomeIcon, ThermometerIcon, TreePalmIcon, GemIcon } from "lucide-react"
+import AboutTable from "./Components/AboutTable";
 import { Laptop, Mouse, Headphones, Monitor } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import MessageBar from "./Components/MessageBar";
 
 
 export default function Dashboard() {
@@ -24,40 +26,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="flex flex-col md:flex-row">
-        {/* Sidebar */}
-        <aside className="w-full md:w-64 p-4 md:p-6 border-b md:border-b-0 md:border-r">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold">Good evening Sandro!</h1>
-            <div className="flex items-center gap-2 text-gray-500 mt-2">
-              <Calendar size={16} />
-              <span>Wednesday, July 26</span>
-            </div>
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Pins</h2>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-gray-700">
-                <List size={16} />
-                <span>Kickoff meeting</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-700">
-                <List size={16} />
-                <span>Getting started handy guide</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-700">
-                <List size={16} />
-                <span>Brief of the new client's project</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-700">
-                <List size={16} />
-                <span>Sandro's project</span>
-              </li>
-            </ul>
-          </div>
-        </aside>
-
+      <div className="flex flex-col md:flex-row pr-4">
         {/* Main Content */}
         <main className="flex-1 p-4 md:p-6">
           {/* Search Bar */}
@@ -75,7 +44,6 @@ export default function Dashboard() {
               <span>Add People</span>
             </button>
           </div>
-
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center space-x-4 overflow-hidden">
@@ -144,6 +112,8 @@ export default function Dashboard() {
             </div>
 
           </div>
+
+          <AboutTable />
 
           {/* Quick Access */}
           <div className="mb-8">
@@ -234,72 +204,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Highlights */}
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Highlights</h2>
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 rounded flex items-center justify-center">
-                    <Users size={20} className="text-green-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Team management</h3>
-                    <p className="text-gray-500 text-sm">2 Persons</p>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <img src="/placeholder.svg?height=30&width=30" alt="Avatar" className="rounded-full" />
-                    <span className="text-gray-700">Jess Munroe</span>
-                  </div>
-                  <span className="text-gray-500 text-sm">2min ago</span>
-                  <MoreHorizontal size={16} className="text-gray-400" />
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded flex items-center justify-center">
-                    <FileText size={20} className="text-blue-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Highlights</h3>
-                    <p className="text-gray-500 text-sm">1 Person</p>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <img src="/placeholder.svg?height=30&width=30" alt="Avatar" className="rounded-full" />
-                    <span className="text-gray-700">Suzi Hu</span>
-                  </div>
-                  <span className="text-gray-500 text-sm">3h ago</span>
-                  <MoreHorizontal size={16} className="text-gray-400" />
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded flex items-center justify-center">
-                    <FileText size={20} className="text-blue-500" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">Productivity</h3>
-                    <p className="text-gray-500 text-sm">1 Person</p>
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <img src="/placeholder.svg?height=30&width=30" alt="Avatar" className="rounded-full" />
-                    <span className="text-gray-700">Jake Jones</span>
-                  </div>
-                  <span className="text-gray-500 text-sm">1d ago</span>
-                  <MoreHorizontal size={16} className="text-gray-400" />
-                </div>
-              </div>
-            </div>
-          </div>
         </main>
+         <aside className="flex-shrink-0">
+          <MessageBar />
+        </aside>
       </div>
     </div>
   )
