@@ -21,7 +21,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
   });
 
   return (
-      <div className="p-2 sm:px-2 lg:px-2">
+      <div className="p-2 sm:px-4 lg:px-4">
         {/* Header */}
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
