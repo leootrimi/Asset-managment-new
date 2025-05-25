@@ -15,6 +15,7 @@ import DiscardChanges from '../../Core/DiscardChanges'
 import LoadingView from '../../Core/LoadingView'
 import ProfileField from './Components/ProfileField'
 import Alert from '../../Core/Alerts'
+import useEmployerProfileStore from '../../stores/employerProfileStore'
 
 const user = {
   name: 'Whitney Francis',
@@ -26,69 +27,6 @@ const attachments = [
   { name: 'resume_front_end_developer.pdf', href: '#' },
   { name: 'coverletter_front_end_developer.pdf', href: '#' },
 ]
-const eventTypes = {
-  leave: { icon: ArrowRightEndOnRectangleIcon, bgColorClass: 'bg-red-500' },
-  join: { icon: ArrowLeftEndOnRectangleIcon, bgColorClass: 'bg-green-500' },
-  home: { icon: HomeIcon, bgColorClass: 'bg-blue-500' },
-  sick: { icon: HeartIcon, bgColorClass: 'bg-orange-500' }
-}
-const timeline = [
-  {
-    id: 2,
-    type: eventTypes.leave,
-    content: 'Left office at ',
-    target: 'Bethany Blake',
-    date: 'Sep 22',
-    datetime: '2020-09-22',
-  },
-  {
-    id: 3,
-    type: eventTypes.join,
-    content: 'Joined office at',
-    target: 'Martha Gardner',
-    date: 'Sep 28',
-    datetime: '2020-09-28',
-  },
-  {
-    id: 4,
-    type: eventTypes.sick,
-    content: 'Called out sick ',
-    target: 'Bethany Blake',
-    date: 'Sep 30',
-    datetime: '2020-09-30',
-  },
-  {
-    id: 5,
-    type: eventTypes.home,
-    content: 'Working from home ',
-    target: 'Katherine Snyder',
-    date: 'Oct 4',
-    datetime: '2020-10-04',
-  },
-]
-const comments = [
-  {
-    id: 1,
-    name: 'Leslie Alexander',
-    date: '4d ago',
-    imageId: '1494790108377-be9c29b29330',
-    body: 'Ducimus quas delectus ad maxime totam doloribus reiciendis ex. Tempore dolorem maiores. Similique voluptatibus tempore non ut.',
-  },
-  {
-    id: 2,
-    name: 'Michael Foster',
-    date: '4d ago',
-    imageId: '1519244703995-f4e0f30006d5',
-    body: 'Et ut autem. Voluptatem eum dolores sint necessitatibus quos. Quis eum qui dolorem accusantium voluptas voluptatem ipsum. Quo facere iusto quia accusamus veniam id explicabo et aut.',
-  },
-  {
-    id: 3,
-    name: 'Dries Vincent',
-    date: '4d ago',
-    imageId: '1506794778202-cad84cf45f1d',
-    body: 'Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum et.',
-  },
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -97,42 +35,24 @@ function classNames(...classes) {
 
 export default function EmployersProfile() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [isEditEnabled, setEditEnable] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDiscardModal, setShowDiscardModal] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
   const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
   const { id } = useParams();
-
-  const [updatedUserData, setUpdatedUserData] = useState({
-    position: userProfile?.position || "",
-    level: userProfile?.level || "",
-    email: userProfile?.email || "",
-    salary: userProfile?.salary || "",
-    country: userProfile?.country || "",
-    city: userProfile?.city || "",
-    phoneNumber: userProfile?.phoneNumber || "",
-  })
+  const { employerProfile,
+     fetchEmployerProfile,
+      loading,
+       updatedProfile, 
+       setUpdatedUserData,
+        deleteEmployer, 
+        comments, 
+        timeline,
+      resetUpdatedProfile } = useEmployerProfileStore();
 
   useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await apiRequest({ endpoint: `/users/${id}` })
-        setUserProfile(response)
-        setUpdatedUserData(response)
-      } catch (err) {
-        console.error("Error fetching user profile", err)
-      } finally {
-        // For testing only
-        setTimeout(() => {
-          setLoading(false)
-        }, 1000)
-      }
-    }
-
-      fetchUserProfile()
+    fetchEmployerProfile(id)
   }, [id])
 
   if (loading) {
@@ -141,24 +61,8 @@ export default function EmployersProfile() {
     )
   }
 
-  function onDeleteUser() {
-    setLoading(true)
-    try {
-      const response = apiRequest({ endpoint: '/users', method: 'DELETE', body: { _id: id } })
-    } catch (err) {
-      console.log(err);
-    } finally {
-      // Testing only
-      setTimeout(() => {
-        setLoading(false)
-        navigate('/employers', { replace: true })
-      }, 1000)
-    }
-  }
-
   async function updateUserProfile() {
-    setLoading(true)
-    if (!hasUserProfileChanged(userProfile, updatedUserData)) {
+    if (!hasUserProfileChanged(employerProfile, updatedProfile)) {
       setAlert({
         show: true,
         type: 'error',
@@ -169,7 +73,7 @@ export default function EmployersProfile() {
       return
     }
     try {
-      const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedUserData } })
+      const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedProfile } })
       setAlert({
         show: true,
         type: 'success',
@@ -179,7 +83,7 @@ export default function EmployersProfile() {
     } catch (err) {
       console.log(err);
       setErrorOcurred(true)
-      setUpdatedUserData(userProfile)
+      setUpdatedUserData(employerProfile)
       setAlert({
         show: true,
         type: 'error',
@@ -188,10 +92,8 @@ export default function EmployersProfile() {
       })
 
     } finally {
-      setLoading(false)
       setEditEnable(false)
       setTimeout(() => {
-        setErrorOcurred(false)
         setSuccessUpdateAlert(false)
       }, 2000)
     }
@@ -199,19 +101,23 @@ export default function EmployersProfile() {
 
   const userProfileOnChange = (e) => {
     const { name, value } = e.target;
-    const newData = {
-      ...updatedUserData,
-      [name]: value,
-    };
-  
-    setUpdatedUserData(newData);
-    setSaveButtonEnabled(hasUserProfileChanged(userProfile, newData));
+
+    setUpdatedUserData({ [name]: value });
+    console.log(updatedProfile);
+    
+    setSaveButtonEnabled(
+      hasUserProfileChanged(employerProfile, {
+        ...updatedProfile,
+        [name]: value,
+      })
+    );
   };
-  
+
+
 
   function enableEditingUserProfile() {
     if (isEditEnabled) {
-      if (hasUserProfileChanged(userProfile, updatedUserData)) {
+      if (hasUserProfileChanged(employerProfile, updatedProfile)) {
         setShowDiscardModal(true);
       } else {
         setEditEnable(false);
@@ -226,11 +132,12 @@ export default function EmployersProfile() {
     return Object.keys(original).some(
       key => original[key] !== updated[key]
     );
-  }  
+  }
 
   function discardProfileChanges() {
-    setUpdatedUserData(userProfile)
+    resetUpdatedProfile(employerProfile);
     setShowDiscardModal(false)
+    setEditEnable(false)
   }
 
   function cancelDiscardModal() {
@@ -271,12 +178,12 @@ export default function EmployersProfile() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  {(userProfile?.firstName && userProfile?.lastName)
-                    ? `${userProfile.firstName} ${userProfile.lastName}`
+                  {(employerProfile?.firstName && employerProfile?.lastName)
+                    ? `${employerProfile.firstName} ${employerProfile.lastName}`
                     : "Name not available"}
                 </h1>
                 <p className="text-sm font-medium text-gray-500">
-                  {userProfile?.position ? `${userProfile.position} ` : "Not available"}
+                  {employerProfile?.position ? `${employerProfile.position} ` : "Not available"}
                   since <time dateTime="2020-08-25">August 25, 2020</time>
                 </p>
               </div>
@@ -289,7 +196,7 @@ export default function EmployersProfile() {
               >
                 Delete
               </button>
-              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={onDeleteUser} />
+              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={() => { deleteEmployer(id); navigate('/employers', { replace: true }) }} />
               <button
                 type="button"
                 onClick={enableEditingUserProfile}
@@ -327,7 +234,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Working as"
                         name="position"
-                        value={updatedUserData.position}
+                        value={updatedProfile?.position}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="e.g. Head of Engineering"
@@ -336,7 +243,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Position level"
                         name="level"
-                        value={updatedUserData.level}
+                        value={updatedProfile?.level}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Junior"
@@ -346,7 +253,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Email address"
                         name="email"
-                        value={updatedUserData.email}
+                        value={updatedProfile?.email}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. example@ex.yo"
@@ -364,7 +271,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Country"
                         name="country"
-                        value={updatedUserData.country}
+                        value={updatedProfile?.country}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Kosovo"
@@ -373,7 +280,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="City"
                         name="city"
-                        value={updatedUserData.city}
+                        value={updatedProfile?.city}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Prishtina"
@@ -382,7 +289,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Phone"
                         name="phone"
-                        value={updatedUserData.phoneNumber}
+                        value={updatedProfile?.phoneNumber}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. +383 43 974 385"

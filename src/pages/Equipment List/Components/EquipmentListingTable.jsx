@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import RoundedButton from "../../../Core/RoundedButton";
 
@@ -22,8 +21,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
   });
 
   return (
-    <Box>
-      <div className="px-2 sm:px-2 lg:px-2">
+      <div className="p-2 sm:px-2 lg:px-2">
         {/* Header */}
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
@@ -65,7 +63,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
                 <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
                 <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
                 <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">In Use</th>
-                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Warranty Left</th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden sm:table-cell">Warranty Left</th>
                 <th className="relative py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -81,9 +79,9 @@ const EquipmentListingTable = ({ equipmentData }) => {
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.name}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">${item.price}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {item.inUse ? "Yes" : "No"}
+                    {item.assignedTo ? "Yes" : "No"}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.warrantyLeft} years</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden sm:table-cell">{item.warrantyLeft} years</td>
                   <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                     <a href={`/equipment/${item._id}`} className="text-indigo-600 hover:text-indigo-900">
                       View<span className="sr-only">, {item.name}</span>
@@ -114,7 +112,6 @@ const EquipmentListingTable = ({ equipmentData }) => {
           </div>
         </div>
       </div>
-    </Box>
   );
 };
 
