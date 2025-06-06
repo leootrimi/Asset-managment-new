@@ -13,7 +13,20 @@ const checkins = [
     checkOutTime: null,
     status: 'Active',
   },
-  // More check-ins...
+  {
+    id: 3,
+    date: '2025-06-01',
+    checkInTime: '09:00 AM',
+    checkOutTime: '05:00 PM',
+    status: 'Completed',
+  },
+  {
+    id: 4,
+    date: '2025-06-02',
+    checkInTime: '10:00 AM',
+    checkOutTime: null,
+    status: 'Active',
+  },
 ];
 
 function classNames(...classes) {

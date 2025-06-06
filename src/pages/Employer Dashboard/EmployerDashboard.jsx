@@ -47,11 +47,11 @@ export default function Dashboard() {
           </div>
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center space-x-4 overflow-hidden">
+            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex items-center space-x-4 overflow-hidden border-1 border-gray-300">
               {/* Left Chevron */}
               <button
                 onClick={handlePrev}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none"
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300 focus:outline-none"
                 aria-label="Previous card"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -64,17 +64,17 @@ export default function Dashboard() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg text-white font-semibold text-gray-800">
+                  <h3 className="text-lg text-gray-700 font-semibold text-gray-800">
                     {cardStates[currentIndex].title}
                   </h3>
-                  <p className="text-sm text-gray-50">{cardStates[currentIndex].description}</p>
+                  <p className="text-sm text-gray-500">{cardStates[currentIndex].description}</p>
                 </div>
               </div>
 
               {/* Right Chevron */}
               <button
                 onClick={handleNext}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300 focus:outline-none"
                 aria-label="Next card"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -91,13 +91,13 @@ export default function Dashboard() {
               </svg>
             </div>
 
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex flex-col sm:flex-row items-center gap-4 overflow-hidden">
+            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex flex-col sm:flex-row items-center gap-4 overflow-hidden border-1 border-gray-300">
               {/* Left section */}
-              <h1 className="text-3xl text-white font-semibold">05<span className="text-sm">h</span> 23<span className="text-sm">min</span></h1>
-              <div className="text-center sm:text-left">
-                <h3 className="text-xl text-white font-semibold text-gray-800">You’re checked in</h3>
-                <p className="text-gray-50 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
-                <button className="mt-4 bg-gradient-to-r from-red-400 to-red-600 text-white hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-sm">
+              <h1 className="text-3xl text-gray-800 font-semibold">05<span className="text-sm">h</span> 23<span className="text-sm">min</span></h1>
+              <div className="text-center sm:text-left z-50">
+                <h3 className="text-xl font-semibold text-gray-800">You’re checked in</h3>
+                <p className="text-gray-600 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
+                <button className="mt-4 bg-gradient-to-r from-red-400 to-red-600 text-white hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm">
                   Check Out
                 </button>
               </div>
@@ -114,7 +114,12 @@ export default function Dashboard() {
 
           </div>
 
+          <hr className="border-t border-gray-300 my-4" />
+
           <AboutTable />
+
+          <hr className="border-t border-gray-300 my-4" />
+
 
           {/* Quick Access */}
           <div className="mb-8">
@@ -153,7 +158,7 @@ export default function Dashboard() {
 
 
               {/* Files */}
-              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
+              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col transform transition duration-200 hover:-translate-y-1">
                 <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Equipment findings</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
 
@@ -190,7 +195,7 @@ export default function Dashboard() {
               </div>
 
               {/* Meetings */}
-              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
+              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col transform transition duration-200 hover:-translate-y-1">
                 <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Meetings</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
                   <div className="flex items-center gap-2">

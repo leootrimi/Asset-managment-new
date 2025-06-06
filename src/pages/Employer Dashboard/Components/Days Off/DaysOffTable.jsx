@@ -1,34 +1,16 @@
-
-const Status = {
-    Approved: 'approved',
-    Rejected: 'rejected',
-    Pending: 'pending'
-}
-
-const daysOff = [
-    {
-        id: 1,
-        appliedIn: '2025-05-27',
-        from: '2025-06-01',
-        till: '2025-06-07',
-        status: Status.Approved
-    },
-    {
-        id: 2,
-        appliedIn: '2025-05-27',
-        from: '2025-06-01',
-        till: '2025-06-07',
-        status: Status.Pending
-    }
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function DaysOffScheduled() {
+ const Status = {
+    Approved: 'Approved',
+    Rejected: 'Rejected',
+    Pending: 'Pending'
+}
+
+export default function DaysOffTable({daysOff}) {
     return(
-        <div className="px-4 sm:px-6 lg:px-8">
+         <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-6 flow-root">
         <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
@@ -80,17 +62,20 @@ export default function DaysOffScheduled() {
                       <td className="px-3 py-4 text-sm text-gray-500">
                         {daysOff.till || '—'}
                       </td>
-                      <td className="px-3 py-4 text-sm">
+                      <td className="px-3 py-4 text-sm flex">
                         <span
                           className={classNames(
                             daysOff.status === Status.Approved
                               ? 'bg-green-100 text-green-800'
                               : 'bg-blue-100 text-blue-800',
-                            'inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium'
+                            'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium'
                           )}
                         >
                           {daysOff.status}
                         </span>
+                        { index == 0 && 
+                        <span className="relative ml-2 bg-gradient-to-br from-blue-700 to-blue-900 text-white text-xs items-center inline-flex font-medium px-2 rounded-xl">Latest</span>
+                        }
                       </td>
                     </tr>
                   ))}

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import { AnimatePresence, motion } from 'framer-motion';
-import EmployerEquipments from './EmployerEquipments';
-import DaysOffScheduled from './DaysOffScheduled';
+import EmployerEquipments from './Employer Equipments/EmployerEquipments';
+import DaysOffScheduled from './Days Off/DaysOffScheduled';
 import EmployerActivity from './EmployerActivity';
 
 const tabs = [
@@ -47,7 +47,7 @@ export default function AboutTable() {
   const direction = activeTabIndex > prevTabIndex ? 1 : -1;
 
   return (
-    <div className="border-b border-gray-200 pb-5 sm:pb-0 mb-6">
+    <div className="pb-5 sm:pb-0 mb-6">
       <h3 className="text-base font-semibold text-gray-900">About you</h3>
       <div className="mt-3 sm:mt-4">
         <div className="grid grid-cols-1 sm:hidden">
@@ -106,7 +106,7 @@ export default function AboutTable() {
                   x: { type: 'spring', stiffness: 300, damping: 30 },
                   opacity: { duration: 0.2 },
                 }}
-                className="absolute inset-0 w-full"
+                className="inset-0 w-full"
                 style={{ transformOrigin: 'center' }}
               >
                 <ActiveComponent />
