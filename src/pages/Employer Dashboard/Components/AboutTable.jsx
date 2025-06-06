@@ -1,30 +1,66 @@
-import { ChevronDownIcon } from '@heroicons/react/16/solid'
-import EmployerEquipments from './EmployerEquipments'
+import { useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import { AnimatePresence, motion } from 'framer-motion';
+import EmployerEquipments from './EmployerEquipments';
+import DaysOffScheduled from './DaysOffScheduled';
+import EmployerActivity from './EmployerActivity';
 
 const tabs = [
-  { name: 'Your equipments', href: '#', current: false },
-  { name: 'Days off Scheduled', href: '#', current: false },
-  { name: 'Activity', href: '#', current: true },
-]
+  { name: 'Your equipments', href: '#', component: EmployerEquipments },
+  { name: 'Days off Scheduled', href: '#', component: DaysOffScheduled },
+  { name: 'Activity', href: '#', component: EmployerActivity },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function AboutTable() {
+  const [activeTab, setActiveTab] = useState(tabs.find((tab) => tab.name === 'Activity').name);
+  const [prevTabIndex, setPrevTabIndex] = useState(tabs.findIndex((tab) => tab.name === 'Activity'));
+
+  // Handle tab click
+  const handleTabClick = (tabName) => {
+    const newTabIndex = tabs.findIndex((tab) => tab.name === tabName);
+    setPrevTabIndex(tabs.findIndex((tab) => tab.name === activeTab));
+    setActiveTab(tabName);
+  };
+
+  const activeTabIndex = tabs.findIndex((tab) => tab.name === activeTab);
+  const ActiveComponent = tabs[activeTabIndex]?.component;
+
+  const variants = {
+    enter: (direction) => ({
+      x: direction > 0 ? '100%' : '-100%', 
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      x: direction > 0 ? '-100%' : '100%',
+      opacity: 0,
+    }),
+  };
+
+  const direction = activeTabIndex > prevTabIndex ? 1 : -1;
+
   return (
     <div className="border-b border-gray-200 pb-5 sm:pb-0 mb-6">
       <h3 className="text-base font-semibold text-gray-900">About you</h3>
       <div className="mt-3 sm:mt-4">
         <div className="grid grid-cols-1 sm:hidden">
-          {/* Use an "onChange" listener to redirect the user to the selected tab URL. */}
           <select
-            defaultValue={tabs.find((tab) => tab.current).name}
+            value={activeTab}
+            onChange={(e) => handleTabClick(e.target.value)}
             aria-label="Select a tab"
             className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
           >
             {tabs.map((tab) => (
-              <option key={tab.name}>{tab.name}</option>
+              <option key={tab.name} value={tab.name}>
+                {tab.name}
+              </option>
             ))}
           </select>
           <ChevronDownIcon
@@ -38,12 +74,16 @@ export default function AboutTable() {
               <a
                 key={tab.name}
                 href={tab.href}
-                aria-current={tab.current ? 'page' : undefined}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTabClick(tab.name);
+                }}
+                aria-current={activeTab === tab.name ? 'page' : undefined}
                 className={classNames(
-                  tab.current
+                  activeTab === tab.name
                     ? 'border-indigo-500 text-indigo-600'
                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                  'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium',
+                  'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium cursor-pointer',
                 )}
               >
                 {tab.name}
@@ -51,8 +91,30 @@ export default function AboutTable() {
             ))}
           </nav>
         </div>
-        <EmployerEquipments />
+
+        <div className="relative mt-4" style={{ minHeight: '200px' }}>
+          <AnimatePresence initial={false} custom={direction}>
+            {ActiveComponent && (
+              <motion.div
+                key={activeTab}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{
+                  x: { type: 'spring', stiffness: 300, damping: 30 },
+                  opacity: { duration: 0.2 },
+                }}
+                className="absolute inset-0 w-full"
+                style={{ transformOrigin: 'center' }}
+              >
+                <ActiveComponent />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
-  )
+  );
 }

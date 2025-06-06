@@ -27,7 +27,7 @@ function classNames(...classes) {
 export default function EmployerEquipments() {
   return (
     <div className="px-4 sm:px-4 lg:px-0">
-      <div className="-mx-4 mt-10 ring-1 ring-gray-600 sm:mx-0 sm:rounded-lg">
+      <div className="-mx-4 mt-5 ring-1 ring-gray-600 sm:mx-0 sm:rounded-lg">
         <table className="min-w-full divide-y divide-gray-300">
           <thead>
             <tr>

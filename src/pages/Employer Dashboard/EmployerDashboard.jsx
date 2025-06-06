@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Calendar, List, FileText, Users, MoreHorizontal, Plus, HomeIcon, ThermometerIcon, TreePalmIcon, GemIcon } from "lucide-react"
+import { Search, CheckCircle, HomeIcon, ThermometerIcon, TreePalmIcon, GemIcon } from "lucide-react"
 import AboutTable from "./Components/AboutTable";
 import { Laptop, Mouse, Headphones, Monitor } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -39,10 +39,11 @@ export default function Dashboard() {
                 className="w-full border rounded-full py-2 pl-10 pr-4 text-gray-700"
               />
             </div>
-            <button className="bg-gray-700 text-white rounded-full px-4 py-2 flex items-center justify-center gap-1">
-              <Plus size={16} />
-              <span>Add People</span>
+            <button className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full px-4 py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200">
+              <CheckCircle size={16} className="text-green-100" />
+              <span>Check In</span>
             </button>
+
           </div>
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
@@ -96,7 +97,7 @@ export default function Dashboard() {
               <div className="text-center sm:text-left">
                 <h3 className="text-xl text-white font-semibold text-gray-800">You’re checked in</h3>
                 <p className="text-gray-50 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
-                <button className="mt-4 bg-white hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-sm">
+                <button className="mt-4 bg-gradient-to-r from-red-400 to-red-600 text-white hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-sm">
                   Check Out
                 </button>
               </div>
@@ -205,7 +206,7 @@ export default function Dashboard() {
           </div>
 
         </main>
-         <aside className="flex-shrink-0">
+        <aside className="flex-shrink-0">
           <MessageBar />
         </aside>
       </div>
