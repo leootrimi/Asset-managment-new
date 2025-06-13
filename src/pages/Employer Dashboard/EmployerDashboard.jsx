@@ -126,7 +126,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold mb-4">Quick Access</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Quick Links */}
-              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
+              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col transform transition duration-200 hover:-translate-y-1">
                 <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Holidays choice</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
                   <div className="flex items-center gap-2">

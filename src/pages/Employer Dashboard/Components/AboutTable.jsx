@@ -19,7 +19,6 @@ export default function AboutTable() {
   const [activeTab, setActiveTab] = useState(tabs.find((tab) => tab.name === 'Activity').name);
   const [prevTabIndex, setPrevTabIndex] = useState(tabs.findIndex((tab) => tab.name === 'Activity'));
 
-  // Handle tab click
   const handleTabClick = (tabName) => {
     const newTabIndex = tabs.findIndex((tab) => tab.name === tabName);
     setPrevTabIndex(tabs.findIndex((tab) => tab.name === activeTab));

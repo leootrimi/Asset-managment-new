@@ -21,7 +21,6 @@ const plans = [
   //   price: '$80',
   //   isCurrent: true,
   // },
-  // More...
 ];
 
 export default function EmployerEquipments() {
