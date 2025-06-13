@@ -170,7 +170,7 @@ export default function EmployersProfile() {
                 <div className="relative">
                   <img
                     alt=""
-                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
+                    src={employerProfile?.picture}
                     className="size-16 rounded-full"
                   />
                   <span aria-hidden="true" className="absolute inset-0 rounded-full shadow-inner" />
@@ -178,12 +178,12 @@ export default function EmployersProfile() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  {(employerProfile?.firstName && employerProfile?.lastName)
-                    ? `${employerProfile.firstName} ${employerProfile.lastName}`
+                  {(employerProfile?.user_metadata.firstName && employerProfile?.user_metadata.lastName)
+                    ? `${employerProfile.user_metadata.firstName} ${employerProfile.user_metadata.lastName}`
                     : "Name not available"}
                 </h1>
                 <p className="text-sm font-medium text-gray-500">
-                  {employerProfile?.position ? `${employerProfile.position} ` : "Not available"}
+                  {employerProfile?.user_metadata.position ? `${employerProfile.user_metadata.position} ` : "Not available"}
                   since <time dateTime="2020-08-25">August 25, 2020</time>
                 </p>
               </div>
