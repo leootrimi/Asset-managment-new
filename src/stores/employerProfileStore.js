@@ -76,6 +76,7 @@ const useEmployerProfileStore = create((set) => ({
 
     employerProfile: null,
     updatedProfile: null,
+    equpiments: null,
     comments: comments,
     timeline: timeline,
     loading: false,
@@ -120,6 +121,16 @@ const useEmployerProfileStore = create((set) => ({
         ...data
         }        
   })),
+
+  fetchEmployerEquipments: async ()  => {
+    try {
+            const response = await apiRequest({ endpoint: `/equipments/employer` })
+            console.log(response);
+            set({ equipments: response})
+        } catch (error) {
+             set({ error: error.message })
+        }
+  },
 
   resetUpdatedProfile: (data) => set({ updatedProfile: data }),
 }))

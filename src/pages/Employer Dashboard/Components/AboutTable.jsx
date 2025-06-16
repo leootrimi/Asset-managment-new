@@ -15,7 +15,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function AboutTable({ checkinList}) {
+export default function AboutTable({ checkinList, equpipments}) {
   const [activeTab, setActiveTab] = useState(tabs.find((tab) => tab.name === 'Activity').name);
   const [prevTabIndex, setPrevTabIndex] = useState(tabs.findIndex((tab) => tab.name === 'Activity'));
 
@@ -108,7 +108,7 @@ export default function AboutTable({ checkinList}) {
                 className="inset-0 w-full"
                 style={{ transformOrigin: 'center' }}
               >
-                <ActiveComponent checkinsList={checkinList} />
+                <ActiveComponent checkinsList={checkinList} equipments={equpipments} />
               </motion.div>
             )}
           </AnimatePresence>
