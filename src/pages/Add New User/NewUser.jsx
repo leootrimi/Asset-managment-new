@@ -1,7 +1,7 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 import { apiRequest } from '../../services/ApiCalls'
-import Alerts from '../../Core/Alerts'
+import Alert from '../../Core/Alerts'
 import LoadingView from '../../Core/LoadingView'
 import { useState } from 'react'
 
@@ -77,8 +77,13 @@ export default function NewUser() {
 
   return (
     <>
-      { showLoading && <LoadingView />}
-      { showSuccesAlert && <Alerts />}
+      {showLoading && <LoadingView />}
+      {showSuccesAlert && <Alert
+        type='success'
+        title='Registered Succesfully'
+        message='You registered a new user sucessfully'
+        show={true}
+      />}
       <form onSubmit={registerUser}>
         <div className="space-y-3 p-3">
           <div className="border-b border-gray-900/10 pb-3">

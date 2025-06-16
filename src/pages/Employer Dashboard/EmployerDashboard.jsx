@@ -1,14 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, CheckCircle, HomeIcon, ThermometerIcon, TreePalmIcon, GemIcon } from "lucide-react"
 import AboutTable from "./Components/AboutTable";
 import { Laptop, Mouse, Headphones, Monitor } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MessageBar from "./Components/MessageBar";
+import { apiRequest } from "../../services/ApiCalls";
+import useEmployerCheckinStore from "../../stores/employerCheckinStore";
+import TimeSinceCheckin from "./Components/TimeSinceCheckin";
 
 
 export default function Dashboard() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasCheckedIn, setHasCheckedIn] = useState(false);
+  const [canCheckIn, setCanCheckIn] = useState(false);
+  const [checkInTime, setCheckInTime] = useState(null);
+
+    const { checkinsList, loading, error, hasCheckoutTimeInFirstCheckin, latestCheckinTime, fetchUserCheckins } = useEmployerCheckinStore();
+
+    useEffect (() => {
+      const fetchAndCheck = async () => {
+        await fetchUserCheckins();
+        const hasCheckoutTime = hasCheckoutTimeInFirstCheckin();
+        setCanCheckIn(hasCheckoutTime);
+        const checkinTime = latestCheckinTime();
+        console.log(checkinTime);
+        
+        setCheckInTime(checkinTime);
+        console.log(hasCheckoutTime);
+      }
+      fetchAndCheck();
+    }, [hasCheckedIn])
 
   const cardStates = [
     { title: 'Work from home', days: 5, description: 'Days remaining' },
@@ -23,6 +45,28 @@ export default function Dashboard() {
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex === cardStates.length - 1 ? 0 : prevIndex + 1));
   };
+
+  const startCheckinTime = async () => {
+    try {
+      const response = await apiRequest({endpoint: '/users-checkin', method: 'POST'});
+      alert('You checked in successfully')
+      console.log(response);
+      setCheckInTime(response.checkinTime);
+      setHasCheckedIn(true)
+    } catch (error) {
+      alert('something went wrong!')
+    }
+  }
+
+  const userCheckout = async () => {
+    try {
+      const response = await apiRequest({endpoint: '/users-checkin/checkout', method: 'POST'});
+      alert('You checked out successfully')
+      setHasCheckedIn(false)
+    } catch (error) {
+      alert('something went wrong!')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -39,7 +83,15 @@ export default function Dashboard() {
                 className="w-full border rounded-full py-2 pl-10 pr-4 text-gray-700"
               />
             </div>
-            <button className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full px-4 py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200">
+              <button
+                className={`${
+                  canCheckIn
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                    : 'bg-gray-300 text-gray-500'
+                }  rounded-full px-4 py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200`}
+                onClick={startCheckinTime}
+                disabled={!canCheckIn}
+              >
               <CheckCircle size={16} className="text-green-100" />
               <span>Check In</span>
             </button>
@@ -93,11 +145,14 @@ export default function Dashboard() {
 
             <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex flex-col sm:flex-row items-center gap-4 overflow-hidden border-1 border-gray-300">
               {/* Left section */}
-              <h1 className="text-3xl text-gray-800 font-semibold">05<span className="text-sm">h</span> 23<span className="text-sm">min</span></h1>
+              <TimeSinceCheckin checkInTime={checkInTime} />
               <div className="text-center sm:text-left z-50">
                 <h3 className="text-xl font-semibold text-gray-800">You’re checked in</h3>
-                <p className="text-gray-600 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
-                <button className="mt-4 bg-gradient-to-r from-red-400 to-red-600 text-white hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm">
+                <p className="text-gray-600 mt-1">Checked in at <span className="font-medium">{latestCheckinTime()}</span></p>
+                <button className={`${(canCheckIn) ? 'bg-gray-300 text-gray-500' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'} mt-4 hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm`}
+                        disabled={canCheckIn}
+                        onClick={userCheckout}
+                >
                   Check Out
                 </button>
               </div>
@@ -116,7 +171,7 @@ export default function Dashboard() {
 
           <hr className="border-t border-gray-300 my-4" />
 
-          <AboutTable />
+          <AboutTable checkinList={checkinsList} />
 
           <hr className="border-t border-gray-300 my-4" />
 

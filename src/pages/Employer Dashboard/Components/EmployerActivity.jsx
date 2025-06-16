@@ -5,19 +5,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function EmployerActivity() {
-
-  const { checkinsList, loading, error, fetchUserCheckins } = useEmployerCheckinStore();
-
-  let user = {
-    id: '1',
-    fullName: 'Leotrim Halimi'
-  }
-
-  useEffect(() => {
-    fetchUserCheckins(user)
-  }, []);
-
+export default function EmployerActivity({ checkinsList }) {
   
   function getCheckinStatus(checkin, checkout) {
   return checkin && checkout ? 'Completed' : 'On going';
