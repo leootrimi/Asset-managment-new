@@ -1,34 +1,18 @@
-
-const Status = {
-    Approved: 'approved',
-    Rejected: 'rejected',
-    Pending: 'pending'
-}
-
-const daysOff = [
-    {
-        id: 1,
-        appliedIn: '2025-05-27',
-        from: '2025-06-01',
-        till: '2025-06-07',
-        status: Status.Approved
-    },
-    {
-        id: 2,
-        appliedIn: '2025-05-27',
-        from: '2025-06-01',
-        till: '2025-06-07',
-        status: Status.Pending
-    }
-];
+import { format } from 'date-fns'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function DaysOffScheduled() {
-    return(
-        <div className="px-4 sm:px-6 lg:px-8">
+const Status = {
+  Approved: 'Approved',
+  Rejected: 'Rejected',
+  Pending: 'pending'
+}
+
+export default function DaysOffTable({ daysOff }) {
+  return (
+    <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-6 flow-root">
         <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
@@ -60,6 +44,12 @@ export default function DaysOffScheduled() {
                     >
                       Status
                     </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Leave Type
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -69,28 +59,34 @@ export default function DaysOffScheduled() {
                       className="transition-colors hover:bg-gray-50"
                     >
                       <td className="relative py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {daysOff.appliedIn}
+                        {format(new Date(daysOff.appliedDate), 'yyyy-MM-dd')}
                         {index !== 0 && (
                           <div className="absolute -top-px left-6 right-0 h-px bg-gray-200" />
                         )}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {daysOff.from}
+                        {format(new Date(daysOff.fromDate), 'yyyy-MM-dd')}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {daysOff.till || '—'}
+                        {format(new Date(daysOff.toDate), 'yyyy-MM-dd') || '—'}
                       </td>
-                      <td className="px-3 py-4 text-sm">
+                      <td className="px-3 py-4 text-sm flex">
                         <span
                           className={classNames(
                             daysOff.status === Status.Approved
                               ? 'bg-green-100 text-green-800'
                               : 'bg-blue-100 text-blue-800',
-                            'inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium'
+                            'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium'
                           )}
                         >
                           {daysOff.status}
                         </span>
+                        {index == 0 &&
+                          <span className="relative ml-2 bg-gradient-to-br from-blue-700 to-blue-900 text-white text-xs items-center inline-flex font-medium px-2 rounded-xl">Latest</span>
+                        }
+                      </td>
+                      <td className="px-3 py-4 text-sm text-gray-500">
+                        {daysOff.type}
                       </td>
                     </tr>
                   ))}
@@ -101,5 +97,5 @@ export default function DaysOffScheduled() {
         </div>
       </div>
     </div>
-    );
+  );
 }

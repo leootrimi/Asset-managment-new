@@ -32,7 +32,8 @@ const port = '3000';
   
       const roles = payload["https:/assets.com/roles"] || [];
       const name = payload["name"]      
-      return { roles, name };
+      const meta_data = payload["https://assets.com/user_metadata"];
+      return { roles, name, meta_data };
     } catch (err) {
       console.error("Error parsing ID token:", err);
       return [];
@@ -60,8 +61,8 @@ export async function apiRequest({
       headers['id-token'] = getIdToken();
     }
     //For local testing
-    // const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}${endpoint}`, {
+    const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
+      // const response = await fetch(`${import.meta.env.VITE_BASE_URL}${endpoint}`, {
       method,
       headers,
       body: body ? JSON.stringify(body) : null,

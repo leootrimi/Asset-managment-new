@@ -6,6 +6,7 @@ import {
   HomeIcon,
   HeartIcon
 } from '@heroicons/react/20/solid'
+import { time } from "framer-motion";
 
 const comments = [
   {
@@ -76,8 +77,9 @@ const useEmployerProfileStore = create((set) => ({
 
     employerProfile: null,
     updatedProfile: null,
+    equpiments: [],
     comments: comments,
-    timeline: timeline,
+    timeline: [],
     loading: false,
     error: null,
 
@@ -85,18 +87,30 @@ const useEmployerProfileStore = create((set) => ({
         set({ loading: true });
         try {
             const response = await apiRequest({ endpoint: `/users/${id}` })
+            console.log(response);
             
             set({ employerProfile: response, loading: false,
                 updatedProfile: {
-                    position: response.position || "",
-                    level: response.level || "",
+                    position: response.user_metadata.position || "",
+                    level: response.user_metadata.level || "",
                     email: response.email || "",
-                    salary: response.salary || "",
-                    country: response.country || "",
-                    city: response.city || "",
-                    phoneNumber: response.phoneNumber || "",
+                    salary: response.user_metadata.salary || "",
+                    country: response.user_metadata.country || "",
+                    city: response.user_metadata.city || "",
+                    phoneNumber: response.user_metadata.phoneNumber || "",
                     }
             })
+        } catch (error) {
+             set({ loading: false, error: error.message })
+        }
+    },
+
+    fetchEmployerActivity: async (id) => {
+              try {
+            const response = await apiRequest({ endpoint: `/users-checkin/${id}/activity` })
+            console.log(response);
+            
+            set({ timeline: response })
         } catch (error) {
              set({ loading: false, error: error.message })
         }
@@ -119,6 +133,16 @@ const useEmployerProfileStore = create((set) => ({
         ...data
         }        
   })),
+
+  fetchEmployerEquipments: async ()  => {
+    try {
+            const response = await apiRequest({ endpoint: `/equipments/employer` })
+            console.log(response);
+            set({ equipments: response})
+        } catch (error) {
+             set({ error: error.message })
+        }
+  },
 
   resetUpdatedProfile: (data) => set({ updatedProfile: data }),
 }))

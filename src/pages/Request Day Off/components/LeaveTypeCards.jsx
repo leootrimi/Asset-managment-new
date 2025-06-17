@@ -1,8 +1,10 @@
-import React from 'react';
 import { Palmtree, Thermometer, Heart, GraduationCap, Baby, Users, Clock, Plus } from 'lucide-react';
 import { LeaveTypeCard } from './LeaveTypeCard';
+import LeaveRequestDrawer from './LeaveRequestDrawer';
+import { useState } from 'react';
 
 export const LeaveTypeCards = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const leaveTypes = [
     {
       icon: Palmtree,
@@ -89,6 +91,7 @@ export const LeaveTypeCards = () => {
             color={leave.color}
             daysRemaining={leave.daysRemaining}
             lastUsed={leave.lastUsed}
+            setIsOpen={setIsOpen}
           />
         ))}
       </div>
@@ -98,6 +101,9 @@ export const LeaveTypeCards = () => {
           View Leave Calendar
         </button>
       </div>
+
+      <LeaveRequestDrawer open={isOpen} setIsOpen={setIsOpen} />
+
     </section>
   );
 };

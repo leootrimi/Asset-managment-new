@@ -1,14 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, CheckCircle, HomeIcon, ThermometerIcon, TreePalmIcon, GemIcon } from "lucide-react"
 import AboutTable from "./Components/AboutTable";
 import { Laptop, Mouse, Headphones, Monitor } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MessageBar from "./Components/MessageBar";
-
+import { apiRequest } from "../../services/ApiCalls";
+import useEmployerCheckinStore from "../../stores/employerCheckinStore";
+import TimeSinceCheckin from "./Components/TimeSinceCheckin";
+import useEmployerProfileStore from "../../stores/employerProfileStore";
 
 export default function Dashboard() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [hasCheckedIn, setHasCheckedIn] = useState(null);
+  const [canCheckIn, setCanCheckIn] = useState(false);
+  const [checkInTime, setCheckInTime] = useState(null);
+
+  const { checkinsList, loading, error, hasCheckoutTimeInFirstCheckin, latestCheckinTime, fetchUserCheckins } = useEmployerCheckinStore();
+  const { fetchEmployerEquipments, equipments } = useEmployerProfileStore();
+
+  useEffect(() => {
+    const fetchAndCheck = async () => {
+      await fetchUserCheckins();
+      const hasCheckoutTime = hasCheckoutTimeInFirstCheckin();
+      setCanCheckIn(hasCheckoutTime);
+      const checkinTime = latestCheckinTime();
+
+      setCheckInTime(checkinTime);
+    }
+    fetchAndCheck();
+  }, [hasCheckedIn])
+
+  useEffect(() => {
+    const fetchEquipments = async () => {
+      await fetchEmployerEquipments();
+    }
+
+    fetchEquipments();
+  }, [])
 
   const cardStates = [
     { title: 'Work from home', days: 5, description: 'Days remaining' },
@@ -23,6 +52,27 @@ export default function Dashboard() {
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex === cardStates.length - 1 ? 0 : prevIndex + 1));
   };
+
+  const startCheckinTime = async () => {
+    try {
+      const response = await apiRequest({ endpoint: '/users-checkin', method: 'POST' });
+      alert('You checked in successfully')
+      setCheckInTime(response.checkinTime);
+      setHasCheckedIn(true)
+    } catch (error) {
+      alert('something went wrong!')
+    }
+  }
+
+  const userCheckout = async () => {
+    try {
+      const response = await apiRequest({ endpoint: '/users-checkin/checkout', method: 'POST' });
+      alert('You checked out successfully')
+      setHasCheckedIn(false)
+    } catch (error) {
+      alert('something went wrong!')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -39,7 +89,14 @@ export default function Dashboard() {
                 className="w-full border rounded-full py-2 pl-10 pr-4 text-gray-700"
               />
             </div>
-            <button className="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-full px-4 py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200">
+            <button
+              className={`${canCheckIn
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                  : 'bg-gray-300 text-gray-500'
+                }  rounded-full px-4 py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200`}
+              onClick={startCheckinTime}
+              disabled={!canCheckIn}
+            >
               <CheckCircle size={16} className="text-green-100" />
               <span>Check In</span>
             </button>
@@ -47,11 +104,11 @@ export default function Dashboard() {
           </div>
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex items-center space-x-4 overflow-hidden">
+            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex items-center space-x-4 overflow-hidden border-1 border-gray-300">
               {/* Left Chevron */}
               <button
                 onClick={handlePrev}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none"
+                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300 focus:outline-none"
                 aria-label="Previous card"
               >
                 <ChevronLeft className="w-6 h-6" />
@@ -64,17 +121,17 @@ export default function Dashboard() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg text-white font-semibold text-gray-800">
+                  <h3 className="text-lg text-gray-700 font-semibold text-gray-800">
                     {cardStates[currentIndex].title}
                   </h3>
-                  <p className="text-sm text-gray-50">{cardStates[currentIndex].description}</p>
+                  <p className="text-sm text-gray-500">{cardStates[currentIndex].description}</p>
                 </div>
               </div>
 
               {/* Right Chevron */}
               <button
                 onClick={handleNext}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300 focus:outline-none"
                 aria-label="Next card"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -91,13 +148,16 @@ export default function Dashboard() {
               </svg>
             </div>
 
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-600 to-gray-900 flex flex-col sm:flex-row items-center gap-4 overflow-hidden">
+            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex flex-col sm:flex-row items-center gap-4 overflow-hidden border-1 border-gray-300">
               {/* Left section */}
-              <h1 className="text-3xl text-white font-semibold">05<span className="text-sm">h</span> 23<span className="text-sm">min</span></h1>
-              <div className="text-center sm:text-left">
-                <h3 className="text-xl text-white font-semibold text-gray-800">You’re checked in</h3>
-                <p className="text-gray-50 mt-1">Checked in <span className="font-medium">2h 14m ago</span></p>
-                <button className="mt-4 bg-gradient-to-r from-red-400 to-red-600 text-white hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-md shadow-sm">
+              <TimeSinceCheckin checkInTime={checkInTime} canCheckIn={canCheckIn} />
+              <div className="text-center sm:text-left z-50">
+                <h3 className="text-xl font-semibold text-gray-800">{canCheckIn ? 'You are not checked in yet!' : 'You have checked in'}</h3>
+                <p className="text-gray-600 mt-1">{canCheckIn ? 'Last checked in' : 'Checked in at'} <span className="font-medium">{latestCheckinTime()}</span></p>
+                <button className={`${(canCheckIn) ? 'bg-gray-300 text-gray-500' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'} mt-4 hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm`}
+                  disabled={canCheckIn}
+                  onClick={userCheckout}
+                >
                   Check Out
                 </button>
               </div>
@@ -114,14 +174,19 @@ export default function Dashboard() {
 
           </div>
 
-          <AboutTable />
+          <hr className="border-t border-gray-300 my-4" />
+
+          <AboutTable checkinList={checkinsList} equpipments={equipments} />
+
+          <hr className="border-t border-gray-300 my-4" />
+
 
           {/* Quick Access */}
           <div className="mb-8">
             <h2 className="text-2xl font-bold mb-4">Quick Access</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Quick Links */}
-              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
+              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col transform transition duration-200 hover:-translate-y-1">
                 <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Holidays choice</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
                   <div className="flex items-center gap-2">
@@ -153,7 +218,7 @@ export default function Dashboard() {
 
 
               {/* Files */}
-              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
+              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col transform transition duration-200 hover:-translate-y-1">
                 <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Equipment findings</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
 
@@ -190,7 +255,7 @@ export default function Dashboard() {
               </div>
 
               {/* Meetings */}
-              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col">
+              <div className="rounded-3xl bg-gray-700 overflow-hidden h-60 flex flex-col transform transition duration-200 hover:-translate-y-1">
                 <h3 className="text-gray-700 font-medium mb-2 mt-2 px-4 text-white">Meetings</h3>
                 <div className="space-y-3 bg-white p-4 border rounded-3xl flex-1 overflow-auto">
                   <div className="flex items-center gap-2">

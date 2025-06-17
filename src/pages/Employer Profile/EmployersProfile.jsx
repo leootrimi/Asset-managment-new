@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { apiRequest } from '../../services/ApiCalls'
+import React from 'react';
 import {
   PaperClipIcon,
   QuestionMarkCircleIcon,
@@ -42,17 +43,19 @@ export default function EmployersProfile() {
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
   const { id } = useParams();
   const { employerProfile,
-     fetchEmployerProfile,
-      loading,
-       updatedProfile, 
-       setUpdatedUserData,
-        deleteEmployer, 
-        comments, 
-        timeline,
-      resetUpdatedProfile } = useEmployerProfileStore();
+    fetchEmployerProfile,
+    loading,
+    updatedProfile,
+    setUpdatedUserData,
+    deleteEmployer,
+    comments,
+    timeline,
+    fetchEmployerActivity,
+    resetUpdatedProfile } = useEmployerProfileStore();
 
   useEffect(() => {
     fetchEmployerProfile(id)
+    fetchEmployerActivity(id)
   }, [id])
 
   if (loading) {
@@ -104,7 +107,7 @@ export default function EmployersProfile() {
 
     setUpdatedUserData({ [name]: value });
     console.log(updatedProfile);
-    
+
     setSaveButtonEnabled(
       hasUserProfileChanged(employerProfile, {
         ...updatedProfile,
@@ -170,7 +173,7 @@ export default function EmployersProfile() {
                 <div className="relative">
                   <img
                     alt=""
-                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
+                    src={employerProfile?.picture}
                     className="size-16 rounded-full"
                   />
                   <span aria-hidden="true" className="absolute inset-0 rounded-full shadow-inner" />
@@ -178,12 +181,12 @@ export default function EmployersProfile() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  {(employerProfile?.firstName && employerProfile?.lastName)
-                    ? `${employerProfile.firstName} ${employerProfile.lastName}`
+                  {(employerProfile?.user_metadata.firstName && employerProfile?.user_metadata.lastName)
+                    ? `${employerProfile.user_metadata.firstName} ${employerProfile.user_metadata.lastName}`
                     : "Name not available"}
                 </h1>
                 <p className="text-sm font-medium text-gray-500">
-                  {employerProfile?.position ? `${employerProfile.position} ` : "Not available"}
+                  {employerProfile?.user_metadata.position ? `${employerProfile.user_metadata.position} ` : "Not available"}
                   since <time dateTime="2020-08-25">August 25, 2020</time>
                 </p>
               </div>
@@ -431,43 +434,66 @@ export default function EmployersProfile() {
                 <div className="mt-6 flow-root">
                   <ul role="list" className="-mb-8">
                     {timeline.map((item, itemIdx) => (
-                      <li key={item.id}>
-                        <div className="relative pb-8">
-                          {itemIdx !== timeline.length - 1 ? (
+                      <React.Fragment key={item.id}>
+                        {/* Check-in item */}
+                        <li>
+                          <div className="relative pb-8">
                             <span
                               aria-hidden="true"
                               className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
                             />
-                          ) : null}
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span
-                                className={classNames(
-                                  item.type.bgColorClass,
-                                  'flex size-8 items-center justify-center rounded-full ring-8 ring-white',
-                                )}
-                              >
-                                <item.type.icon aria-hidden="true" className="size-5 text-white" />
-                              </span>
-                            </div>
-                            <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                            <div className="relative flex space-x-3">
                               <div>
-                                <p className="text-sm text-gray-500">
-                                  {item.content}{' '}
-                                  <a href="#" className="font-medium text-gray-900">
-                                    {item.target}
-                                  </a>
-                                </p>
+                                <span className="bg-green-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
+                                  <ArrowRightEndOnRectangleIcon aria-hidden="true" className="size-5 text-white" />
+                                </span>
                               </div>
-                              <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                <time dateTime={item.datetime}>{item.date}</time>
+                              <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                <div>
+                                  <p className="text-sm text-gray-500">
+                                    Checked in at <span className="font-medium text-gray-900">{item.checkinTime}</span>
+                                  </p>
+                                </div>
+                                <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                                  <time dateTime={item.checkinDate}>{item.checkinDate}</time>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </li>
+                        </li>
+
+                        {/* Check-out item */}
+                        <li>
+                          <div className="relative pb-8">
+                            {itemIdx !== timeline.length - 1 && (
+                              <span
+                                aria-hidden="true"
+                                className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+                              />
+                            )}
+                            <div className="relative flex space-x-3">
+                              <div>
+                                <span className="bg-red-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
+                                  <ArrowRightEndOnRectangleIcon aria-hidden="true" className="size-5 text-white" />
+                                </span>
+                              </div>
+                              <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                <div>
+                                  <p className="text-sm text-gray-500">
+                                    Checked out at <span className="font-medium text-gray-900">{item.checkoutTime}</span>
+                                  </p>
+                                </div>
+                                <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                                  <time dateTime={item.checkinDate}>{item.checkoutTime}</time>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </React.Fragment>
                     ))}
                   </ul>
+
                 </div>
                 <div className="mt-6 flex flex-col justify-stretch">
                   <button

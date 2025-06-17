@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { LeaveRequestModal } from './LeaveRequestModal';
+import LeaveRequestDrawer from './LeaveRequestDrawer';
 
-export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemaining, lastUsed }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemaining, lastUsed, setIsOpen }) => {
 
   return (
     <>
@@ -34,7 +33,7 @@ export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemai
           </div>
 
           <button 
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsOpen(true)}
             className={`mt-auto w-full inline-flex items-center justify-center px-4 py-2 rounded-md font-medium ${color.replace('bg-', 'text-white bg-')} hover:bg-opacity-90 transition-colors duration-200`}
           >
             Request Leave
@@ -55,12 +54,6 @@ export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemai
         </div>
       </div>
 
-      <LeaveRequestModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        leaveType={title}
-        color={color}
-      />
     </>
   );
 };

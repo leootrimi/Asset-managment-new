@@ -1,26 +1,16 @@
-const checkins = [
-  {
-    id: 1,
-    date: '2025-06-01',
-    checkInTime: '09:00 AM',
-    checkOutTime: '05:00 PM',
-    status: 'Completed',
-  },
-  {
-    id: 2,
-    date: '2025-06-02',
-    checkInTime: '10:00 AM',
-    checkOutTime: null,
-    status: 'Active',
-  },
-  // More check-ins...
-];
+import { useEffect } from "react";
+import useEmployerCheckinStore from "../../../stores/employerCheckinStore";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function EmployerActivity() {
+export default function EmployerActivity({ checkinsList }) {
+  
+  function getCheckinStatus(checkin, checkout) {
+  return checkin && checkout ? 'Completed' : 'On going';
+}
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-6 flow-root">
@@ -57,33 +47,33 @@ export default function EmployerActivity() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
-                  {checkins.map((checkin, index) => (
+                  {checkinsList?.map((checkin, index) => (
                     <tr
-                      key={checkin.id}
+                      key={checkin._id}
                       className="transition-colors hover:bg-gray-50"
                     >
                       <td className="relative py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {checkin.date}
+                        {checkin.checkinDate}
                         {index !== 0 && (
                           <div className="absolute -top-px left-6 right-0 h-px bg-gray-200" />
                         )}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {checkin.checkInTime}
+                        {checkin.checkinTime}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {checkin.checkOutTime || '—'}
+                        {checkin.checkoutTime || '—'}
                       </td>
                       <td className="px-3 py-4 text-sm">
                         <span
                           className={classNames(
-                            checkin.status === 'Active'
+                            getCheckinStatus(checkin.checkinTime, checkin.checkoutTime) === 'Completed'
                               ? 'bg-green-100 text-green-800'
                               : 'bg-blue-100 text-blue-800',
                             'inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium'
                           )}
                         >
-                          {checkin.status}
+                          {getCheckinStatus(checkin.checkinTime, checkin.checkoutTime)}
                         </span>
                       </td>
                     </tr>
