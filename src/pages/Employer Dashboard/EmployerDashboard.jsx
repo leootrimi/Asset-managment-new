@@ -150,10 +150,10 @@ export default function Dashboard() {
 
             <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex flex-col sm:flex-row items-center gap-4 overflow-hidden border-1 border-gray-300">
               {/* Left section */}
-              <TimeSinceCheckin checkInTime={checkInTime} />
+              <TimeSinceCheckin checkInTime={checkInTime} canCheckIn={canCheckIn} />
               <div className="text-center sm:text-left z-50">
-                <h3 className="text-xl font-semibold text-gray-800">You’re checked in</h3>
-                <p className="text-gray-600 mt-1">Checked in at <span className="font-medium">{latestCheckinTime()}</span></p>
+                <h3 className="text-xl font-semibold text-gray-800">{canCheckIn ? 'You are not checked in yet!' : 'You have checked in'}</h3>
+                <p className="text-gray-600 mt-1">{canCheckIn ? 'Last checked in' : 'Checked in at'} <span className="font-medium">{latestCheckinTime()}</span></p>
                 <button className={`${(canCheckIn) ? 'bg-gray-300 text-gray-500' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'} mt-4 hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm`}
                   disabled={canCheckIn}
                   onClick={userCheckout}

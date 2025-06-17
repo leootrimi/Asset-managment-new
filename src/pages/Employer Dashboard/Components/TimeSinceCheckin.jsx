@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 
-export default function TimeSinceCheckin({ checkInTime }) {
+export default function TimeSinceCheckin({ checkInTime, canCheckIn }) {
     const [elapsedTime, setElapsedTime] = useState({ hours: 0, minutes: 0 });
 
     useEffect(() => {
         if (!checkInTime) return;
-
+        console.log(checkInTime);
+        
         const parseCheckInTime = (timeStr) => {
             // Expect timeStr in "HH:mm" format, e.g., "14:43"
             const [hours, minutes] = timeStr.split(':').map(Number);
@@ -41,6 +42,11 @@ export default function TimeSinceCheckin({ checkInTime }) {
         
         return () => clearInterval(interval);
     }, [checkInTime]);
+
+    // If canCheckIn is true, return null to not show time
+    if (canCheckIn) {
+        return null;
+    }
 
     return (
         checkInTime ? (
