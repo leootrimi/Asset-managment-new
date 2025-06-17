@@ -5,7 +5,7 @@ import { Laptop2Icon } from "lucide-react";
 export default function EmployerEquipments({ equipments }) {
   return (
     <div className="px-4 sm:px-4 lg:px-0">
-      { equipments.length === 0 ?
+      { !equipments || equipments.length === 0 ?
        ( <EmptySchedulingList
         icon={Laptop2Icon}
         title="You don't own any company equpiment yet!"

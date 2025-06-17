@@ -6,6 +6,7 @@ import {
   HomeIcon,
   HeartIcon
 } from '@heroicons/react/20/solid'
+import { time } from "framer-motion";
 
 const comments = [
   {
@@ -76,9 +77,9 @@ const useEmployerProfileStore = create((set) => ({
 
     employerProfile: null,
     updatedProfile: null,
-    equpiments: null,
+    equpiments: [],
     comments: comments,
-    timeline: timeline,
+    timeline: [],
     loading: false,
     error: null,
 
@@ -99,6 +100,17 @@ const useEmployerProfileStore = create((set) => ({
                     phoneNumber: response.user_metadata.phoneNumber || "",
                     }
             })
+        } catch (error) {
+             set({ loading: false, error: error.message })
+        }
+    },
+
+    fetchEmployerActivity: async (id) => {
+              try {
+            const response = await apiRequest({ endpoint: `/users-checkin/${id}/activity` })
+            console.log(response);
+            
+            set({ timeline: response })
         } catch (error) {
              set({ loading: false, error: error.message })
         }

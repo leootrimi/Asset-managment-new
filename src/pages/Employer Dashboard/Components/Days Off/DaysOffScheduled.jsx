@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import DaysOffTable from "./DaysOffTable";
 import EmptySchedulingList from "./EmptySchedulingList";
+import { apiRequest } from "../../../../services/ApiCalls";
 
 const Status = {
   Approved: 'Approved',
@@ -7,24 +9,21 @@ const Status = {
   Pending: 'Pending'
 }
 
-const daysOff = [
-  {
-    id: 1,
-    appliedIn: '2025-05-27',
-    from: '2025-06-01',
-    till: '2025-06-07',
-    status: Status.Approved
-  },
-  {
-    id: 2,
-    appliedIn: '2025-05-27',
-    from: '2025-06-01',
-    till: '2025-06-07',
-    status: Status.Pending
-  }
-];
-
 export default function DaysOffScheduled() {
+  const [daysOff, setDaysOff] = useState([])
+
+  useEffect(() => {
+    async function fetchHolidaysSchedled() {
+      try {
+        const response = await apiRequest({ endpoint: '/holidays' })
+        setDaysOff(response)        
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchHolidaysSchedled()
+  }, [])
+
   return (
     <>
       {daysOff.length === 0 ?

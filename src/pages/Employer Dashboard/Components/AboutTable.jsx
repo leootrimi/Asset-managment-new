@@ -16,7 +16,7 @@ function classNames(...classes) {
 }
 
 export default function AboutTable({ checkinList, equpipments}) {
-  const [activeTab, setActiveTab] = useState(tabs.find((tab) => tab.name === 'Activity').name);
+  const [activeTab, setActiveTab] = useState(tabs.find((tab) => tab.name === 'Your equipments').name);
   const [prevTabIndex, setPrevTabIndex] = useState(tabs.findIndex((tab) => tab.name === 'Activity'));
 
   const handleTabClick = (tabName) => {

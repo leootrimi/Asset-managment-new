@@ -1,16 +1,18 @@
+import { format } from 'date-fns'
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
- const Status = {
-    Approved: 'Approved',
-    Rejected: 'Rejected',
-    Pending: 'Pending'
+const Status = {
+  Approved: 'Approved',
+  Rejected: 'Rejected',
+  Pending: 'pending'
 }
 
-export default function DaysOffTable({daysOff}) {
-    return(
-         <div className="px-4 sm:px-6 lg:px-8">
+export default function DaysOffTable({ daysOff }) {
+  return (
+    <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-6 flow-root">
         <div className="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle">
@@ -42,6 +44,12 @@ export default function DaysOffTable({daysOff}) {
                     >
                       Status
                     </th>
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      Leave Type
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -51,16 +59,16 @@ export default function DaysOffTable({daysOff}) {
                       className="transition-colors hover:bg-gray-50"
                     >
                       <td className="relative py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {daysOff.appliedIn}
+                        {format(new Date(daysOff.appliedDate), 'yyyy-MM-dd')}
                         {index !== 0 && (
                           <div className="absolute -top-px left-6 right-0 h-px bg-gray-200" />
                         )}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {daysOff.from}
+                        {format(new Date(daysOff.fromDate), 'yyyy-MM-dd')}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {daysOff.till || '—'}
+                        {format(new Date(daysOff.toDate), 'yyyy-MM-dd') || '—'}
                       </td>
                       <td className="px-3 py-4 text-sm flex">
                         <span
@@ -73,9 +81,12 @@ export default function DaysOffTable({daysOff}) {
                         >
                           {daysOff.status}
                         </span>
-                        { index == 0 && 
-                        <span className="relative ml-2 bg-gradient-to-br from-blue-700 to-blue-900 text-white text-xs items-center inline-flex font-medium px-2 rounded-xl">Latest</span>
+                        {index == 0 &&
+                          <span className="relative ml-2 bg-gradient-to-br from-blue-700 to-blue-900 text-white text-xs items-center inline-flex font-medium px-2 rounded-xl">Latest</span>
                         }
+                      </td>
+                      <td className="px-3 py-4 text-sm text-gray-500">
+                        {daysOff.type}
                       </td>
                     </tr>
                   ))}
@@ -86,5 +97,5 @@ export default function DaysOffTable({daysOff}) {
         </div>
       </div>
     </div>
-    );
+  );
 }
