@@ -6,22 +6,24 @@ const EquipmentListingTable = ({ equipmentData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [inUseFilter, setInUseFilter] = useState("all");
 
-  const filteredData = equipmentData.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.tag.toLowerCase().includes(searchTerm.toLowerCase());
+const filteredData = Array.isArray(equipmentData)
+  ? equipmentData.filter((item) => {
+      const matchesSearch =
+        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.tag?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesInUse =
-      inUseFilter === "all" ||
-      (inUseFilter === "yes" && item.inUse) ||
-      (inUseFilter === "no" && !item.inUse);
+      const matchesInUse =
+        inUseFilter === "all" ||
+        (inUseFilter === "yes" && item.inUse) ||
+        (inUseFilter === "no" && !item.inUse);
 
-    return matchesSearch && matchesInUse;
-  });
+      return matchesSearch && matchesInUse;
+    })
+  : [];
 
   return (
-      <div className="p-2 sm:px-4 lg:px-4">
+      <div className="px-4 sm:px-6 lg:px-6">
         {/* Header */}
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">

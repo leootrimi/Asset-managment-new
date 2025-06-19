@@ -13,12 +13,10 @@ const useEmployerCheckinStore = create((set, get) => ({
         try {
             const response = await apiRequest({ endpoint: '/users-checkin/user', method: 'POST'})
             set({ checkinsList: response, loading: false})
-            console.log(response);
             
             
         } catch (error) {
             set({ loading: false, error: error.message})
-            console.log(error.message);
         }   
     },
 
@@ -44,7 +42,6 @@ const useEmployerCheckinStore = create((set, get) => ({
     ) {
       return 'No checkin time';
     }
-    console.log(checkinsList[0].checkinTime);
     return checkinsList[0].checkinTime;
   },
 

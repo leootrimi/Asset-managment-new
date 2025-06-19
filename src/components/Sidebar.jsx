@@ -56,10 +56,9 @@ function classNames(...classes) {
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const navigate = useNavigate();
-  const { logout } = useAuth0();
-  const { user} = useAuth0();
+  const { logout, user } = useAuth0();
   const selectedProject = useProjectStore((state) => state.selectedProject);
-  
+
   return (
     <>
       <div>
@@ -180,7 +179,7 @@ export default function Example() {
                 src="https://static.vecteezy.com/system/resources/previews/055/007/018/non_2x/data-analysis-is-at-hand-vector.jpg"
                 className="h-15 w-auto"
               />
-              <h1 className='text-lg font-bold'>{selectedProject}</h1>
+              <h1 className='text-lg font-bold'>{selectedProject.company}</h1>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">

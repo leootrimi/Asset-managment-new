@@ -55,7 +55,7 @@ export default function DaysOffTable({ daysOff }) {
                 <tbody className="divide-y divide-gray-200">
                   {daysOff.map((daysOff, index) => (
                     <tr
-                      key={daysOff.id}
+                      key={daysOff._id}
                       className="transition-colors hover:bg-gray-50"
                     >
                       <td className="relative py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">

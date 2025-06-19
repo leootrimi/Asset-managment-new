@@ -7,9 +7,7 @@ import {
   PaperClipIcon,
   QuestionMarkCircleIcon,
   ArrowRightEndOnRectangleIcon,
-  ArrowLeftEndOnRectangleIcon,
-  HomeIcon,
-  HeartIcon
+  BuildingOffice2Icon
 } from '@heroicons/react/20/solid'
 import DeleteAlert from '../../Core/DeleteAlert'
 import DiscardChanges from '../../Core/DiscardChanges'
@@ -56,6 +54,8 @@ export default function EmployersProfile() {
   useEffect(() => {
     fetchEmployerProfile(id)
     fetchEmployerActivity(id)
+    console.log(updatedProfile);
+    
   }, [id])
 
   if (loading) {
@@ -84,7 +84,6 @@ export default function EmployersProfile() {
         message: 'You successfully updated user details',
       })
     } catch (err) {
-      console.log(err);
       setErrorOcurred(true)
       setUpdatedUserData(employerProfile)
       setAlert({
@@ -106,7 +105,6 @@ export default function EmployersProfile() {
     const { name, value } = e.target;
 
     setUpdatedUserData({ [name]: value });
-    console.log(updatedProfile);
 
     setSaveButtonEnabled(
       hasUserProfileChanged(employerProfile, {
@@ -120,6 +118,10 @@ export default function EmployersProfile() {
 
   function enableEditingUserProfile() {
     if (isEditEnabled) {
+      console.log('original', employerProfile);
+      console.log('updated', updatedProfile);
+
+
       if (hasUserProfileChanged(employerProfile, updatedProfile)) {
         setShowDiscardModal(true);
       } else {
@@ -132,13 +134,30 @@ export default function EmployersProfile() {
 
 
   function hasUserProfileChanged(original, updated) {
-    return Object.keys(original).some(
-      key => original[key] !== updated[key]
-    );
+    function deepEqual(obj1, obj2) {
+      if (obj1 === obj2) return true;
+      if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+        return false;
+      }
+
+      const keys1 = Object.keys(obj1);
+      const keys2 = Object.keys(obj2);
+
+      if (keys1.length !== keys2.length) return false;
+
+      for (const key of keys1) {
+        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return !deepEqual(original, updated);
   }
 
   function discardProfileChanges() {
-    resetUpdatedProfile(employerProfile);
+    resetUpdatedProfile();
     setShowDiscardModal(false)
     setEditEnable(false)
   }
@@ -237,7 +256,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Working as"
                         name="position"
-                        value={updatedProfile?.position}
+                        value={updatedProfile?.user_metadata.position}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="e.g. Head of Engineering"
@@ -246,7 +265,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Position level"
                         name="level"
-                        value={updatedProfile?.level}
+                        value={updatedProfile?.user_metadata.level}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Junior"
@@ -256,7 +275,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Email address"
                         name="email"
-                        value={updatedProfile?.email}
+                        value={updatedProfile?.user_metadata.email}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. example@ex.yo"
@@ -274,7 +293,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Country"
                         name="country"
-                        value={updatedProfile?.country}
+                        value={updatedProfile?.user_metadata.country}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Kosovo"
@@ -283,7 +302,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="City"
                         name="city"
-                        value={updatedProfile?.city}
+                        value={updatedProfile?.user_metadata.city}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Prishtina"
@@ -292,7 +311,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Phone"
                         name="phone"
-                        value={updatedProfile?.phoneNumber}
+                        value={updatedProfile?.user_metadata.phoneNumber}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. +383 43 974 385"
@@ -427,14 +446,63 @@ export default function EmployersProfile() {
             <section aria-labelledby="timeline-title" className="lg:col-span-1 lg:col-start-3">
               <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                 <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
-                  Timeline
+                  Last Week Timeline
                 </h2>
 
                 {/* Activity Feed */}
                 <div className="mt-6 flow-root">
                   <ul role="list" className="-mb-8">
                     {timeline.map((item, itemIdx) => (
-                      <React.Fragment key={item.id}>
+                      <React.Fragment key={item._id}>
+
+                        {/* Check-out item */}
+                        <li>
+                          <div className="relative pb-8">
+                            {itemIdx !== timeline.length - 1 && (
+                              <span
+                                aria-hidden="true"
+                                className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
+                              />
+                            )}
+                            {!item.checkoutTime ? (
+                              <div>
+                                <div className="relative flex space-x-3">
+                                  <div>
+                                    <span className="bg-blue-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
+                                      <BuildingOffice2Icon aria-hidden="true" className="size-5 text-white" />
+                                    </span>
+                                  </div>
+                                  <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                    <div>
+                                      <p className="text-sm font-medium text-blue-400">
+                                        Not checked out yet!
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="relative flex space-x-3">
+                                <div>
+                                  <span className="bg-red-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
+                                    <ArrowRightEndOnRectangleIcon aria-hidden="true" className="size-5 text-white" />
+                                  </span>
+                                </div>
+                                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                  <div>
+                                    <p className="text-sm text-gray-500">
+                                      Checked out at <span className="font-medium text-gray-900">{item.checkoutTime}</span>
+                                    </p>
+                                  </div>
+                                  <div className="whitespace-nowrap text-right text-sm text-gray-500">
+                                    <time dateTime={item.checkinDate}>{item.checkoutTime}</time>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                          </div>
+                        </li>
                         {/* Check-in item */}
                         <li>
                           <div className="relative pb-8">
@@ -456,35 +524,6 @@ export default function EmployersProfile() {
                                 </div>
                                 <div className="whitespace-nowrap text-right text-sm text-gray-500">
                                   <time dateTime={item.checkinDate}>{item.checkinDate}</time>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-
-                        {/* Check-out item */}
-                        <li>
-                          <div className="relative pb-8">
-                            {itemIdx !== timeline.length - 1 && (
-                              <span
-                                aria-hidden="true"
-                                className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
-                              />
-                            )}
-                            <div className="relative flex space-x-3">
-                              <div>
-                                <span className="bg-red-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
-                                  <ArrowRightEndOnRectangleIcon aria-hidden="true" className="size-5 text-white" />
-                                </span>
-                              </div>
-                              <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    Checked out at <span className="font-medium text-gray-900">{item.checkoutTime}</span>
-                                  </p>
-                                </div>
-                                <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                  <time dateTime={item.checkinDate}>{item.checkoutTime}</time>
                                 </div>
                               </div>
                             </div>

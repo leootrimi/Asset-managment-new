@@ -3,6 +3,8 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
 import { XMarkIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
+import { apiRequest, getUserRolesFromIdToken } from "../../../services/ApiCalls"
+import { useEffect } from "react"
 
 export default function LeaveRequestDrawer({ open, setIsOpen }) {
   const [formData, setFormData] = useState({
@@ -16,6 +18,16 @@ export default function LeaveRequestDrawer({ open, setIsOpen }) {
     emergencyPhone: "",
   })
 
+  useEffect(() => {
+  const user = userMetaData()
+  if (user && user.name) {
+    setFormData((prev) => ({
+      ...prev,
+      employeeName: user.name,
+    }))
+  }
+}, [])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -24,10 +36,24 @@ export default function LeaveRequestDrawer({ open, setIsOpen }) {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const userMetaData = () => {
+  const user = getUserRolesFromIdToken()
+  return user
+}
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Leave request submitted:", formData)
-    // Handle form submission here
+    try {
+      await apiRequest({
+         endpoint: '/holidays',
+          method: 'POST', 
+          body: {
+            'fromDate': formData.startDate,
+            'toDate': formData.endDate,
+            'type': formData.leaveType
+          } })
+    } catch (error) {
+    }
     setIsOpen(false)
   }
 
@@ -84,7 +110,8 @@ export default function LeaveRequestDrawer({ open, setIsOpen }) {
                               required
                               value={formData.employeeName}
                               onChange={handleInputChange}
-                              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
+                              disabled={true}
+                              className="block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
                               placeholder="Enter your full name"
                             />
                           </div>
@@ -123,12 +150,12 @@ export default function LeaveRequestDrawer({ open, setIsOpen }) {
                               className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
                             >
                               <option value="">Select leave type</option>
-                              <option value="annual">Annual Leave</option>
-                              <option value="sick">Sick Leave</option>
-                              <option value="personal">Personal Leave</option>
-                              <option value="maternity">Maternity Leave</option>
-                              <option value="paternity">Paternity Leave</option>
-                              <option value="emergency">Emergency Leave</option>
+                              <option value="Annual Leave">Annual Leave</option>
+                              <option value="Sick Leave">Sick Leave</option>
+                              <option value="Personal Leave">Personal Leave</option>
+                              <option value="Maternity Leave">Maternity Leave</option>
+                              <option value="Paternity Leave">Paternity Leave</option>
+                              <option value="Emergency Leave">Emergency Leave</option>
                               <option value="other">Other</option>
                             </select>
                           </div>

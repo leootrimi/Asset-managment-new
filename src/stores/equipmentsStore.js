@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { apiRequest } from "../services/ApiCalls";
+import { useProjectStore } from "./projectStore";
 
 const useEquipmentStore = create((set) => ({
 
@@ -10,7 +11,12 @@ const useEquipmentStore = create((set) => ({
     fetchEquipments: async () => {
         set({ loading: true});
         try {
-            const response = await apiRequest({ endpoint: '/equipments'})
+            const selectedProject = useProjectStore.getState().selectedProject;
+            const response = await apiRequest({
+                 endpoint: `/equipments?companyId=${selectedProject._id}`,
+                 method: 'GET'
+            })
+            
             set({ equipments: response, loading: false })
         } catch (error) {
             set({ error: error.message, loading: false})
