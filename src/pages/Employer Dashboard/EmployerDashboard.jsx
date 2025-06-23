@@ -8,6 +8,7 @@ import { apiRequest } from "../../services/ApiCalls";
 import useEmployerCheckinStore from "../../stores/employerCheckinStore";
 import TimeSinceCheckin from "./Components/TimeSinceCheckin";
 import useEmployerProfileStore from "../../stores/employerProfileStore";
+import card from "@material-tailwind/react/theme/components/card";
 
 export default function Dashboard() {
 
@@ -15,9 +16,11 @@ export default function Dashboard() {
   const [hasCheckedIn, setHasCheckedIn] = useState(null);
   const [canCheckIn, setCanCheckIn] = useState(false);
   const [checkInTime, setCheckInTime] = useState(null);
+  const [cardStates, setCardStates] = useState([]);
+
 
   const { checkinsList, loading, error, hasCheckoutTimeInFirstCheckin, latestCheckinTime, fetchUserCheckins } = useEmployerCheckinStore();
-  const { fetchEmployerEquipments, equipments } = useEmployerProfileStore();
+  const { fetchEmployerEquipments, equipments, fetchEmployerDaysOff, holidays } = useEmployerProfileStore();
 
   useEffect(() => {
     const fetchAndCheck = async () => {
@@ -34,16 +37,21 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchEquipments = async () => {
       await fetchEmployerEquipments();
+      await fetchEmployerDaysOff();
     }
 
     fetchEquipments();
   }, [])
 
-  const cardStates = [
-    { title: 'Work from home', days: 5, description: 'Days remaining' },
-    { title: 'Holidays', days: 10, description: 'Days remaining' },
-    { title: 'Sick leave', days: 3, description: 'Days available' },
-  ];
+  useEffect(() => {
+    if (holidays) {
+      setCardStates([
+        { title: 'Work from home', days: holidays.workFromHomeDays, description: 'Days remaining' },
+        { title: 'Holidays', days: holidays.daysOff, description: 'Days remaining' },
+        { title: 'Sick leave', days: holidays.medicalLeaveDays, description: 'Days available' },
+      ]);
+    }
+  }, [holidays]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? cardStates.length - 1 : prevIndex - 1));
@@ -91,8 +99,8 @@ export default function Dashboard() {
             </div>
             <button
               className={`${canCheckIn
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
-                  : 'bg-gray-300 text-gray-500'
+                ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                : 'bg-gray-300 text-gray-500'
                 }  rounded-full px-4 py-2 flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition duration-200`}
               onClick={startCheckinTime}
               disabled={!canCheckIn}
@@ -115,18 +123,21 @@ export default function Dashboard() {
               </button>
 
               {/* Main Content */}
-              <div className="flex items-center space-x-4">
-                <div className="bg-white rounded-full w-20 h-20 ml-2 flex items-center justify-center shadow text-blue-600 font-bold text-xl">
-                  <h1 className="text-4xl text-gray-500">{cardStates[currentIndex].days}</h1>
-                </div>
+              {cardStates[currentIndex] && (
+                <div className="flex items-center space-x-4">
+                  <div className="bg-white rounded-full w-20 h-20 ml-2 flex items-center justify-center shadow text-blue-600 font-bold text-xl">
+                    <h1 className="text-4xl text-gray-500">{cardStates[currentIndex].days}</h1>
+                  </div>
 
-                <div>
-                  <h3 className="text-lg text-gray-700 font-semibold text-gray-800">
-                    {cardStates[currentIndex].title}
-                  </h3>
-                  <p className="text-sm text-gray-500">{cardStates[currentIndex].description}</p>
+                  <div>
+                    <h3 className="text-lg text-gray-700 font-semibold text-gray-800">
+                      {cardStates[currentIndex].title}
+                    </h3>
+                    <p className="text-sm text-gray-500">{cardStates[currentIndex].description}</p>
+                  </div>
                 </div>
-              </div>
+              )}
+
 
               {/* Right Chevron */}
               <button

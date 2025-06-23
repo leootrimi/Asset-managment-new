@@ -21,6 +21,7 @@ import EmployerDashboard from './pages/Employer Dashboard/EmployerDashboard';
 import YourWork from './pages/your-work/Your-work';
 import { RequestPage } from './pages/Request Page/RequestPage';
 import { RequestDayOff } from './pages/Request Day Off/RequestDayOff';
+import RequestManagement from './pages/Request Managment/RequestManagement';
 
 import './App.css';
 
@@ -66,6 +67,7 @@ function App() {
             <Route path="reports" element={<ReportsPage />} />
             <Route path="requests-items" element={<RequestPage />} />
             <Route path="/requests-day" element={<RequestDayOff />} />
+            <Route path="/request/manage" element={<RequestManagement />} />
 
           </Route>
           </Route>

@@ -16,6 +16,7 @@ export const admingNavigation = [
   { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon, current: false },
   { name: 'Reports', href: '/reports', icon: ChartPieIcon, current: false },
   { name: 'Requests', href: '/requests', icon: ArrowDownOnSquareStackIcon, current: false },
+  { name: 'Holiday Requests', href: '/request/manage', icon: ArrowDownOnSquareStackIcon, current: false },
 ]
 
 export const employerNavigation = [
@@ -25,4 +26,5 @@ export const employerNavigation = [
   { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Request Item', href: '/requests-items', icon: ArrowDownOnSquareStackIcon, current: false },
   { name: 'Day off', href: '/requests-day', icon: ArrowDownOnSquareStackIcon, current: false },
+  { name: 'Holiday Requests', href: '/request/manage', icon: ArrowDownOnSquareStackIcon, current: false },
 ]

@@ -77,6 +77,7 @@ const useEmployerProfileStore = create((set) => ({
 
     employerProfile: null,
     updatedProfile: null,
+    holidays: null,
     equpiments: [],
     comments: comments,
     timeline: [],
@@ -133,7 +134,20 @@ const useEmployerProfileStore = create((set) => ({
         }
   },
 
+  fetchEmployerDaysOff: async () => {
+    try {
+      const response = await apiRequest({
+        endpoint: '/holidays/capacity'
+      })
+      set({ holidays: response })
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  },
+
   resetUpdatedProfile: () => set((state) => ({ updatedProfile: state.employerProfile})),
+
 }))
 
 export default useEmployerProfileStore;

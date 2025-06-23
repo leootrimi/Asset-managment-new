@@ -5,8 +5,10 @@ import { XMarkIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
 import { apiRequest, getUserRolesFromIdToken } from "../../../services/ApiCalls"
 import { useEffect } from "react"
+import { useProjectStore } from "../../../stores/projectStore"
 
 export default function LeaveRequestDrawer({ open, setIsOpen }) {
+  const selectedProject = useProjectStore.getState().selectedProject;
   const [formData, setFormData] = useState({
     employeeName: "",
     employeeId: "",
@@ -43,6 +45,8 @@ export default function LeaveRequestDrawer({ open, setIsOpen }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log("hanlde submit called");
+    
     try {
       await apiRequest({
          endpoint: '/holidays',
@@ -50,11 +54,15 @@ export default function LeaveRequestDrawer({ open, setIsOpen }) {
           body: {
             'fromDate': formData.startDate,
             'toDate': formData.endDate,
-            'type': formData.leaveType
+            'type': formData.leaveType,
+            'company_id': selectedProject._id,
+            'company_name': selectedProject.company
           } })
-    } catch (error) {
-    }
     setIsOpen(false)
+    } catch (error) {
+      console.log(error.message);
+      
+    }
   }
 
   const handleClose = () => {
