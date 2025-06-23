@@ -1,4 +1,6 @@
+import { apiRequest } from "../../../services/ApiCalls"
 import { formatToDayMonth } from "../../../services/DateConverter"
+import { CheckCircle, XIcon } from "lucide-react"
 
 const RequestItem = ({ request, section, showBottomBorder }) => {
     const getStatusColor = (status) => {
@@ -31,14 +33,29 @@ const RequestItem = ({ request, section, showBottomBorder }) => {
         return colors[type] || "bg-gray-100 text-gray-800"
     }
 
-    const getPriorityIcon = (priority) => {
-        if (priority === 1) return "🔴"
-        if (priority === 2) return "🟡"
-        return "🟢"
+    async function acceptRequest(id) {
+        try {
+            await apiRequest({
+                endpoint: `/holidays/accept?requestId=${id}`
+            })
+            alert('successfully accepted request')
+        } catch (error) {
+            console.log(error.message);
+            alert('something went wrong')
+        }
     }
 
-    const getInitials = (assignee) => {
-        return assignee
+
+    async function rejectRequest(id) {
+        try {
+            await apiRequest({
+                endpoint: `/holidays/reject?requestId=${id}`
+            })
+            alert('successfully accepted request')
+        } catch (error) {
+            console.log(error.message);
+            alert('something went wrong')
+        }
     }
 
     return (
@@ -52,7 +69,6 @@ const RequestItem = ({ request, section, showBottomBorder }) => {
                 <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
                         <span className="text-sm font-medium text-gray-600">{request.employer_name}</span>
-                        <span className="bg-gray-500 w-0.5 h-4"></span>
                         <span className="text-sm text-gray-800">{request.type}</span>
                     </div>
 
@@ -71,6 +87,13 @@ const RequestItem = ({ request, section, showBottomBorder }) => {
                 <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(request.status)}`}>
                     {request.status.toUpperCase()}
                 </span>
+                <button onClick={() => acceptRequest(request._id)} className="bg-green-300 p-2 rounded-full">
+                    <CheckCircle size={20} className="text-green-700" />
+                </button>
+
+                <button onClick={() => rejectRequest(request._id)} className="bg-red-400 p-2 rounded-full">
+                     <XIcon size={20} className="text-red-800" />
+                </button>
             </div>
         </div>
     )

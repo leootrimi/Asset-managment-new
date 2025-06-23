@@ -5,6 +5,8 @@ import RequestSection from "./Components/RequestSection"
 import { initialRequests } from "./Components/mock-data"
 import { apiRequest } from "../../services/ApiCalls"
 import { useProjectStore } from "../../stores/projectStore"
+import { getUserRolesFromIdToken } from "../../services/ApiCalls"
+import { Roles } from "../../services/Roles"
 
 const RequestManagement = () => {
   const [requests, setRequests] = useState(initialRequests)
@@ -15,7 +17,10 @@ const RequestManagement = () => {
     equipment: true,
     other: true,
   })
+  const role = getUserRolesFromIdToken()
 
+  console.log(role);
+  
   useEffect(() => {
     async function fetchHolidayRequest() {
       try {
@@ -55,23 +60,27 @@ const RequestManagement = () => {
     },
   ]
 
-
   return (
-    <div className="max-w-full px-4 min-h-screen">
-      <div className=" rounded-lg shadow-sm borderoverflow-hidden space-y-4">
-        {sections.map((section) => (
-          <RequestSection
-            key={section.key}
-            title={section.title}
-            sectionKey={section.key}
-            requests={section.requests}
-            isExpanded={expandedSections[section.key]}
-            onToggleSection={toggleSection}
-          />
-        ))}
+    role.roles[0] === Roles.ADMIN ? (
+      <div className="max-w-full px-4 min-h-screen">
+        <div className="rounded-lg shadow-sm border overflow-hidden space-y-4">
+          {sections.map((section) => (
+            <RequestSection
+              key={section.key}
+              title={section.title}
+              sectionKey={section.key}
+              requests={section.requests}
+              isExpanded={expandedSections[section.key]}
+              onToggleSection={toggleSection}
+            />
+          ))}
+        </div>
       </div>
-    </div>
-  )
+    ) : (
+      <div className="p-2">You are not authorized for this</div>
+    )
+  );
+
 }
 
 export default RequestManagement
