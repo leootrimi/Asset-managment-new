@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import RoundedButton from "../../../Core/RoundedButton";
+import { hasRole } from "../../../services/authHelpers";
+import { Roles } from "../../../services/Roles";
 
 const EquipmentListingTable = ({ equipmentData }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -49,7 +51,10 @@ const filteredData = Array.isArray(equipmentData)
               <option value="yes">In Use</option>
               <option value="no">Not In Use</option>
             </select>
-            <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} />
+            {
+              hasRole(Roles.ADMIN) && <RoundedButton path='/equpiment/add/new' text='Add New' icon={PlusIcon} />
+            }
+            {/* <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} /> */}
           </div>
         </div>
 

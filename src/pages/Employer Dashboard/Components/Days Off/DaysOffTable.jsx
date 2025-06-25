@@ -5,7 +5,7 @@ function classNames(...classes) {
 }
 
 const Status = {
-  Approved: 'Approved',
+  Approved: 'approved',
   Rejected: 'Rejected',
   Pending: 'pending'
 }

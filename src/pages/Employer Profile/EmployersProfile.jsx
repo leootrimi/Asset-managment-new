@@ -15,6 +15,10 @@ import LoadingView from '../../Core/LoadingView'
 import ProfileField from './Components/ProfileField'
 import Alert from '../../Core/Alerts'
 import useEmployerProfileStore from '../../stores/employerProfileStore'
+import { hasRole } from '../../services/authHelpers';
+import { Roles } from '../../services/Roles';
+import EmployerTimeline from './Components/EmployerTimeline';
+import { time } from 'framer-motion';
 
 const user = {
   name: 'Whitney Francis',
@@ -210,7 +214,9 @@ export default function EmployersProfile() {
                 </p>
               </div>
             </div>
-            <div className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
+            {
+              hasRole(Roles.ADMIN) && 
+              <div className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
               <button
                 type="button"
                 onClick={() => setShowModal(true)}
@@ -238,6 +244,8 @@ export default function EmployersProfile() {
               }
 
             </div>
+            }
+            
           </div>
 
           <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
@@ -450,90 +458,8 @@ export default function EmployersProfile() {
                 </h2>
 
                 {/* Activity Feed */}
-                <div className="mt-6 flow-root">
-                  <ul role="list" className="-mb-8">
-                    {timeline.map((item, itemIdx) => (
-                      <React.Fragment key={item._id}>
+                <EmployerTimeline timeline={timeline}/>
 
-                        {/* Check-out item */}
-                        <li>
-                          <div className="relative pb-8">
-                            {itemIdx !== timeline.length - 1 && (
-                              <span
-                                aria-hidden="true"
-                                className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
-                              />
-                            )}
-                            {!item.checkoutTime ? (
-                              <div>
-                                <div className="relative flex space-x-3">
-                                  <div>
-                                    <span className="bg-blue-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
-                                      <BuildingOffice2Icon aria-hidden="true" className="size-5 text-white" />
-                                    </span>
-                                  </div>
-                                  <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                    <div>
-                                      <p className="text-sm font-medium text-blue-400">
-                                        Not checked out yet!
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="relative flex space-x-3">
-                                <div>
-                                  <span className="bg-red-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
-                                    <ArrowRightEndOnRectangleIcon aria-hidden="true" className="size-5 text-white" />
-                                  </span>
-                                </div>
-                                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                  <div>
-                                    <p className="text-sm text-gray-500">
-                                      Checked out at <span className="font-medium text-gray-900">{item.checkoutTime}</span>
-                                    </p>
-                                  </div>
-                                  <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                    <time dateTime={item.checkinDate}>{item.checkoutTime}</time>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                          </div>
-                        </li>
-                        {/* Check-in item */}
-                        <li>
-                          <div className="relative pb-8">
-                            <span
-                              aria-hidden="true"
-                              className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
-                            />
-                            <div className="relative flex space-x-3">
-                              <div>
-                                <span className="bg-green-500 flex size-8 items-center justify-center rounded-full ring-8 ring-white">
-                                  <ArrowRightEndOnRectangleIcon aria-hidden="true" className="size-5 text-white" />
-                                </span>
-                              </div>
-                              <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                                <div>
-                                  <p className="text-sm text-gray-500">
-                                    Checked in at <span className="font-medium text-gray-900">{item.checkinTime}</span>
-                                  </p>
-                                </div>
-                                <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                  <time dateTime={item.checkinDate}>{item.checkinDate}</time>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </React.Fragment>
-                    ))}
-                  </ul>
-
-                </div>
                 <div className="mt-6 flex flex-col justify-stretch">
                   <button
                     type="button"

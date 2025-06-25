@@ -80,7 +80,6 @@ const RequestManagement = () => {
       <div className="p-2">You are not authorized for this</div>
     )
   );
-
 }
 
 export default RequestManagement

@@ -35,7 +35,7 @@ export default function NewEquipment() {
   }, [])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault();    
     try {
       const response = await apiRequest({
         endpoint: '/equipments',
