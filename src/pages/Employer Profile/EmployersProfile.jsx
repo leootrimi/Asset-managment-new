@@ -18,6 +18,7 @@ import useEmployerProfileStore from '../../stores/employerProfileStore'
 import { hasRole } from '../../services/authHelpers';
 import { Roles } from '../../services/Roles';
 import EmployerTimeline from './Components/EmployerTimeline';
+import TimelineDrawer from './Components/TimelineDrawer';
 import { time } from 'framer-motion';
 
 const user = {
@@ -27,8 +28,7 @@ const user = {
     'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
 }
 const attachments = [
-  { name: 'resume_front_end_developer.pdf', href: '#' },
-  { name: 'coverletter_front_end_developer.pdf', href: '#' },
+  { name: 'Generate PDF file with this data!', href: '#' },
 ]
 
 function classNames(...classes) {
@@ -43,6 +43,7 @@ export default function EmployersProfile() {
   const [showDiscardModal, setShowDiscardModal] = useState(false);
   const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
+  const [ isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
   const { employerProfile,
     fetchEmployerProfile,
@@ -340,7 +341,7 @@ export default function EmployersProfile() {
                                 </div>
                                 <div className="ml-4 shrink-0">
                                   <a href={attachment.href} className="font-medium text-blue-600 hover:text-blue-500">
-                                    Download
+                                    Generate
                                   </a>
                                 </div>
                               </li>
@@ -464,10 +465,36 @@ export default function EmployersProfile() {
                   <button
                     type="button"
                     className="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-500 ring-1 ring-inset ring-blue-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    onClick={() => { setIsOpen(true)} }
                   >
                     View activity from last month
                   </button>
                 </div>
+                <TimelineDrawer isOpen={isOpen} setIsOpen={setIsOpen} timeline={timeline} />
+              </div>
+
+              <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6 mt-4">
+                  <h1 className='text-lg font-medium text-gray-900'>🗓️ Upcoming days off</h1>
+                  {/* <div className="mt-2 flex flex-col gap-y-2">
+                    <div className="flex justify-between">
+                      <h1 className='text-sm'>From:</h1>
+                      <h1 className='text-sm text-gray-500'>25/06/2025</h1>
+                    </div>
+                     <div className="flex justify-between">
+                      <h1 className='text-sm'>To:</h1>
+                      <h1 className='text-sm text-gray-500'>28/06/2025</h1>
+                    </div>
+                    <hr className='text-gray-300' />
+                    <div className="flex justify-between">
+                      <h1 className='text-base font-medium'>Total days off: </h1>
+                      <h1 className='text-bas font-medium'>3</h1>
+                    </div>
+                  </div> */}
+
+                  {/* No upcoming days off */}
+                  <div className="flex justify-center p-5 bg-gray-50 rounded-lg mt-2">
+                    <h1 className='text-sm font-light text-gray-500'>There are no scheduled days off</h1>
+                  </div>
               </div>
             </section>
           </div>
