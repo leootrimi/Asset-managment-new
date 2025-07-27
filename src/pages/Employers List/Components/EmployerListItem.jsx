@@ -1,7 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
 export default function EmployerListItem({ employtersList }) {
-  const imgURL = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80';
   return (
     <ul
       role="list"
@@ -10,12 +9,12 @@ export default function EmployerListItem({ employtersList }) {
       {employtersList.map((person, index) => (
         <li key={person.email} className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
           <div className="flex min-w-0 gap-x-4">
-            <img alt="" src={imgURL} className="size-12 flex-none rounded-full bg-gray-50" />
+            <img alt="" src={person.picture} className="size-12 flex-none rounded-full bg-gray-50" />
             <div className="min-w-0 flex-auto">
               <p className="text-sm/6 font-semibold text-gray-900">
-                <a href={`/employers/${person._id}`}>
+                <a href={`/employers/${person.user_id}`}>
                   <span className="absolute inset-x-0 -top-px bottom-0" />
-                  {person.firstName + " " + person.lastName}
+                  {person.user_metadata.firstName + " " + person.user_metadata.lastName}
                 </a>
               </p>
               <p className="mt-1 flex text-xs/5 text-gray-500">

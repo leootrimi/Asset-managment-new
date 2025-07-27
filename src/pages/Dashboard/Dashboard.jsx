@@ -113,23 +113,8 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showSucessAlert, setShowSucessAler] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false) 
   const role = getUserRolesFromIdToken()
-
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken')
-
-    
-    const fetchData = async () => {
-      const data = await apiRequest({ endpoint: '/users', token: token });
-    }
-    if (token) {
-      fetchData()
-    }
-
-  }, []);
   return (
     <>
       {showSucessAlert &&
@@ -144,7 +129,7 @@ export default function Dashboard() {
 
       {        
         role.roles == Roles.ADMIN ? (
-          <main>
+          <main className='px-2'>
           <div className="relative isolate overflow-hidden pt-1">
             {/* Secondary navigation */}
             <header className="pb-4 pt-1 sm:pb-6">

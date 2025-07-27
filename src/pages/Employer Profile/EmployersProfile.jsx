@@ -2,19 +2,24 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { apiRequest } from '../../services/ApiCalls'
+import React from 'react';
 import {
   PaperClipIcon,
   QuestionMarkCircleIcon,
   ArrowRightEndOnRectangleIcon,
-  ArrowLeftEndOnRectangleIcon,
-  HomeIcon,
-  HeartIcon
+  BuildingOffice2Icon
 } from '@heroicons/react/20/solid'
 import DeleteAlert from '../../Core/DeleteAlert'
 import DiscardChanges from '../../Core/DiscardChanges'
 import LoadingView from '../../Core/LoadingView'
 import ProfileField from './Components/ProfileField'
 import Alert from '../../Core/Alerts'
+import useEmployerProfileStore from '../../stores/employerProfileStore'
+import { hasRole } from '../../services/authHelpers';
+import { Roles } from '../../services/Roles';
+import EmployerTimeline from './Components/EmployerTimeline';
+import TimelineDrawer from './Components/TimelineDrawer';
+import { time } from 'framer-motion';
 
 const user = {
   name: 'Whitney Francis',
@@ -23,71 +28,7 @@ const user = {
     'https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80',
 }
 const attachments = [
-  { name: 'resume_front_end_developer.pdf', href: '#' },
-  { name: 'coverletter_front_end_developer.pdf', href: '#' },
-]
-const eventTypes = {
-  leave: { icon: ArrowRightEndOnRectangleIcon, bgColorClass: 'bg-red-500' },
-  join: { icon: ArrowLeftEndOnRectangleIcon, bgColorClass: 'bg-green-500' },
-  home: { icon: HomeIcon, bgColorClass: 'bg-blue-500' },
-  sick: { icon: HeartIcon, bgColorClass: 'bg-orange-500' }
-}
-const timeline = [
-  {
-    id: 2,
-    type: eventTypes.leave,
-    content: 'Left office at ',
-    target: 'Bethany Blake',
-    date: 'Sep 22',
-    datetime: '2020-09-22',
-  },
-  {
-    id: 3,
-    type: eventTypes.join,
-    content: 'Joined office at',
-    target: 'Martha Gardner',
-    date: 'Sep 28',
-    datetime: '2020-09-28',
-  },
-  {
-    id: 4,
-    type: eventTypes.sick,
-    content: 'Called out sick ',
-    target: 'Bethany Blake',
-    date: 'Sep 30',
-    datetime: '2020-09-30',
-  },
-  {
-    id: 5,
-    type: eventTypes.home,
-    content: 'Working from home ',
-    target: 'Katherine Snyder',
-    date: 'Oct 4',
-    datetime: '2020-10-04',
-  },
-]
-const comments = [
-  {
-    id: 1,
-    name: 'Leslie Alexander',
-    date: '4d ago',
-    imageId: '1494790108377-be9c29b29330',
-    body: 'Ducimus quas delectus ad maxime totam doloribus reiciendis ex. Tempore dolorem maiores. Similique voluptatibus tempore non ut.',
-  },
-  {
-    id: 2,
-    name: 'Michael Foster',
-    date: '4d ago',
-    imageId: '1519244703995-f4e0f30006d5',
-    body: 'Et ut autem. Voluptatem eum dolores sint necessitatibus quos. Quis eum qui dolorem accusantium voluptas voluptatem ipsum. Quo facere iusto quia accusamus veniam id explicabo et aut.',
-  },
-  {
-    id: 3,
-    name: 'Dries Vincent',
-    date: '4d ago',
-    imageId: '1506794778202-cad84cf45f1d',
-    body: 'Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum et.',
-  },
+  { name: 'Generate PDF file with this data!', href: '#' },
 ]
 
 function classNames(...classes) {
@@ -97,42 +38,29 @@ function classNames(...classes) {
 
 export default function EmployersProfile() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [isEditEnabled, setEditEnable] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDiscardModal, setShowDiscardModal] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
   const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
   const [saveButtonEnabled, setSaveButtonEnabled] = useState(false)
+  const [ isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
-
-  const [updatedUserData, setUpdatedUserData] = useState({
-    position: userProfile?.position || "",
-    level: userProfile?.level || "",
-    email: userProfile?.email || "",
-    salary: userProfile?.salary || "",
-    country: userProfile?.country || "",
-    city: userProfile?.city || "",
-    phoneNumber: userProfile?.phoneNumber || "",
-  })
+  const { employerProfile,
+    fetchEmployerProfile,
+    loading,
+    updatedProfile,
+    setUpdatedUserData,
+    deleteEmployer,
+    comments,
+    timeline,
+    fetchEmployerActivity,
+    resetUpdatedProfile } = useEmployerProfileStore();
 
   useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await apiRequest({ endpoint: `/users/${id}` })
-        setUserProfile(response)
-        setUpdatedUserData(response)
-      } catch (err) {
-        console.error("Error fetching user profile", err)
-      } finally {
-        // For testing only
-        setTimeout(() => {
-          setLoading(false)
-        }, 1000)
-      }
-    }
-
-      fetchUserProfile()
+    fetchEmployerProfile(id)
+    fetchEmployerActivity(id)
+    console.log(updatedProfile);
+    
   }, [id])
 
   if (loading) {
@@ -141,24 +69,8 @@ export default function EmployersProfile() {
     )
   }
 
-  function onDeleteUser() {
-    setLoading(true)
-    try {
-      const response = apiRequest({ endpoint: '/users', method: 'DELETE', body: { _id: id } })
-    } catch (err) {
-      console.log(err);
-    } finally {
-      // Testing only
-      setTimeout(() => {
-        setLoading(false)
-        navigate('/employers', { replace: true })
-      }, 1000)
-    }
-  }
-
   async function updateUserProfile() {
-    setLoading(true)
-    if (!hasUserProfileChanged(userProfile, updatedUserData)) {
+    if (!hasUserProfileChanged(employerProfile, updatedProfile)) {
       setAlert({
         show: true,
         type: 'error',
@@ -169,7 +81,7 @@ export default function EmployersProfile() {
       return
     }
     try {
-      const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedUserData } })
+      const response = await apiRequest({ endpoint: '/users', method: 'PUT', body: { id: id, updateUser: updatedProfile } })
       setAlert({
         show: true,
         type: 'success',
@@ -177,9 +89,8 @@ export default function EmployersProfile() {
         message: 'You successfully updated user details',
       })
     } catch (err) {
-      console.log(err);
       setErrorOcurred(true)
-      setUpdatedUserData(userProfile)
+      setUpdatedUserData(employerProfile)
       setAlert({
         show: true,
         type: 'error',
@@ -188,10 +99,8 @@ export default function EmployersProfile() {
       })
 
     } finally {
-      setLoading(false)
       setEditEnable(false)
       setTimeout(() => {
-        setErrorOcurred(false)
         setSuccessUpdateAlert(false)
       }, 2000)
     }
@@ -199,19 +108,26 @@ export default function EmployersProfile() {
 
   const userProfileOnChange = (e) => {
     const { name, value } = e.target;
-    const newData = {
-      ...updatedUserData,
-      [name]: value,
-    };
-  
-    setUpdatedUserData(newData);
-    setSaveButtonEnabled(hasUserProfileChanged(userProfile, newData));
+
+    setUpdatedUserData({ [name]: value });
+
+    setSaveButtonEnabled(
+      hasUserProfileChanged(employerProfile, {
+        ...updatedProfile,
+        [name]: value,
+      })
+    );
   };
-  
+
+
 
   function enableEditingUserProfile() {
     if (isEditEnabled) {
-      if (hasUserProfileChanged(userProfile, updatedUserData)) {
+      console.log('original', employerProfile);
+      console.log('updated', updatedProfile);
+
+
+      if (hasUserProfileChanged(employerProfile, updatedProfile)) {
         setShowDiscardModal(true);
       } else {
         setEditEnable(false);
@@ -223,14 +139,32 @@ export default function EmployersProfile() {
 
 
   function hasUserProfileChanged(original, updated) {
-    return Object.keys(original).some(
-      key => original[key] !== updated[key]
-    );
-  }  
+    function deepEqual(obj1, obj2) {
+      if (obj1 === obj2) return true;
+      if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+        return false;
+      }
+
+      const keys1 = Object.keys(obj1);
+      const keys2 = Object.keys(obj2);
+
+      if (keys1.length !== keys2.length) return false;
+
+      for (const key of keys1) {
+        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return !deepEqual(original, updated);
+  }
 
   function discardProfileChanges() {
-    setUpdatedUserData(userProfile)
+    resetUpdatedProfile();
     setShowDiscardModal(false)
+    setEditEnable(false)
   }
 
   function cancelDiscardModal() {
@@ -263,7 +197,7 @@ export default function EmployersProfile() {
                 <div className="relative">
                   <img
                     alt=""
-                    src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
+                    src={employerProfile?.picture}
                     className="size-16 rounded-full"
                   />
                   <span aria-hidden="true" className="absolute inset-0 rounded-full shadow-inner" />
@@ -271,17 +205,19 @@ export default function EmployersProfile() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  {(userProfile?.firstName && userProfile?.lastName)
-                    ? `${userProfile.firstName} ${userProfile.lastName}`
+                  {(employerProfile?.user_metadata.firstName && employerProfile?.user_metadata.lastName)
+                    ? `${employerProfile.user_metadata.firstName} ${employerProfile.user_metadata.lastName}`
                     : "Name not available"}
                 </h1>
                 <p className="text-sm font-medium text-gray-500">
-                  {userProfile?.position ? `${userProfile.position} ` : "Not available"}
+                  {employerProfile?.user_metadata.position ? `${employerProfile.user_metadata.position} ` : "Not available"}
                   since <time dateTime="2020-08-25">August 25, 2020</time>
                 </p>
               </div>
             </div>
-            <div className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
+            {
+              hasRole(Roles.ADMIN) && 
+              <div className="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-3 sm:space-y-0 sm:space-x-reverse md:mt-0 md:flex-row md:space-x-3">
               <button
                 type="button"
                 onClick={() => setShowModal(true)}
@@ -289,7 +225,7 @@ export default function EmployersProfile() {
               >
                 Delete
               </button>
-              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={onDeleteUser} />
+              <DeleteAlert isOpen={showModal} onClose={() => setShowModal(false)} onDeleteUser={() => { deleteEmployer(id); navigate('/employers', { replace: true }) }} />
               <button
                 type="button"
                 onClick={enableEditingUserProfile}
@@ -309,6 +245,8 @@ export default function EmployersProfile() {
               }
 
             </div>
+            }
+            
           </div>
 
           <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
@@ -327,7 +265,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Working as"
                         name="position"
-                        value={updatedUserData.position}
+                        value={updatedProfile?.user_metadata.position}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="e.g. Head of Engineering"
@@ -336,7 +274,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Position level"
                         name="level"
-                        value={updatedUserData.level}
+                        value={updatedProfile?.user_metadata.level}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Junior"
@@ -346,7 +284,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Email address"
                         name="email"
-                        value={updatedUserData.email}
+                        value={updatedProfile?.user_metadata.email}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. example@ex.yo"
@@ -364,7 +302,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Country"
                         name="country"
-                        value={updatedUserData.country}
+                        value={updatedProfile?.user_metadata.country}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Kosovo"
@@ -373,7 +311,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="City"
                         name="city"
-                        value={updatedUserData.city}
+                        value={updatedProfile?.user_metadata.city}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. Prishtina"
@@ -382,7 +320,7 @@ export default function EmployersProfile() {
                       <ProfileField
                         label="Phone"
                         name="phone"
-                        value={updatedUserData.phoneNumber}
+                        value={updatedProfile?.user_metadata.phoneNumber}
                         isEditEnabled={isEditEnabled}
                         userProfileOnChange={userProfileOnChange}
                         placeholder="eg. +383 43 974 385"
@@ -403,7 +341,7 @@ export default function EmployersProfile() {
                                 </div>
                                 <div className="ml-4 shrink-0">
                                   <a href={attachment.href} className="font-medium text-blue-600 hover:text-blue-500">
-                                    Download
+                                    Generate
                                   </a>
                                 </div>
                               </li>
@@ -517,59 +455,46 @@ export default function EmployersProfile() {
             <section aria-labelledby="timeline-title" className="lg:col-span-1 lg:col-start-3">
               <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                 <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
-                  Timeline
+                  Last Week Timeline
                 </h2>
 
                 {/* Activity Feed */}
-                <div className="mt-6 flow-root">
-                  <ul role="list" className="-mb-8">
-                    {timeline.map((item, itemIdx) => (
-                      <li key={item.id}>
-                        <div className="relative pb-8">
-                          {itemIdx !== timeline.length - 1 ? (
-                            <span
-                              aria-hidden="true"
-                              className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-gray-200"
-                            />
-                          ) : null}
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span
-                                className={classNames(
-                                  item.type.bgColorClass,
-                                  'flex size-8 items-center justify-center rounded-full ring-8 ring-white',
-                                )}
-                              >
-                                <item.type.icon aria-hidden="true" className="size-5 text-white" />
-                              </span>
-                            </div>
-                            <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  {item.content}{' '}
-                                  <a href="#" className="font-medium text-gray-900">
-                                    {item.target}
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                <time dateTime={item.datetime}>{item.date}</time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <EmployerTimeline timeline={timeline}/>
+
                 <div className="mt-6 flex flex-col justify-stretch">
                   <button
                     type="button"
                     className="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-700 shadow-sm hover:bg-blue-500 ring-1 ring-inset ring-blue-400 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    onClick={() => { setIsOpen(true)} }
                   >
                     View activity from last month
                   </button>
                 </div>
+                <TimelineDrawer isOpen={isOpen} setIsOpen={setIsOpen} timeline={timeline} />
+              </div>
+
+              <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6 mt-4">
+                  <h1 className='text-lg font-medium text-gray-900'>🗓️ Upcoming days off</h1>
+                  {/* <div className="mt-2 flex flex-col gap-y-2">
+                    <div className="flex justify-between">
+                      <h1 className='text-sm'>From:</h1>
+                      <h1 className='text-sm text-gray-500'>25/06/2025</h1>
+                    </div>
+                     <div className="flex justify-between">
+                      <h1 className='text-sm'>To:</h1>
+                      <h1 className='text-sm text-gray-500'>28/06/2025</h1>
+                    </div>
+                    <hr className='text-gray-300' />
+                    <div className="flex justify-between">
+                      <h1 className='text-base font-medium'>Total days off: </h1>
+                      <h1 className='text-bas font-medium'>3</h1>
+                    </div>
+                  </div> */}
+
+                  {/* No upcoming days off */}
+                  <div className="flex justify-center p-5 bg-gray-50 rounded-lg mt-2">
+                    <h1 className='text-sm font-light text-gray-500'>There are no scheduled days off</h1>
+                  </div>
               </div>
             </section>
           </div>

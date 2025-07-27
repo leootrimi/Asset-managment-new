@@ -28,8 +28,10 @@ import {
   XMarkIcon as XMarkIconMini,
 } from '@heroicons/react/20/solid'
 import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
-import { apiRequest } from '../../services/ApiCalls'
 import Alert from '../../Core/Alerts';
+import useEquipmentProfileStore from '../../stores/equipmentProfileStore';
+import ApiErrorScreen from "../../Core/ApiErrorScreen";
+import LoadingView from "../../Core/LoadingView";
 
 const invoice = {
   subTotal: '$8,800.00',
@@ -118,75 +120,37 @@ function formatDate(date) {
 
 
 export default function EquipmentProfile() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [selected, setSelected] = useState(moods[5])
-  const [equipmentsProfile, setEquipmentsProfile] = useState();
-  const [updatedProfile, setUpdatedProfile] = useState();
   const [updateEnabled, setUpdateEnabled] = useState(false);
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedUser, setSelectedUser] = useState(null)
-  const [users, setUsers] = useState([])
-  const [alert, setAlert] = useState({ show: false, type: '', title: '', message: '' })
   const { id } = useParams()
+  const {
+    equipment,
+    users,
+    loading,
+    error,
+    fetchEquipmentProfile,
+    selectedUser,
+    setSelectedUser,
+    saveUpdatedProfile,
+    alert
+  } = useEquipmentProfileStore();
 
   useEffect(() => {
-    console.log(alert);
-    
-    async function fetchEquipmentsProfile() {
-      try {
-        const [equipmentResponse, employersResponse] = await Promise.all([
-          apiRequest({ endpoint: `/equipments/${id}` }),
-          apiRequest({ endpoint: '/users' }),
-        ]);
-        setEquipmentsProfile(equipmentResponse);
-        setUpdatedProfile(equipmentResponse);
-        setUsers(employersResponse);
-        console.log(employersResponse);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchEquipmentsProfile()
+    fetchEquipmentProfile(id);
   }, [])
 
   function editProfileButton() {
     setUpdateEnabled(!updateEnabled)
   }
-  
-  async function saveUpdatedProfile() {
-    try {
-      const response = await apiRequest({ endpoint: `/equipments/${id}`, method: 'PUT', body: selectedUser })
-      setEquipmentsProfile( prev => ({
-        ...prev,
-        assignedTo: selectedUser
-      }))
-      setAlert({
-        show: true,
-        type: 'success',
-        title: 'User Updated',
-        message: 'You successfully updated user details',
-      })
-      setUpdateEnabled(!updateEnabled)
-    } catch (err) {
-      setAlert({
-        show: true,
-        type: 'error',
-        title: 'Please try again later',
-        message: 'An error ocurred while trying to process the request',
-      })
-      setUpdateEnabled(!updateEnabled)
-    } finally {
-      setTimeout(() => {
-        setAlert({
-          show: false
-        })
-      }, 2000)
-    }
+
+  if (loading) {
+     return <LoadingView />
   }
 
-  const filteredUsers = (users || []).filter(user =>
-    `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  if (error) {
+    return <ApiErrorScreen />
+  }
 
   return (
     <>
@@ -223,9 +187,9 @@ export default function EquipmentProfile() {
                 />
                 <h1>
                   <div className="text-sm/6 text-gray-500">
-                    Tag <span className="text-gray-700">#{equipmentsProfile?.tag}</span>
+                    Tag <span className="text-gray-700">#{equipment?.tag}</span>
                   </div>
-                  <div className="mt-1 text-base font-semibold text-gray-900">{equipmentsProfile?.name}</div>
+                  <div className="mt-1 text-base font-semibold text-gray-900">{equipment?.name}</div>
                 </h1>
               </div>
               <div className="flex items-center gap-x-4 sm:gap-x-6">
@@ -234,7 +198,7 @@ export default function EquipmentProfile() {
                 </button>
                 {updateEnabled &&
                   <a
-                    onClick={saveUpdatedProfile}
+                    onClick={() => saveUpdatedProfile(id)}
                     className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Save
@@ -284,17 +248,17 @@ export default function EquipmentProfile() {
                 <dl className="flex flex-wrap">
                   <div className="flex-auto pl-6 pt-6">
                     <dt className="text-sm/6 font-semibold text-gray-900">Amount</dt>
-                    <dd className="mt-1 text-base font-semibold text-gray-900">${equipmentsProfile?.price}</dd>
+                    <dd className="mt-1 text-base font-semibold text-gray-900">${equipment?.price}</dd>
                   </div>
                   <div className="flex-none self-end px-6 pt-4">
                     <dt className="sr-only">Status</dt>
 
-                    <dd className={`rounded-md px-2 py-1.5 text-xs font-medium ring-1 ring-inset ${equipmentsProfile?.assignedTo?.fullName
-                      ? getStatusClasses(equipmentStatus(equipmentsProfile.assignedTo.fullName))
+                    <dd className={`rounded-md px-2 py-1.5 text-xs font-medium ring-1 ring-inset ${equipment?.assignedTo?.fullName
+                      ? getStatusClasses(equipmentStatus(equipment.assignedTo.fullName))
                       : getStatusClasses(equipmentStatus(undefined))
                       }`}>
-                      {equipmentsProfile?.assignedTo?.fullName
-                        ? equipmentStatus(equipmentsProfile.assignedTo.fullName)
+                      {equipment?.assignedTo?.fullName
+                        ? equipmentStatus(equipment.assignedTo.fullName)
                         : equipmentStatus(undefined)
                       }
                     </dd>
@@ -322,12 +286,12 @@ export default function EquipmentProfile() {
                           <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
                             {users.map((user) => (
                               <ListboxOption
-                                key={user._id}
-                                value={{ id: user._id, fullName: `${user.firstName} ${user.lastName}` }}
+                                key={user.user_id}
+                                value={{ id: user.user_id, fullName: `${user.user_metadata.firstName} ${user.user_metadata.lastName}` }}
                                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none flex"
                               >
                                 <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                                  {`${user.firstName} ${user.lastName}`}
+                                  {`${user.user_metadata.firstName} ${user.user_metadata.lastName}`}
                                 </span>
 
                                 <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-[&:not([data-selected])]:hidden group-data-[focus]:text-white">
@@ -340,8 +304,8 @@ export default function EquipmentProfile() {
                       </Listbox>
                     ) : (
                       <dd className="text-sm/6 font-medium text-gray-900">
-                        {equipmentsProfile?.assignedTo?.fullName
-                          ? isEquipmentAssigned(equipmentsProfile.assignedTo.fullName)
+                        {equipment?.assignedTo?.fullName
+                          ? isEquipmentAssigned(equipment.assignedTo.fullName)
                           : isEquipmentAssigned('')}
                       </dd>
                     )}
@@ -353,7 +317,7 @@ export default function EquipmentProfile() {
                       <CalendarDaysIcon aria-hidden="true" className="h-6 w-5 text-gray-400" />
                     </dt>
                     <dd className="text-sm/6 text-gray-500">
-                      <time dateTime="2023-01-31">{equipmentsProfile?.assignedDate}</time>
+                      <time dateTime="2023-01-31">{equipment?.assignedDate}</time>
                     </dd>
                   </div>
                   <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
@@ -379,8 +343,8 @@ export default function EquipmentProfile() {
                 <div className="sm:pr-4">
                   <dt className="inline text-gray-500">Issued on</dt>{' '}
                   <dd className="inline text-gray-700">
-                    <time dateTime={equipmentsProfile?.createdAt}>
-                      {equipmentsProfile?.createdAt ? new Date(equipmentsProfile.createdAt).toLocaleDateString('en-US', {
+                    <time dateTime={equipment?.createdAt}>
+                      {equipment?.createdAt ? new Date(equipment.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -392,8 +356,8 @@ export default function EquipmentProfile() {
                 <div className="mt-2 sm:mt-0 sm:pl-4">
                   <dt className="inline text-gray-500">Due on</dt>{' '}
                   <dd className="inline text-gray-700">
-                    <time dateTime={equipmentsProfile?.updatedAt}>
-                      {equipmentsProfile?.createdAt ? new Date(equipmentsProfile.createdAt).toLocaleDateString('en-US', {
+                    <time dateTime={equipment?.updatedAt}>
+                      {equipment?.createdAt ? new Date(equipment.createdAt).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -512,11 +476,11 @@ export default function EquipmentProfile() {
               {/* Activity feed */}
               <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
               <ul role="list" className="mt-3 space-y-6">
-                {equipmentsProfile?.activity && equipmentsProfile.activity.map((activityItem, activityItemIdx) => (
-                  <li key={activityItem._id} className="relative flex gap-x-4">
+                {equipment?.activity && equipment.activity.map((activityItem, activityItemIdx) => (
+                  <li key={activityItemIdx} className="relative flex gap-x-4">
                     <div
                       className={classNames(
-                        activityItemIdx === equipmentsProfile.activity.length - 1 ? 'h-6' : '-bottom-6',
+                        activityItemIdx === equipment.activity.length - 1 ? 'h-6' : '-bottom-6',
                         'absolute left-0 top-0 flex w-6 justify-center',
                       )}
                     >

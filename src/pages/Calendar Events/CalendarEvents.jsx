@@ -38,7 +38,6 @@ export default function CalendarEvents() {
             try {
                 const response = await apiRequest({ endpoint: '/calendar'})
                 const data = response
-                console.log(response);
                 setEvents(data)
             } catch (error) {
                 console.error('Error fetching events:', error)
@@ -47,7 +46,6 @@ export default function CalendarEvents() {
         fetchEvents()
     }, [])
 
-    // Scroll to current time
     useEffect(() => {
         const startHour = 9
         const endHour = 18

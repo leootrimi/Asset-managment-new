@@ -19,6 +19,9 @@ import RequestBoard from './pages/Requests Made/Request-board';
 import ReportsPage from './pages/Reports/ReportsPage';
 import EmployerDashboard from './pages/Employer Dashboard/EmployerDashboard';
 import YourWork from './pages/your-work/Your-work';
+import { RequestPage } from './pages/Request Page/RequestPage';
+import { RequestDayOff } from './pages/Request Day Off/RequestDayOff';
+import RequestManagement from './pages/Request Managment/RequestManagement';
 
 import './App.css';
 
@@ -59,9 +62,13 @@ function App() {
             <Route path="equipment/:id" element={<EquipmentProfile />} />
             <Route path="events" element={<CalendarEvents />} />
             <Route path="documents" element={<Documents />} />
-            <Route path="equpiment/add" element={<NewEquipment />} />
+            <Route path="equipment/add/new" element={<NewEquipment />} />
             <Route path="requests" element={<RequestBoard />} />
             <Route path="reports" element={<ReportsPage />} />
+            <Route path="requests-items" element={<RequestPage />} />
+            <Route path="/requests-day" element={<RequestDayOff />} />
+            <Route path="/request/manage" element={<RequestManagement />} />
+
           </Route>
           </Route>
         </Routes>

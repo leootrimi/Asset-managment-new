@@ -1,29 +1,31 @@
 import React, { useState } from "react";
-import { Box } from "@mui/material";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import RoundedButton from "../../../Core/RoundedButton";
+import { hasRole } from "../../../services/authHelpers";
+import { Roles } from "../../../services/Roles";
 
 const EquipmentListingTable = ({ equipmentData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [inUseFilter, setInUseFilter] = useState("all");
 
-  const filteredData = equipmentData.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.tag.toLowerCase().includes(searchTerm.toLowerCase());
+const filteredData = Array.isArray(equipmentData)
+  ? equipmentData.filter((item) => {
+      const matchesSearch =
+        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.tag?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesInUse =
-      inUseFilter === "all" ||
-      (inUseFilter === "yes" && item.inUse) ||
-      (inUseFilter === "no" && !item.inUse);
+      const matchesInUse =
+        inUseFilter === "all" ||
+        (inUseFilter === "yes" && item.inUse) ||
+        (inUseFilter === "no" && !item.inUse);
 
-    return matchesSearch && matchesInUse;
-  });
+      return matchesSearch && matchesInUse;
+    })
+  : [];
 
   return (
-    <Box>
-      <div className="px-2 sm:px-2 lg:px-2">
+      <div className="px-4 sm:px-6 lg:px-6">
         {/* Header */}
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
@@ -49,7 +51,10 @@ const EquipmentListingTable = ({ equipmentData }) => {
               <option value="yes">In Use</option>
               <option value="no">Not In Use</option>
             </select>
-            <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} />
+            {
+              hasRole(Roles.ADMIN) && <RoundedButton path='/equpiment/add/new' text='Add New' icon={PlusIcon} />
+            }
+            {/* <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} /> */}
           </div>
         </div>
 
@@ -65,7 +70,7 @@ const EquipmentListingTable = ({ equipmentData }) => {
                 <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
                 <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Price</th>
                 <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">In Use</th>
-                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Warranty Left</th>
+                <th className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden sm:table-cell">Warranty Left</th>
                 <th className="relative py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">
                   <span className="sr-only">Edit</span>
                 </th>
@@ -81,9 +86,9 @@ const EquipmentListingTable = ({ equipmentData }) => {
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.name}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">${item.price}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                    {item.inUse ? "Yes" : "No"}
+                    {item.assignedTo ? "Yes" : "No"}
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{item.warrantyLeft} years</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 hidden sm:table-cell">{item.warrantyLeft} years</td>
                   <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                     <a href={`/equipment/${item._id}`} className="text-indigo-600 hover:text-indigo-900">
                       View<span className="sr-only">, {item.name}</span>
@@ -114,7 +119,6 @@ const EquipmentListingTable = ({ equipmentData }) => {
           </div>
         </div>
       </div>
-    </Box>
   );
 };
 

@@ -21,4 +21,4 @@ export const useProjectStore = create(persist(
     }
   }),
   { name: 'selected-project' }
-));
+)); 

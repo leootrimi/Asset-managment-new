@@ -14,30 +14,31 @@ import {
 import {
   Bars3Icon,
   BellIcon,
-  CalendarIcon,
-  ChartPieIcon,
   Cog6ToothIcon,
-  DocumentDuplicateIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
   XMarkIcon,
-  ArrowDownOnSquareStackIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react'
 import { useProjectStore } from '../stores/projectStore'
+import { admingNavigation, employerNavigation } from '../services/SidebarItems'
+import { getUserRolesFromIdToken } from '../services/ApiCalls'
+import { Roles } from '../services/Roles'
 
-const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
-  { name: 'Team', href: '/employers', icon: UsersIcon, current: false },
-  { name: 'Equipments', href: '/equipment', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon, current: false },
-  { name: 'Reports', href: '/reports', icon: ChartPieIcon, current: false },
-  { name: 'Requests', href: '/requests', icon: ArrowDownOnSquareStackIcon, current: false },
-]
+const navigationItems = () => {
+  const role = getUserRolesFromIdToken()
+  if (role.roles == Roles.ADMIN) {
+    return admingNavigation
+  } else {
+    return employerNavigation
+  }
+}
+
+const userMetaData = () => {
+  const role = getUserRolesFromIdToken()
+  return role.meta_data
+}
+
 const teams = [
   { id: 1, name: 'Heroicons', href: '#', initial: 'H', current: false },
   { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
@@ -55,10 +56,9 @@ function classNames(...classes) {
 export default function Example() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const navigate = useNavigate();
-  const { logout } = useAuth0();
-  const { user} = useAuth0();
+  const { logout, user } = useAuth0();
   const selectedProject = useProjectStore((state) => state.selectedProject);
-  
+
   return (
     <>
       <div>
@@ -94,7 +94,7 @@ export default function Example() {
                   <ul role="list" className="flex flex-1 flex-col gap-y-7">
                     <li>
                       <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
+                        {navigationItems().map((item) => (
                           <li key={item.name}>
                             <a
                               href={item.href}
@@ -179,13 +179,13 @@ export default function Example() {
                 src="https://static.vecteezy.com/system/resources/previews/055/007/018/non_2x/data-analysis-is-at-hand-vector.jpg"
                 className="h-15 w-auto"
               />
-              <h1 className='text-lg font-bold'>{selectedProject}</h1>
+              <h1 className='text-lg font-bold'>{selectedProject.company}</h1>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
                 <li>
                   <ul role="list" className="-mx-2 space-y-1">
-                    {navigation.map((item) => (
+                    {navigationItems().map((item) => (
                       <li key={item.name}>
                         <a
                           href={item.href}
@@ -295,12 +295,12 @@ export default function Example() {
                     <span className="sr-only">Open user menu</span>
                     <img
                       alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src={user?.picture}
                       className="size-8 rounded-full bg-gray-50"
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                        {user?.name ? user?.name : '' }
+                        {'Hi, ' + userMetaData().firstName }
                       </span>
                       <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                     </span>
@@ -337,7 +337,7 @@ export default function Example() {
           </div>
 
           <main className="py-4">
-            <div className="px-2 sm:px-6 lg:px-4">
+            <div className="">
               <Outlet />
             </div>
           </main>

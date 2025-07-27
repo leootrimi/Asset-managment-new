@@ -1,14 +1,18 @@
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
 import { apiRequest } from '../../services/ApiCalls'
-import Alerts from '../../Core/Alerts'
+import Alert from '../../Core/Alerts'
 import LoadingView from '../../Core/LoadingView'
 import { useState } from 'react'
+import { useProjectStore } from '../../stores/projectStore'
+import { useEffect } from 'react'
 
 export default function NewUser() {
 
   const [showSuccesAlert, setShowSuccessAlert] = useState(null);
   const [showLoading, setShowLoading] = useState(false);
+  const selectedProject = useProjectStore((state) => state.selectedProject);
+  
   const [userInfo, setUserInfo] = useState({
     firstName: '',
     lastName: '',
@@ -29,9 +33,22 @@ export default function NewUser() {
       level: '',
       country: '',
       city: '',
-      zipCode: ''
+      assignedTo: undefined,
+      zipCode: '',
+      company: '',
+      company_id: ''
     })
   }
+
+  useEffect(() => {
+  if (selectedProject) {
+    setUserInfo((prev) => ({
+      ...prev,
+      company: selectedProject.company,
+      company_id: selectedProject._id
+    }))
+  }
+}, [])
 
   const didChangeField = (e) => {
     const { name, value, type, checked } = e.target;
@@ -49,7 +66,6 @@ export default function NewUser() {
         [name]: value,
       }));
     }
-    console.log(userInfo);
 
   }
 
@@ -77,8 +93,13 @@ export default function NewUser() {
 
   return (
     <>
-      { showLoading && <LoadingView />}
-      { showSuccesAlert && <Alerts />}
+      {showLoading && <LoadingView />}
+      {showSuccesAlert && <Alert
+        type='success'
+        title='Registered Succesfully'
+        message='You registered a new user sucessfully'
+        show={true}
+      />}
       <form onSubmit={registerUser}>
         <div className="space-y-3 p-3">
           <div className="border-b border-gray-900/10 pb-3">

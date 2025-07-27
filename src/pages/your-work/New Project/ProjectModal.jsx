@@ -21,7 +21,6 @@ export default function ProjectModal({ onClose, onSubmit }) {
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    console.log(formData);
     
   }
 
@@ -31,7 +30,6 @@ export default function ProjectModal({ onClose, onSubmit }) {
       const response = await apiRequest({endpoint: '/projects', method: 'POST', body: formData})
       onClose();
     } catch (error) {
-      console.log(error);
     }
   }
 

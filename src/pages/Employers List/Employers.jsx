@@ -30,7 +30,7 @@ const Employers = () => {
   }
 
   return (
-    <Box sx={{ width: "100%", p: 0 }}>
+    <Box sx={{ width: "100%", px: 2 }}>
       {/* Header with filtering */}
       <EmployersFilterSection />
 
