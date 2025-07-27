@@ -18,7 +18,6 @@ export default function DaysOffScheduled() {
         const response = await apiRequest({ endpoint: '/holidays' })
         setDaysOff(response)        
       } catch (error) {
-        console.log(error.message);
       }
     }
     fetchHolidaysSchedled()

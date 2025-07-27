@@ -5,7 +5,6 @@ export default function TimeSinceCheckin({ checkInTime, canCheckIn }) {
 
     useEffect(() => {
         if (!checkInTime) return;
-        console.log(checkInTime);
         
         const parseCheckInTime = (timeStr) => {
             // Expect timeStr in "HH:mm" format, e.g., "14:43"

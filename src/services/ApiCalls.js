@@ -58,8 +58,8 @@ export async function apiRequest({
     if (token || getAccessToken()) {
       
       headers['Authorization'] = `Bearer ${token || getAccessToken()}`;
-      headers['id-token'] = getIdToken();
-    }
+      headers['id-token'] = getIdToken()
+    };
     //For local testing
     // const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
       const response = await fetch(`${import.meta.env.VITE_BASE_URL}${endpoint}`, {

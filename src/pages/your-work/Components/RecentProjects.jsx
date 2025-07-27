@@ -50,7 +50,7 @@ function ProjectCard({ project }) {
   const randomHoverClass = hoverBorderMap[randomBgColor] || '';
 
   function navigateToProject() {
-    setSelectedProject(project.company)
+    setSelectedProject(project)
     navigate(`/dashboard?company=${project.company}`)
   }
 

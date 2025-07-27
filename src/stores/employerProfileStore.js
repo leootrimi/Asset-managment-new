@@ -77,6 +77,7 @@ const useEmployerProfileStore = create((set) => ({
 
     employerProfile: null,
     updatedProfile: null,
+    holidays: null,
     equpiments: [],
     comments: comments,
     timeline: [],
@@ -87,18 +88,9 @@ const useEmployerProfileStore = create((set) => ({
         set({ loading: true });
         try {
             const response = await apiRequest({ endpoint: `/users/${id}` })
-            console.log(response);
             
             set({ employerProfile: response, loading: false,
-                updatedProfile: {
-                    position: response.user_metadata.position || "",
-                    level: response.user_metadata.level || "",
-                    email: response.email || "",
-                    salary: response.user_metadata.salary || "",
-                    country: response.user_metadata.country || "",
-                    city: response.user_metadata.city || "",
-                    phoneNumber: response.user_metadata.phoneNumber || "",
-                    }
+                updatedProfile: {...response}
             })
         } catch (error) {
              set({ loading: false, error: error.message })
@@ -108,7 +100,6 @@ const useEmployerProfileStore = create((set) => ({
     fetchEmployerActivity: async (id) => {
               try {
             const response = await apiRequest({ endpoint: `/users-checkin/${id}/activity` })
-            console.log(response);
             
             set({ timeline: response })
         } catch (error) {
@@ -137,14 +128,26 @@ const useEmployerProfileStore = create((set) => ({
   fetchEmployerEquipments: async ()  => {
     try {
             const response = await apiRequest({ endpoint: `/equipments/employer` })
-            console.log(response);
             set({ equipments: response})
         } catch (error) {
              set({ error: error.message })
         }
   },
 
-  resetUpdatedProfile: (data) => set({ updatedProfile: data }),
+  fetchEmployerDaysOff: async () => {
+    try {
+      const response = await apiRequest({
+        endpoint: '/holidays/capacity'
+      })
+      set({ holidays: response })
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+  },
+
+  resetUpdatedProfile: () => set((state) => ({ updatedProfile: state.employerProfile})),
+
 }))
 
 export default useEmployerProfileStore;

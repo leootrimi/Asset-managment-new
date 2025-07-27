@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import LeaveRequestDrawer from './LeaveRequestDrawer';
 
 export const LeaveTypeCard = ({ icon: Icon, title, description, color, daysRemaining, lastUsed, setIsOpen }) => {
 

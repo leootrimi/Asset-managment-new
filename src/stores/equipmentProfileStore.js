@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { apiRequest } from "../services/ApiCalls";
+import { useProjectStore } from "./projectStore";
 
 const useEquipmentProfileStore = create((set) => ({
 
@@ -14,8 +15,9 @@ const useEquipmentProfileStore = create((set) => ({
     fetchEquipmentProfile: async (id) => {
         set({ loading: true })
         try {
+            const selectedProject = useProjectStore.getState().selectedProject;
             const response = await apiRequest({ endpoint: `/equipments/${id}` });
-            const users = await apiRequest({ endpoint: '/users' });
+            const users = await apiRequest({ endpoint: `/users?companyId=${selectedProject._id}` });
             set({ equipment: response, users: users, loading: false })
         } catch (error) {
             set({ error: true, loading: false})

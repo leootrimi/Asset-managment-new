@@ -1,27 +1,31 @@
 import React, { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import RoundedButton from "../../../Core/RoundedButton";
+import { hasRole } from "../../../services/authHelpers";
+import { Roles } from "../../../services/Roles";
 
 const EquipmentListingTable = ({ equipmentData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [inUseFilter, setInUseFilter] = useState("all");
 
-  const filteredData = equipmentData.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.tag.toLowerCase().includes(searchTerm.toLowerCase());
+const filteredData = Array.isArray(equipmentData)
+  ? equipmentData.filter((item) => {
+      const matchesSearch =
+        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.tag?.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesInUse =
-      inUseFilter === "all" ||
-      (inUseFilter === "yes" && item.inUse) ||
-      (inUseFilter === "no" && !item.inUse);
+      const matchesInUse =
+        inUseFilter === "all" ||
+        (inUseFilter === "yes" && item.inUse) ||
+        (inUseFilter === "no" && !item.inUse);
 
-    return matchesSearch && matchesInUse;
-  });
+      return matchesSearch && matchesInUse;
+    })
+  : [];
 
   return (
-      <div className="p-2 sm:px-4 lg:px-4">
+      <div className="px-4 sm:px-6 lg:px-6">
         {/* Header */}
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
@@ -47,7 +51,10 @@ const EquipmentListingTable = ({ equipmentData }) => {
               <option value="yes">In Use</option>
               <option value="no">Not In Use</option>
             </select>
-            <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} />
+            {
+              hasRole(Roles.ADMIN) && <RoundedButton path='/equpiment/add/new' text='Add New' icon={PlusIcon} />
+            }
+            {/* <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} /> */}
           </div>
         </div>
 
