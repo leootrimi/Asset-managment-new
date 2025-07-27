@@ -59,10 +59,10 @@ export default function EmployerActivity({ checkinsList }) {
                         )}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {checkin.checkinTime}
+                        🟢 {checkin.checkinTime}
                       </td>
                       <td className="px-3 py-4 text-sm text-gray-500">
-                        {checkin.checkoutTime || '—'}
+                        🔴 {checkin.checkoutTime || '—'}
                       </td>
                       <td className="px-3 py-4 text-sm">
                         <span

@@ -8,7 +8,6 @@ export default function CheckButton() {
   const handleCheck = () => {
     setIsCheckedIn(!isCheckedIn)
     const timestamp = new Date().toLocaleTimeString()
-    console.log(`User ${isCheckedIn ? "checked out" : "checked in"} at ${timestamp}`)
   }
 
   return (

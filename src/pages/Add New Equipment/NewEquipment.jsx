@@ -1,9 +1,67 @@
-import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
-import { ChevronDownIcon } from '@heroicons/react/16/solid'
+import { useState } from 'react';
+import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import { useEffect } from 'react';
+import { useProjectStore } from '../../stores/projectStore';
+import { apiRequest } from '../../services/ApiCalls';
 
 export default function NewEquipment() {
+
+  const selectedProject = useProjectStore.getState().selectedProject;
+  const [formData, setFormData] = useState({
+    name: '',
+    type: 'Laptop',
+    tag: '',
+    serialNo: '',
+    price: '',
+    assignedDate: '',
+    company: {}
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    
+  };
+
+  useEffect(() => {
+    formData.company = {
+      id: selectedProject._id,
+      companyName: selectedProject.company
+    }
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();    
+    try {
+      const response = await apiRequest({
+        endpoint: '/equipments',
+        method: 'POST',
+        body: formData
+      })
+      if (!response.ok) {
+        throw new Error('Failed to submit equipment data');
+      }
+
+      const result = await response.json();
+      setFormData({
+        name: '',
+        type: 'Laptop',
+        tag: '',
+        serialNo: '',
+        price: '',
+        assignedDate: '',
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="space-y-3 p-3">
         <div className="border-b border-gray-900/10 pb-3">
           <h2 className="text-base/7 font-semibold text-gray-900">Equipment Image</h2>
@@ -35,15 +93,17 @@ export default function NewEquipment() {
 
           <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
             <div className="sm:col-span-3">
-              <label htmlFor="equipment-name" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="name" className="block text-sm/6 font-medium text-gray-900">
                 Equipment Name
               </label>
               <div className="mt-2">
                 <input
-                  id="equipment-name"
-                  name="equipment-name"
+                  id="name"
+                  name="name"
                   type="text"
                   autoComplete="off"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   placeholder="e.g., Dell XPS 13"
                 />
@@ -51,14 +111,16 @@ export default function NewEquipment() {
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="equipment-type" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="type" className="block text-sm/6 font-medium text-gray-900">
                 Equipment Type
               </label>
               <div className="mt-2 grid grid-cols-1">
                 <select
-                  id="equipment-type"
-                  name="equipment-type"
+                  id="type"
+                  name="type"
                   autoComplete="off"
+                  value={formData.type}
+                  onChange={handleChange}
                   className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 >
                   <option>Laptop</option>
@@ -76,15 +138,35 @@ export default function NewEquipment() {
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="serial-number" className="block text-sm/6 font-medium text-gray-900">
+              <label htmlFor="tag" className="block text-sm/6 font-medium text-gray-900">
+                Tag
+              </label>
+              <div className="mt-2">
+                <input
+                  id="tag"
+                  name="tag"
+                  type="text"
+                  autoComplete="off"
+                  value={formData.tag}
+                  onChange={handleChange}
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  placeholder="e.g., IT-ASSET-001"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="serialNo" className="block text-sm/6 font-medium text-gray-900">
                 Serial Number
               </label>
               <div className="mt-2">
                 <input
-                  id="serial-number"
-                  name="serial-number"
+                  id="serialNo"
+                  name="serialNo"
                   type="text"
                   autoComplete="off"
+                  value={formData.serialNo}
+                  onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   placeholder="e.g., SN123456789"
                 />
@@ -92,107 +174,37 @@ export default function NewEquipment() {
             </div>
 
             <div className="sm:col-span-3">
-              <label htmlFor="purchase-date" className="block text-sm/6 font-medium text-gray-900">
-                Purchase Date
+              <label htmlFor="price" className="block text-sm/6 font-medium text-gray-900">
+                Price
               </label>
               <div className="mt-2">
                 <input
-                  id="purchase-date"
-                  name="purchase-date"
+                  id="price"
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  autoComplete="off"
+                  value={formData.price}
+                  onChange={handleChange}
+                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-n/6"
+                  placeholder="e.g., 999.99"
+                />
+              </div>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label htmlFor="assignedDate" className="block text-sm/6 font-medium text-gray-900">
+                Assigned Date
+              </label>
+              <div className="mt-2">
+                <input
+                  id="assignedDate"
+                  name="assignedDate"
                   type="date"
                   autoComplete="off"
+                  value={formData.assignedDate}
+                  onChange={handleChange}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="condition" className="block text-sm/6 font-medium text-gray-900">
-                Condition
-              </label>
-              <div className="mt-2 grid grid-cols-1">
-                <select
-                  id="condition"
-                  name="condition"
-                  autoComplete="off"
-                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                >
-                  <option>New</option>
-                  <option>Used</option>
-                  <option>Refurbished</option>
-                  <option>Faulty</option>
-                </select>
-                <ChevronDownIcon
-                  aria-hidden="true"
-                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="in-use-status" className="block text-sm/6 font-medium text-gray-900">
-                In Use Status
-              </label>
-              <div className="mt-2 grid grid-cols-1">
-                <select
-                  id="in-use-status"
-                  name="in-use-status"
-                  autoComplete="off"
-                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                >
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-                <ChevronDownIcon
-                  aria-hidden="true"
-                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="assigned-to" className="block text-sm/6 font-medium text-gray-900">
-                Assigned To
-              </label>
-              <div className="mt-2">
-                <input
-                  id="assigned-to"
-                  name="assigned-to"
-                  type="text"
-                  autoComplete="off"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  placeholder="e.g., John Doe or IT Department"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="location" className="block text-sm/6 font-medium text-gray-900">
-                Location
-              </label>
-              <div className="mt-2">
-                <input
-                  id="location"
-                  name="location"
-                  type="text"
-                  autoComplete="off"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  placeholder="e.g., Office A or Remote - John Doe"
-                />
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="maintenance-notes" className="block text-sm/6 font-medium text-gray-900">
-                Maintenance Notes
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="maintenance-notes"
-                  name="maintenance-notes"
-                  rows="4"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  placeholder="e.g., Software update scheduled for 2025-06-01, replaced battery in 2024"
                 />
               </div>
             </div>
@@ -212,5 +224,5 @@ export default function NewEquipment() {
         </button>
       </div>
     </form>
-  )
+  );
 }

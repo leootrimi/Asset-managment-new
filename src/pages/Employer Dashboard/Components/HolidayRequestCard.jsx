@@ -12,7 +12,6 @@ export default function HolidayRequestCard() {
   const handleSubmit = (e) => {
     e.preventDefault()
     // In a real app, you would send this data to your backend
-    console.log("Holiday request submitted:", { startDate, endDate, reason })
     alert("Holiday request submitted!")
     setStartDate("")
     setEndDate("")

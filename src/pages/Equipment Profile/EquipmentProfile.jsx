@@ -477,7 +477,7 @@ export default function EquipmentProfile() {
               <h2 className="text-sm/6 font-semibold text-gray-900">Activity</h2>
               <ul role="list" className="mt-3 space-y-6">
                 {equipment?.activity && equipment.activity.map((activityItem, activityItemIdx) => (
-                  <li key={activityItem._id} className="relative flex gap-x-4">
+                  <li key={activityItemIdx} className="relative flex gap-x-4">
                     <div
                       className={classNames(
                         activityItemIdx === equipment.activity.length - 1 ? 'h-6' : '-bottom-6',

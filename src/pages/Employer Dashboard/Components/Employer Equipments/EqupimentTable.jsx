@@ -26,7 +26,7 @@ export default function EquipmentTable({ equipments }) {
         </thead>
         <tbody>
           {equipments.map((plan, planIdx) => (
-            <tr key={plan.id}>
+            <tr key={plan._id}>
               <td className={classNames(planIdx === 0 ? '' : 'border-t border-transparent', 'relative py-4 pl-4 pr-3 text-sm sm:pl-6')}>
                 <div className="font-medium text-gray-900">
                   {plan.type}
