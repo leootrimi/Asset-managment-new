@@ -61,8 +61,12 @@ export async function apiRequest({
       headers['id-token'] = getIdToken()
     };
     //For local testing
-    // const response = await fetch(`${baseUrl}:${port}${endpoint}`, {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}${endpoint}`, {
+    const enviroment = ""
+    const qaUrl = `${baseUrl}:${port}${endpoint}`
+    const prodUrl = `${import.meta.env.VITE_BASE_URL}${endpoint}`
+
+    const apiUrl = enviroment == "qa" ? qaUrl : prodUrl
+    const response = await fetch(apiUrl, {
       method,
       headers,
       body: body ? JSON.stringify(body) : null,
