@@ -8,7 +8,6 @@ import { apiRequest } from "../../services/ApiCalls";
 import useEmployerCheckinStore from "../../stores/employerCheckinStore";
 import TimeSinceCheckin from "./Components/TimeSinceCheckin";
 import useEmployerProfileStore from "../../stores/employerProfileStore";
-import card from "@material-tailwind/react/theme/components/card";
 
 export default function Dashboard() {
 

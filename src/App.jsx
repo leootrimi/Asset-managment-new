@@ -22,6 +22,7 @@ import YourWork from './pages/your-work/Your-work';
 import { RequestPage } from './pages/Request Page/RequestPage';
 import { RequestDayOff } from './pages/Request Day Off/RequestDayOff';
 import RequestManagement from './pages/Request Managment/RequestManagement';
+import { TimeOffDashboard } from './pages/Time Off Dashboard/TimeOffDashboard';
 
 import './App.css';
 
@@ -68,6 +69,7 @@ function App() {
             <Route path="requests-items" element={<RequestPage />} />
             <Route path="/requests-day" element={<RequestDayOff />} />
             <Route path="/request/manage" element={<RequestManagement />} />
+            <Route path="/timeoff" element={<TimeOffDashboard />} />
 
           </Route>
           </Route>
