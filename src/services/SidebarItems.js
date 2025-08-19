@@ -26,5 +26,5 @@ export const employerNavigation = [
   { name: 'Equipments', href: '/equipment', icon: FolderIcon, current: false },
   { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Request for an Item', href: '/requests-items', icon: ArrowDownOnSquareStackIcon, current: false },
-  { name: 'Get a Day off', href: '/requests-day', icon: PalmtreeIcon, current: false },
+  { name: 'Get a Day off', href: '/timeoff', icon: PalmtreeIcon, current: false },
 ]

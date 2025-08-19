@@ -61,7 +61,7 @@ export async function apiRequest({
       headers['id-token'] = getIdToken()
     };
     //For local testing
-    const enviroment = ""
+    const enviroment = "qa"
     const qaUrl = `${baseUrl}:${port}${endpoint}`
     const prodUrl = `${import.meta.env.VITE_BASE_URL}${endpoint}`
 

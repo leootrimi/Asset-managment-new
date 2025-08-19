@@ -14,7 +14,7 @@ export default function EmployerListItem({ employtersList }) {
               <p className="text-sm/6 font-semibold text-gray-900">
                 <a href={`/employers/${person.user_id}`}>
                   <span className="absolute inset-x-0 -top-px bottom-0" />
-                  {person.user_metadata.firstName + " " + person.user_metadata.lastName}
+                  {person.user_metadata?.firstName + " " + person.user_metadata?.lastName}
                 </a>
               </p>
               <p className="mt-1 flex text-xs/5 text-gray-500">

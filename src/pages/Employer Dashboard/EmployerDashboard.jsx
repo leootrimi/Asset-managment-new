@@ -8,6 +8,7 @@ import { apiRequest } from "../../services/ApiCalls";
 import useEmployerCheckinStore from "../../stores/employerCheckinStore";
 import TimeSinceCheckin from "./Components/TimeSinceCheckin";
 import useEmployerProfileStore from "../../stores/employerProfileStore";
+import DaysOffCarousel from "./Components/DaysOffCarousel";
 
 export default function Dashboard() {
 
@@ -111,52 +112,8 @@ export default function Dashboard() {
           </div>
           {/* Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex items-center space-x-4 overflow-hidden border-1 border-gray-300">
-              {/* Left Chevron */}
-              <button
-                onClick={handlePrev}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300 focus:outline-none"
-                aria-label="Previous card"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
+            <DaysOffCarousel cardStates={cardStates} />
 
-              {/* Main Content */}
-              {cardStates[currentIndex] && (
-                <div className="flex items-center space-x-4">
-                  <div className="bg-white rounded-full w-20 h-20 ml-2 flex items-center justify-center shadow text-blue-600 font-bold text-xl">
-                    <h1 className="text-4xl text-gray-500">{cardStates[currentIndex].days}</h1>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg text-gray-700 font-semibold text-gray-800">
-                      {cardStates[currentIndex].title}
-                    </h3>
-                    <p className="text-sm text-gray-500">{cardStates[currentIndex].description}</p>
-                  </div>
-                </div>
-              )}
-
-
-              {/* Right Chevron */}
-              <button
-                onClick={handleNext}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300 focus:outline-none"
-                aria-label="Next card"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-
-              {/* Background Lines */}
-              <svg
-                className="absolute right-4 top-4 h-full w-1/2 opacity-60 pointer-events-none"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <line x1="0" y1="100" x2="100" y2="0" stroke="#f5f5f5" strokeWidth="4" />
-                <line x1="20" y1="100" x2="100" y2="20" stroke="#f5f5f5" strokeWidth="4" />
-              </svg>
-            </div>
 
             <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex flex-col sm:flex-row items-center gap-4 overflow-hidden border-1 border-gray-300">
               {/* Left section */}
