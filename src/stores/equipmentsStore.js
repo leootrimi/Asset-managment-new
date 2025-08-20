@@ -11,12 +11,10 @@ const useEquipmentStore = create((set) => ({
     fetchEquipments: async () => {
         set({ loading: true});
         try {
-            const selectedProject = useProjectStore.getState().selectedProject;
             const response = await apiRequest({
-                 endpoint: `/equipments?companyId=${selectedProject._id}`,
+                 endpoint: `/equipments`,
                  method: 'GET'
             })
-            
             set({ equipments: response, loading: false })
         } catch (error) {
             set({ error: error.message, loading: false})

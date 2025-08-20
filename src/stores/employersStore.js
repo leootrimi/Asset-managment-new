@@ -12,9 +12,8 @@ const useEmployerStore = create((set) => ({
         set({ loading: true, error: null});
         
         try {
-            const selectedProject = useProjectStore.getState().selectedProject;
             const response = await apiRequest({ 
-                endpoint: `/users?companyId=${selectedProject._id}`,
+                endpoint: `/users`,
             });
             
             set({ employers: response, loading: false})
