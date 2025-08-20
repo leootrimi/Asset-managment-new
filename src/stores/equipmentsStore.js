@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { apiRequest } from "../services/ApiCalls";
-import { useProjectStore } from "./projectStore";
 
 const useEquipmentStore = create((set) => ({
 

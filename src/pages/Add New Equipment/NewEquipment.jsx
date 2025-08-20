@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import { useEffect } from 'react';
-import { useProjectStore } from '../../stores/projectStore';
 import { apiRequest } from '../../services/ApiCalls';
 
 export default function NewEquipment() {
 
-  const selectedProject = useProjectStore.getState().selectedProject;
   const [formData, setFormData] = useState({
     name: '',
     type: 'Laptop',

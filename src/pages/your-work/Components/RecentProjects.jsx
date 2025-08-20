@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { memo } from 'react';
-import { useProjectStore } from "../../../stores/projectStore";
 
 function RecentProjects({projects}) {
 
@@ -27,7 +26,6 @@ export default memo(RecentProjects);
 function ProjectCard({ project }) {
 
   const navigate = useNavigate();
-  const setSelectedProject = useProjectStore((state) => state.setSelectedProject);
 
   const icons = ["🏢", "🏗️", "🏬", "🏛️", "🏠", "🏭", "🏣"];
   const bgColors = ['bg-red-50', 'bg-blue-50', 'bg-green-50', 'bg-yellow-50'];

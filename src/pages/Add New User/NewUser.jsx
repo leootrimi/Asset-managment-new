@@ -4,14 +4,12 @@ import { apiRequest } from '../../services/ApiCalls'
 import Alert from '../../Core/Alerts'
 import LoadingView from '../../Core/LoadingView'
 import { useState } from 'react'
-import { useProjectStore } from '../../stores/projectStore'
 import { useEffect } from 'react'
 
 export default function NewUser() {
 
   const [showSuccesAlert, setShowSuccessAlert] = useState(null);
   const [showLoading, setShowLoading] = useState(false);
-  const selectedProject = useProjectStore((state) => state.selectedProject);
   
   const [userInfo, setUserInfo] = useState({
     firstName: '',
