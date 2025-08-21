@@ -15,6 +15,8 @@ const filteredData = Array.isArray(equipmentData)
         item.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.tag?.toLowerCase().includes(searchTerm.toLowerCase());
 
+        console.log(item.inUse);
+        
       const matchesInUse =
         inUseFilter === "all" ||
         (inUseFilter === "yes" && item.inUse) ||

@@ -18,7 +18,7 @@ import AuthenticationGuard from './Auth0 Protected Route/AuthenticationGuard';
 import RequestBoard from './pages/Requests Made/Request-board';
 import ReportsPage from './pages/Reports/ReportsPage';
 import EmployerDashboard from './pages/Employer Dashboard/EmployerDashboard';
-import { RequestPage } from './pages/Request Page/RequestPage';
+import RequestPage from './pages/Request Page/RequestPage';
 import { TimeOffDashboard } from './pages/Time Off Dashboard/TimeOffDashboard';
 import RequestManagement from './pages/Request Managment/RequestManagement';
 

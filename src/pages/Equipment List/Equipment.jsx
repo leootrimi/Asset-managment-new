@@ -3,6 +3,7 @@ import EquipmentListingTable from "./Components/EquipmentListingTable";
 import useEquipmentStore from "../../stores/equipmentsStore";
 import ApiErrorScreen from "../../Core/ApiErrorScreen";
 import EmployersSkeleton from "../Employers List/Skeleton/EmployersSkeleton"
+import EquipmentManagement from "./Components/EqupimentManagement";
 
 const Equipment = () => {
 
@@ -20,7 +21,7 @@ const Equipment = () => {
     }
 
     return (
-        <EquipmentListingTable equipmentData={equipments} />
+        <EquipmentManagement mockEquipmentData={equipments}/>
     );
 };
 
