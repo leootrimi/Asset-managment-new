@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Calendar, History } from "lucide-react";
 import { format } from "date-fns";
+import { formatToDayMonth, daysBetween } from "@/services/DateConverter";
 
 const statusConfig = {
   pending: { color: 'bg-warning text-warning-foreground', label: 'Pending' },
@@ -10,6 +11,8 @@ const statusConfig = {
 };
 
 export function RequestHistory({ requests }) {
+  console.log(requests);
+  
   return (
     <Card className="bg-gradient-card shadow-soft border-0">
       <CardHeader>
@@ -24,13 +27,10 @@ export function RequestHistory({ requests }) {
       <CardContent className="space-y-4">
         {requests.length > 0 ? (
           requests.map((request) => {
-            const startDate = new Date(request.startDate);
-            const endDate = new Date(request.endDate);
             const config = statusConfig[request.status];
-            
             return (
               <div
-                key={request.id}
+                key={request._id}
                 className="p-4 rounded-lg bg-background/50 border border-border/50 hover:bg-background transition-colors"
               >
                 <div className="flex justify-between items-start mb-2">
@@ -38,7 +38,7 @@ export function RequestHistory({ requests }) {
                     <p className="font-medium text-sm">{request.type}</p>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                       <Calendar className="h-3 w-3" />
-                      {format(startDate, 'MMM dd')} - {format(endDate, 'MMM dd')}
+                      {formatToDayMonth(request.fromDate)} - {formatToDayMonth(request.toDate)}
                     </div>
                   </div>
                   <Badge className={config.color}>
@@ -46,7 +46,7 @@ export function RequestHistory({ requests }) {
                   </Badge>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  {request.days} day{request.days !== 1 ? 's' : ''}
+                  {daysBetween(request.fromDate, request.toDate)} day{request.days !== 1 ? 's' : ''}
                 </div>
               </div>
             );

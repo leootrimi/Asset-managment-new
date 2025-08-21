@@ -113,15 +113,14 @@ export default function Dashboard() {
 
           </div>
           {/* Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 space-y-2">
             <DaysOffCarousel cardStates={cardStates} />
 
-            <div className="">
-              <Card className="bg-gradient-card shadow-soft border-0 flex justify-center items-center h-full">
+              <Card className="bg-gradient-card shadow-soft border-1 flex justify-center items-center h-48 max-w-sm mx">
                 <CardContent>
                   <TimeSinceCheckin checkInTime={checkInTime} canCheckIn={canCheckIn} />
                   <div className="text-center sm:text-left z-50">
-                    <h3 className="text-xl font-semibold text-gray-800">{canCheckIn ? 'You are not checked in yet!' : 'You have checked in'}</h3>
+                    <h3 className="text-xl font-semibold text-gray-800">{canCheckIn ? 'You are not checked in yet!' : 'You are checked in'}</h3>
                     <p className="text-gray-600 mt-1">{canCheckIn ? 'Last checked in' : 'Checked in at'} <span className="font-medium">{latestCheckinTime()}</span></p>
                     <button className={`${(canCheckIn) ? 'bg-gray-300 text-gray-500' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'} mt-4 hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm`}
                       disabled={canCheckIn}
@@ -131,13 +130,7 @@ export default function Dashboard() {
                     </button>
                   </div>
                 </CardContent>
-
               </Card>
-              <Carousel>
-                <CarouselPrevious className="top-[calc(100%+0.5rem)] translate-y-0 left-0" />
-                <CarouselNext className="top-[calc(100%+0.5rem)] translate-y-0 left-2 translate-x-full" />
-              </Carousel>
-            </div>
           </div>
 
           <hr className="border-t border-gray-300 my-4" />

@@ -9,6 +9,19 @@ export function formatToDayMonth(isoDateString) {
   });
 }
 
+export function daysBetween(startDate, endDate) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // Zero out time to avoid timezone issues
+  start.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+
+  const diffMs = end - start;
+  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+  return diffDays;
+}
 
 export const getWorkDurations = (timeline) => {
     

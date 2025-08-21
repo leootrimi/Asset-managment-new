@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, Plus, User, Briefcase } from "lucide-react";
 import { TimeOffRequest } from './Components/TimeOffRequest';
 import { RequestHistory } from './Components/RequestHistory';
+import { apiRequest } from '@/services/ApiCalls';
 
 const TIME_OFF_TYPES = [
   { id: 'vacation', name: 'Vacation', available: 15, used: 5, color: 'bg-primary' },
@@ -13,35 +14,19 @@ const TIME_OFF_TYPES = [
   { id: 'bereavement', name: 'Bereavement', available: 3, used: 0, color: 'bg-muted' },
 ];
 
-const RECENT_REQUESTS = [
-  {
-    id: 1,
-    type: 'Vacation',
-    startDate: '2024-08-20',
-    endDate: '2024-08-22',
-    status: 'approved',
-    days: 3
-  },
-  {
-    id: 2,
-    type: 'Sick Leave',
-    startDate: '2024-08-15',
-    endDate: '2024-08-15',
-    status: 'approved',
-    days: 1
-  },
-  {
-    id: 3,
-    type: 'Personal Days',
-    startDate: '2024-08-10',
-    endDate: '2024-08-10',
-    status: 'pending',
-    days: 1
-  },
-];
-
 export function TimeOffDashboard() {
   const [showRequestForm, setShowRequestForm] = useState(false);
+  const [holidayRequest, setHolidayRequest] = useState([])
+
+  useEffect(() => {
+    async function fetchHoldiays() {
+      const response = await apiRequest({
+        endpoint: '/holidays'
+      })
+      setHolidayRequest(response)
+    }
+    fetchHoldiays()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -156,7 +141,7 @@ export function TimeOffDashboard() {
 
           {/* Recent Requests */}
           <div>
-            <RequestHistory requests={RECENT_REQUESTS} />
+            <RequestHistory requests={holidayRequest} />
           </div>
         </div>
       </div>

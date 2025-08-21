@@ -29,7 +29,7 @@ export default function DaysOffCarousel({ cardStates }) {
     return (
         <div className="mx-auto">
             <Carousel setApi={setApi} className="w-full max-w-xs">
-                <CarouselContent>
+                <CarouselContent className="h-48">
                     {cardStates.map((card, index) => (
                         <CarouselItem key={index}>
                             <Card>

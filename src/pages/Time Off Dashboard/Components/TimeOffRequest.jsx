@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,8 @@ import { format } from "date-fns";
 import { CalendarIcon, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from '@/services/ApiCalls';
+import { Toaster } from '@/components/ui/sonner';
 
 export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
   const [selectedType, setSelectedType] = useState('');
@@ -54,7 +56,11 @@ export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
     setIsSubmitting(true);
     
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await apiRequest({
+      endpoint: '/holidays',
+      method: 'POST',
+      body: {fromDate: startDate, toDate: endDate, type: selectedType}
+    })
     
     toast({
       title: "Request Submitted",
