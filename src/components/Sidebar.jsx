@@ -297,7 +297,7 @@ export default function Example() {
                     />
                     <span className="hidden lg:flex lg:items-center">
                       <span aria-hidden="true" className="ml-4 text-sm/6 font-semibold text-gray-900">
-                        {'Hi, ' + userMetaData().firstName }
+                        {'Hi, ' + userMetaData()?.firstName }
                       </span>
                       <ChevronDownIcon aria-hidden="true" className="ml-2 size-5 text-gray-400" />
                     </span>

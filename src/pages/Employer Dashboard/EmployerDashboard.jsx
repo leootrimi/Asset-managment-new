@@ -9,6 +9,8 @@ import useEmployerCheckinStore from "../../stores/employerCheckinStore";
 import TimeSinceCheckin from "./Components/TimeSinceCheckin";
 import useEmployerProfileStore from "../../stores/employerProfileStore";
 import DaysOffCarousel from "./Components/DaysOffCarousel";
+import { Card, CardContent } from "@/components/ui/card";
+import { CarouselNext, CarouselPrevious, Carousel } from "@/components/ui/carousel";
 
 export default function Dashboard() {
 
@@ -114,31 +116,28 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <DaysOffCarousel cardStates={cardStates} />
 
+            <div className="">
+              <Card className="bg-gradient-card shadow-soft border-0 flex justify-center items-center h-full">
+                <CardContent>
+                  <TimeSinceCheckin checkInTime={checkInTime} canCheckIn={canCheckIn} />
+                  <div className="text-center sm:text-left z-50">
+                    <h3 className="text-xl font-semibold text-gray-800">{canCheckIn ? 'You are not checked in yet!' : 'You have checked in'}</h3>
+                    <p className="text-gray-600 mt-1">{canCheckIn ? 'Last checked in' : 'Checked in at'} <span className="font-medium">{latestCheckinTime()}</span></p>
+                    <button className={`${(canCheckIn) ? 'bg-gray-300 text-gray-500' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'} mt-4 hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm`}
+                      disabled={canCheckIn}
+                      onClick={userCheckout}
+                    >
+                      Check Out
+                    </button>
+                  </div>
+                </CardContent>
 
-            <div className="relative rounded-xl p-6 bg-gradient-to-br from-gray-200 flex flex-col sm:flex-row items-center gap-4 overflow-hidden border-1 border-gray-300">
-              {/* Left section */}
-              <TimeSinceCheckin checkInTime={checkInTime} canCheckIn={canCheckIn} />
-              <div className="text-center sm:text-left z-50">
-                <h3 className="text-xl font-semibold text-gray-800">{canCheckIn ? 'You are not checked in yet!' : 'You have checked in'}</h3>
-                <p className="text-gray-600 mt-1">{canCheckIn ? 'Last checked in' : 'Checked in at'} <span className="font-medium">{latestCheckinTime()}</span></p>
-                <button className={`${(canCheckIn) ? 'bg-gray-300 text-gray-500' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'} mt-4 hover:bg-gray-200 px-4 py-1.5 rounded-2xl shadow-sm`}
-                  disabled={canCheckIn}
-                  onClick={userCheckout}
-                >
-                  Check Out
-                </button>
-              </div>
-              {/* Right section with SVG */}
-              <svg
-                className="absolute right-4 top-4 h-full w-1/2 opacity-60 pointer-events-none"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <line x1="0" y1="100" x2="100" y2="0" stroke="#f5f5f5" strokeWidth="4" />
-                <line x1="20" y1="100" x2="100" y2="20" stroke="#f5f5f5" strokeWidth="4" />
-              </svg>
+              </Card>
+              <Carousel>
+                <CarouselPrevious className="top-[calc(100%+0.5rem)] translate-y-0 left-0" />
+                <CarouselNext className="top-[calc(100%+0.5rem)] translate-y-0 left-2 translate-x-full" />
+              </Carousel>
             </div>
-
           </div>
 
           <hr className="border-t border-gray-300 my-4" />

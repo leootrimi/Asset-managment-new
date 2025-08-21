@@ -181,7 +181,7 @@ const RequestManagement = () => {
             </CardContent>
           </Card>
           
-          <Card className="border-l-4 border-l-success">
+          <Card className="border-l-4 border-l-green-600">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>

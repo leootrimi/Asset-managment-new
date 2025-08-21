@@ -52,7 +52,7 @@ const filteredData = Array.isArray(equipmentData)
               <option value="no">Not In Use</option>
             </select>
             {
-              hasRole(Roles.ADMIN) && <RoundedButton path='/equpiment/add/new' text='Add New' icon={PlusIcon} />
+              hasRole(Roles.ADMIN) && <RoundedButton path='/equipment/add/new' text='Add New' icon={PlusIcon} />
             }
             {/* <RoundedButton path='/equpiment/add' text='Add New' icon={PlusIcon} /> */}
           </div>

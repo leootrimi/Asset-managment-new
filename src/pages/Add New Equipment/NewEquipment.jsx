@@ -12,8 +12,7 @@ export default function NewEquipment() {
     tag: '',
     serialNo: '',
     price: '',
-    assignedDate: '',
-    company: {}
+    assignedDate: ''
   });
 
   const handleChange = (e) => {
@@ -26,10 +25,6 @@ export default function NewEquipment() {
   };
 
   useEffect(() => {
-    formData.company = {
-      id: selectedProject._id,
-      companyName: selectedProject.company
-    }
   }, [])
 
   const handleSubmit = async (e) => {

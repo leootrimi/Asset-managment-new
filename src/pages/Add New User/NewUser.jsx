@@ -39,13 +39,6 @@ export default function NewUser() {
   }
 
   useEffect(() => {
-  if (selectedProject) {
-    setUserInfo((prev) => ({
-      ...prev,
-      company: selectedProject.company,
-      company_id: selectedProject._id
-    }))
-  }
 }, [])
 
   const didChangeField = (e) => {
