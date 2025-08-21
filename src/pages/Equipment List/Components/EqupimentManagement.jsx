@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Link } from "react-router-dom";
 
 const EquipmentManagement = ({ mockEquipmentData }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -252,7 +253,9 @@ const EquipmentManagement = ({ mockEquipmentData }) => {
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end">
                                                         <DropdownMenuItem>
-                                                            <Eye className="mr-2 h-4 w-4" /> View Details
+                                                            <Link to={`/equipment/${item._id}`}>
+                                                            View Details
+                                                            </Link>
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem>Edit</DropdownMenuItem>
                                                         <DropdownMenuItem>Assign</DropdownMenuItem>
