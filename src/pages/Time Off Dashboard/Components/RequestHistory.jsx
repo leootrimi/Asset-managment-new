@@ -1,7 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, History } from "lucide-react";
-import { format } from "date-fns";
 import { formatToDayMonth, daysBetween } from "@/services/DateConverter";
 
 const statusConfig = {
@@ -11,7 +10,6 @@ const statusConfig = {
 };
 
 export function RequestHistory({ requests }) {
-  console.log(requests);
   
   return (
     <Card className="bg-gradient-card shadow-soft border-0">
@@ -27,7 +25,6 @@ export function RequestHistory({ requests }) {
       <CardContent className="space-y-4">
         {requests.length > 0 ? (
           requests.map((request) => {
-            const config = statusConfig[request.status];
             return (
               <div
                 key={request._id}
@@ -41,8 +38,8 @@ export function RequestHistory({ requests }) {
                       {formatToDayMonth(request.fromDate)} - {formatToDayMonth(request.toDate)}
                     </div>
                   </div>
-                  <Badge className={config.color}>
-                    {config.label}
+                  <Badge className={statusConfig[request.status]}>
+                    {statusConfig[request.label]}
                   </Badge>
                 </div>
                 <div className="text-xs text-muted-foreground">

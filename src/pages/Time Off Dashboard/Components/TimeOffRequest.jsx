@@ -11,7 +11,6 @@ import { CalendarIcon, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from '@/services/ApiCalls';
-import { Toaster } from '@/components/ui/sonner';
 
 export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
   const [selectedType, setSelectedType] = useState('');

@@ -6,26 +6,35 @@ import { Calendar, Clock, Plus, User, Briefcase } from "lucide-react";
 import { TimeOffRequest } from './Components/TimeOffRequest';
 import { RequestHistory } from './Components/RequestHistory';
 import { apiRequest } from '@/services/ApiCalls';
+import useEmployerHolidayStore from '@/stores/employerHolidayStore';
 
 const TIME_OFF_TYPES = [
   { id: 'vacation', name: 'Vacation', available: 15, used: 5, color: 'bg-primary' },
   { id: 'sick', name: 'Sick Leave', available: 10, used: 2, color: 'bg-warning' },
-  { id: 'personal', name: 'Personal Days', available: 5, used: 1, color: 'bg-success' },
+  { id: 'personal', name: 'Work from home', available: 5, used: 1, color: 'bg-success' },
   { id: 'bereavement', name: 'Bereavement', available: 3, used: 0, color: 'bg-muted' },
 ];
 
 export function TimeOffDashboard() {
   const [showRequestForm, setShowRequestForm] = useState(false);
-  const [holidayRequest, setHolidayRequest] = useState([])
+  const { holidayCapacity, holidayRequest, fetchHolidayCapacity, fetchHoldiays } = useEmployerHolidayStore();
+
+  const holidayCardType = (type) => {
+    console.log(type);
+    
+    switch (type) {
+      case 'Vacation':
+        return holidayCapacity.daysOff
+      case 'Sick Leave':
+        return holidayCapacity.medicalLeaveDays
+      case 'Work from home':
+        return holidayCapacity.workFromHomeDays
+    }
+  }
 
   useEffect(() => {
-    async function fetchHoldiays() {
-      const response = await apiRequest({
-        endpoint: '/holidays'
-      })
-      setHolidayRequest(response)
-    }
     fetchHoldiays()
+    fetchHolidayCapacity()
   }, [])
 
   return (
@@ -77,7 +86,7 @@ export function TimeOffDashboard() {
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Available</span>
                     <Badge variant="secondary" className="font-semibold">
-                      {type.available - type.used} days
+                      {holidayCardType(type.name)} days
                     </Badge>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
@@ -87,8 +96,8 @@ export function TimeOffDashboard() {
                     />
                   </div>
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <span>Used: {type.used}</span>
-                    <span>Total: {type.available}</span>
+                    <span>Used: {25 - holidayCapacity.daysOff}</span>
+                    <span>Total: {25}</span>
                   </div>
                 </div>
               </CardContent>
