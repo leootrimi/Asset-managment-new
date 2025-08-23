@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, Plus, User, Briefcase } from "lucide-react";
 import { TimeOffRequest } from './Components/TimeOffRequest';
 import { RequestHistory } from './Components/RequestHistory';
-import { apiRequest } from '@/services/ApiCalls';
 import useEmployerHolidayStore from '@/stores/employerHolidayStore';
 
 const TIME_OFF_TYPES = [

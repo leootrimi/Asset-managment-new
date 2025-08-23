@@ -18,6 +18,11 @@ const Status = {
   Pending: "pending",
 }
 
+/// To be modified based on leave type
+const LeaveType = {
+  "sick": "Sick Leave",
+}
+
 export default function DaysOffTable({ daysOff }) {
   return (
     <div className="rounded-2xl border border-gray-200 shadow-sm p-2">
@@ -64,7 +69,7 @@ export default function DaysOffTable({ daysOff }) {
                 )}
               </TableCell>
 
-              <TableCell>{dayOff.type}</TableCell>
+              <TableCell>{LeaveType[dayOff.type]}</TableCell>
             </TableRow>
           ))}
         </TableBody>

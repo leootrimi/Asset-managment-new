@@ -21,6 +21,7 @@ import EmployerDashboard from './pages/Employer Dashboard/EmployerDashboard';
 import RequestPage from './pages/Request Page/RequestPage';
 import { TimeOffDashboard } from './pages/Time Off Dashboard/TimeOffDashboard';
 import RequestManagement from './pages/Request Managment/RequestManagement';
+import TeamsShowcase from './pages/Teams/TeamShowCase';
 
 import './App.css';
 
@@ -66,6 +67,7 @@ function App() {
             <Route path="requests-items" element={<RequestPage />} />
             <Route path="/request/manage" element={<RequestManagement />} />
             <Route path="/timeoff" element={<TimeOffDashboard />} />
+            <Route path="/teams" element={<TeamsShowcase />} />
 
           </Route>
           </Route>

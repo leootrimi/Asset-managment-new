@@ -116,7 +116,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 space-y-2">
             <DaysOffCarousel cardStates={cardStates} />
 
-              <Card className="bg-gradient-card shadow-soft border-1 flex justify-center items-center h-48 max-w-sm mx">
+              <Card className="bg-gradient-card shadow-soft border-1 flex justify-center items-center h-47 max-w-sm">
                 <CardContent>
                   <TimeSinceCheckin checkInTime={checkInTime} canCheckIn={canCheckIn} />
                   <div className="text-center sm:text-left z-50">

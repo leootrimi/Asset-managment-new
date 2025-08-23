@@ -5,13 +5,15 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
+  UserIcon,
   ArrowDownOnSquareStackIcon
 } from '@heroicons/react/24/outline'
 import { ArchiveRestore } from 'lucide-react'
 
 export const admingNavigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
-  { name: 'Team', href: '/employers', icon: UsersIcon, current: false },
+  { name: 'Employers', href: '/employers', icon: UserIcon, current: false },
+  { name: 'Teams', href: '/teams', icon: UsersIcon, current: false },
   { name: 'Equipments', href: '/equipment', icon: FolderIcon, current: false },
   { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon, current: false },
@@ -21,7 +23,8 @@ export const admingNavigation = [
 
 export const employerNavigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, current: true },
-  { name: 'Team', href: '/employers', icon: UsersIcon, current: false },
+  { name: 'Employers', href: '/employers', icon: UserIcon, current: false },
+  { name: 'Teams', href: '/teams', icon: UsersIcon, current: false },
   { name: 'Equipments', href: '/equipment', icon: FolderIcon, current: false },
   { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Item Request', href: '/requests-items', icon: ArrowDownOnSquareStackIcon, current: false },

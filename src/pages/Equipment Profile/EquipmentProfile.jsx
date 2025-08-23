@@ -287,11 +287,11 @@ export default function EquipmentProfile() {
                             {users.map((user) => (
                               <ListboxOption
                                 key={user.user_id}
-                                value={{ id: user.user_id, fullName: `${user.user_metadata.firstName} ${user.user_metadata.lastName}` }}
+                                value={{ id: user.user_id, fullName: user.user_metadata ? `${user.user_metadata.firstName} ${user.user_metadata.lastName}` : "Unknown User" }}
                                 className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-indigo-600 data-[focus]:text-white data-[focus]:outline-none flex"
                               >
                                 <span className="block truncate font-normal group-data-[selected]:font-semibold">
-                                  {`${user.user_metadata.firstName} ${user.user_metadata.lastName}`}
+                                  { user.user_metadata ? `${user.user_metadata.firstName} ${user.user_metadata.lastName}` : "Unknown User"}
                                 </span>
 
                                 <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-[&:not([data-selected])]:hidden group-data-[focus]:text-white">
