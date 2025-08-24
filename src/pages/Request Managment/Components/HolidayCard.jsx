@@ -8,7 +8,6 @@ import {
   User, 
   Building2, 
   Clock,
-  DollarSign,
   CheckCircle,
   XCircle,
   AlertCircle,
@@ -20,8 +19,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { formatToDayMonth } from '@/services/DateConverter'
 
-const RequestCard = ({ request, onAction }) => {
+const HolidayCard = ({ request, onAction }) => {
   const getStatusColor = (status) => {
     switch(status) {
       case 'pending': return 'warning'
@@ -29,9 +29,7 @@ const RequestCard = ({ request, onAction }) => {
       case 'rejected': return 'destructive'
       default: return 'secondary'
     }
-  }
-  console.log(request);
-  
+  }  
 
   const getStatusIcon = (status) => {
     switch(status) {
@@ -63,17 +61,8 @@ const RequestCard = ({ request, onAction }) => {
   const TypeIcon = getTypeIcon(request.type)
   const statusColor = getStatusColor(request.status)
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    })
-  }
-  /// Need to make a generic component for all types of request (Remove HolidayCard)
-
   return (
-    <Card className="transition-all duration-300 hover:shadow-lg border-l-4 p-3 py-5" 
+    <Card className="transition-all duration-300 hover:shadow-lg border-l-4 p-3 py-5 " 
           style={{borderLeftColor: `var(--${statusColor})`}}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
@@ -83,7 +72,7 @@ const RequestCard = ({ request, onAction }) => {
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h3 className="font-semibold text-lg">{request.title}</h3>
+                <h3 className="font-semibold text-lg">Leave Request</h3>
                 <Badge variant="outline" className="capitalize">
                   {request.type}
                 </Badge>
@@ -91,11 +80,11 @@ const RequestCard = ({ request, onAction }) => {
               <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-1">
                   <User className="h-4 w-4" />
-                  <span>{request.employee}</span>
+                  <span>{request.employer_name}</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Building2 className="h-4 w-4" />
-                  <span>{request.department}</span>
+                  <span>Software Engineer</span>
                 </div>
               </div>
             </div>
@@ -103,7 +92,7 @@ const RequestCard = ({ request, onAction }) => {
           
           <div className="flex items-center space-x-2">
             <Badge variant={getPriorityColor(request.priority)} className="capitalize">
-              {request.priority}
+              Make with priority if needed
             </Badge>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -135,30 +124,22 @@ const RequestCard = ({ request, onAction }) => {
       </CardHeader>
       
       <CardContent className="pt-0">
-        <p className="text-muted-foreground mb-4">{request.description}</p>
+        <p className="text-muted-foreground mb-4">Here goes the descprition (Optional)</p>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          {request.startDate && (
+          {request.fromDate && (
             <div className="flex items-center space-x-2 text-sm">
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">Start:</span>
-              <span className="font-medium">{formatDate(request.startDate)}</span>
+              <span className="font-medium">{formatToDayMonth(request.fromDate)}</span>
             </div>
           )}
           
-          {request.endDate && (
+          {request.toDate && (
             <div className="flex items-center space-x-2 text-sm">
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="text-muted-foreground">End:</span>
-              <span className="font-medium">{formatDate(request.endDate)}</span>
-            </div>
-          )}
-          
-          {request.estimatedCost && (
-            <div className="flex items-center space-x-2 text-sm">
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-              <span className="text-muted-foreground">Cost:</span>
-              <span className="font-medium">{request.estimatedCost}</span>
+              <span className="font-medium">{formatToDayMonth(request.toDate)}</span>
             </div>
           )}
         </div>
@@ -170,7 +151,7 @@ const RequestCard = ({ request, onAction }) => {
               {request.status}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              • Submitted {formatDate(request.submittedDate)}
+              • Submitted {formatToDayMonth(request.appliedDate)}
             </span>
           </div>
           
@@ -207,4 +188,4 @@ const RequestCard = ({ request, onAction }) => {
   )
 }
 
-export default RequestCard
+export default HolidayCard

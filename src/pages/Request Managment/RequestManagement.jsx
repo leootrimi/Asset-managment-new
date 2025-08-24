@@ -1,15 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { 
-  Calendar, 
-  Laptop, 
-  Package, 
-  Search, 
+import HolidayCard from './Components/HolidayCard'
+import {
+  Calendar,
+  Laptop,
+  Package,
+  Search,
   Filter,
   Clock,
   CheckCircle,
@@ -19,6 +18,7 @@ import {
 } from 'lucide-react'
 import RequestCard from './Components/RequestCard'
 import { useToast } from '@/hooks/use-toast'
+import { apiRequest } from '@/services/ApiCalls'
 
 const RequestManagement = () => {
   const { toast } = useToast()
@@ -93,12 +93,12 @@ const RequestManagement = () => {
   ])
 
   const handleRequestAction = (requestId, action) => {
-    setRequests(prev => prev.map(req => 
-      req.id === requestId 
+    setRequests(prev => prev.map(req =>
+      req.id === requestId
         ? { ...req, status: action }
         : req
     ))
-    
+
     toast({
       title: `Request ${action}`,
       description: `The request has been ${action} successfully.`,
@@ -108,12 +108,12 @@ const RequestManagement = () => {
 
   const filteredRequests = requests.filter(request => {
     const matchesSearch = request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.department.toLowerCase().includes(searchTerm.toLowerCase())
-    
+      request.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      request.department.toLowerCase().includes(searchTerm.toLowerCase())
+
     const matchesStatus = statusFilter === 'all' || request.status === statusFilter
     const matchesType = typeFilter === 'all' || request.type === typeFilter
-    
+
     return matchesSearch && matchesStatus && matchesType
   })
 
@@ -129,12 +129,24 @@ const RequestManagement = () => {
   const statusCounts = getStatusCounts()
 
   const getTypeIcon = (type) => {
-    switch(type) {
+    switch (type) {
       case 'holiday': return Calendar
       case 'equipment': return Laptop
       default: return Package
     }
   }
+
+  const [holidays, setHolidays] = useState([])
+
+  useEffect(() => {
+    async function getHolidayRequest() {
+      const response = await apiRequest({
+        endpoint: '/holidays/all'
+      })
+      setHolidays(response)
+    }
+    getHolidayRequest()
+  }, [])
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -168,7 +180,7 @@ const RequestManagement = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="border-l-4 border-l-pending">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -180,7 +192,7 @@ const RequestManagement = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="border-l-4 border-l-green-600">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -192,7 +204,7 @@ const RequestManagement = () => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card className="border-l-4 border-l-destructive">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
@@ -279,7 +291,7 @@ const RequestManagement = () => {
             )}
           </TabsContent>
 
-          {['holiday', 'equipment', 'other'].map(type => (
+          {['equipment', 'other'].map(type => (
             <TabsContent key={type} value={type} className="space-y-4">
               <div className="grid gap-4">
                 {filteredRequests
@@ -294,6 +306,16 @@ const RequestManagement = () => {
               </div>
             </TabsContent>
           ))}
+
+          <TabsContent value="holiday" className="space-y-4">
+            {holidays.map(holiday => (
+              <HolidayCard
+                key={holiday._id}
+                request={holiday}
+                onAction={handleRequestAction}
+              />
+            ))}
+          </TabsContent>
         </Tabs>
       </div>
     </div>
