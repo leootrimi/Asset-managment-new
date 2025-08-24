@@ -30,8 +30,6 @@ const RequestCard = ({ request, onAction }) => {
       default: return 'secondary'
     }
   }
-  console.log(request);
-  
 
   const getStatusIcon = (status) => {
     switch(status) {

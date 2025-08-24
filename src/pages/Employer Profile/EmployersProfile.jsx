@@ -59,7 +59,6 @@ export default function EmployersProfile() {
   useEffect(() => {
     fetchEmployerProfile(id)
     fetchEmployerActivity(id)
-    console.log(updatedProfile);
     
   }, [id])
 
@@ -123,10 +122,6 @@ export default function EmployersProfile() {
 
   function enableEditingUserProfile() {
     if (isEditEnabled) {
-      console.log('original', employerProfile);
-      console.log('updated', updatedProfile);
-
-
       if (hasUserProfileChanged(employerProfile, updatedProfile)) {
         setShowDiscardModal(true);
       } else {

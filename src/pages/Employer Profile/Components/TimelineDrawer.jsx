@@ -6,13 +6,6 @@ import { useEffect } from "react";
 export default function TimelineDrawer({ isOpen, setIsOpen, timeline }) {
 
     const { totalHours, averageHours } = getWorkDurations(timeline || []);
-    console.log(totalHours, averageHours);
-
-    useEffect(() => {
-        console.log("Timeline changed:", timeline);
-    }, [timeline]);
-
-
 
     const handleClose = () => {
         setIsOpen(false)

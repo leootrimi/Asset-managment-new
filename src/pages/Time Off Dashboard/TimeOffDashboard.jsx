@@ -19,8 +19,6 @@ export function TimeOffDashboard() {
   const { holidayCapacity, holidayRequest, fetchHolidayCapacity, fetchHoldiays } = useEmployerHolidayStore();
 
   const holidayCardType = (type) => {
-    console.log(type);
-    
     switch (type) {
       case 'Vacation':
         return holidayCapacity.daysOff
