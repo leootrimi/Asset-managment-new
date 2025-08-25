@@ -61,6 +61,8 @@ const HolidayCard = ({ request, onAction }) => {
   const TypeIcon = getTypeIcon(request.type)
   const statusColor = getStatusColor(request.status)
 
+  console.log(request);
+  
   return (
     <Card className="transition-all duration-300 hover:shadow-lg border-l-4 p-3 py-5 " 
           style={{borderLeftColor: `var(--${statusColor})`}}>
@@ -103,11 +105,11 @@ const HolidayCard = ({ request, onAction }) => {
               <DropdownMenuContent align="end">
                 {request.status === 'pending' && (
                   <>
-                    <DropdownMenuItem onClick={() => onAction(request.id, 'approved')}>
+                    <DropdownMenuItem onClick={() => onAction(request._id, request.employer_id, 'approved')}>
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Approve
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onAction(request.id, 'rejected')}>
+                    <DropdownMenuItem onClick={() => onAction(request._id, request.employer_id, 'rejected')}>
                       <XCircle className="h-4 w-4 mr-2" />
                       Reject
                     </DropdownMenuItem>
@@ -160,14 +162,14 @@ const HolidayCard = ({ request, onAction }) => {
               <Button 
                 size="sm" 
                 variant="outline"
-                onClick={() => onAction(request.id, 'rejected')}
+                onClick={() => onAction(request._id, request.employer_id, 'rejected')}
                 className="text-[var(--destructive)] hover:text-white hover:bg-[var(--destructive)] border-1 border-gray-200"
               >
                 Reject
               </Button>
               <Button 
                 size="sm"
-                onClick={() => onAction(request.id, 'approved')}
+                onClick={() => onAction(request._id, request.employer_id, 'approved')}
                 className="bg-white hover:bg-[var(--success)] text-[var(--success)] hover:text-white border-1 border-gray-200"
               >
                 Approve

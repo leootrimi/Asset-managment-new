@@ -91,18 +91,18 @@ const RequestManagement = () => {
     }
   ])
 
-  const handleRequestAction = (requestId, action) => {
-    setRequests(prev => prev.map(req =>
-      req.id === requestId
-        ? { ...req, status: action }
-        : req
-    ))
-
-    console.log('toast called');
-    
-  toast("User created successfully!")
-  toast.success("Saved!");
+  const handleRequestAction = async (requestId, employer_id, action) => {
+      
+    try {
+      const response = await apiRequest({
+      endpoint: `/holidays/accept?requestId=${requestId}&employerId=${employer_id}`
+    })
+    toast("Holiday request successfully approved!")
+    } catch (error) {
+      console.log(error);
   toast.error("Something went wrong");
+
+    }    
   }
 
   const filteredRequests = requests.filter(request => {
