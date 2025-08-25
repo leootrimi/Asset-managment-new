@@ -18,6 +18,7 @@ export const admingNavigation = [
   { name: 'Calendar', href: '/events', icon: CalendarIcon, current: false },
   { name: 'Documents', href: '/documents', icon: DocumentDuplicateIcon, current: false },
   { name: 'Reports', href: '/reports', icon: ChartPieIcon, current: false },
+  { name: 'Item Request', href: '/requests-items', icon: ArrowDownOnSquareStackIcon, current: false },
   { name: 'Requests', href: '/request/manage', icon: ArchiveRestore, current: false },
 ]
 

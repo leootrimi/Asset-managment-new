@@ -34,20 +34,13 @@ export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
     e.preventDefault();
     
     if (!selectedType || !startDate || !endDate) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields.",
-        variant: "destructive",
-      });
+      toast(`Please fill in all required fields.`)
       return;
     }
 
     if (requestedDays > availableDays) {
-      toast({
-        title: "Insufficient Days",
-        description: `You only have ${availableDays} days available for ${selectedTypeData?.name}.`,
-        variant: "destructive",
-      });
+
+      toast(`{You only have ${availableDays} days available for ${selectedTypeData?.name}.}`)
       return;
     }
 
@@ -60,10 +53,7 @@ export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
       body: {fromDate: startDate, toDate: endDate, type: selectedType}
     })
     
-    toast({
-      title: "Request Submitted",
-      description: `Your ${selectedTypeData?.name} request for ${requestedDays} day(s) has been submitted for approval.`,
-    });
+  toast.success("Holiday request successfully sent!")
 
     setIsSubmitting(false);
     onSubmit();

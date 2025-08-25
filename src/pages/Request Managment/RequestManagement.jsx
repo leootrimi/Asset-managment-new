@@ -250,37 +250,12 @@ const RequestManagement = () => {
         </Card>
 
         {/* Requests */}
-        <Tabs defaultValue="all" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all">All Requests</TabsTrigger>
+        <Tabs defaultValue="holiday" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-3 h-10">
             <TabsTrigger value="holiday">Holidays</TabsTrigger>
             <TabsTrigger value="equipment">Equipment</TabsTrigger>
             <TabsTrigger value="other">Other</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="all" className="space-y-4">
-            {filteredRequests.length === 0 ? (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-muted-foreground">No requests found</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Try adjusting your search or filter criteria
-                  </p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-4">
-                {filteredRequests.map(request => (
-                  <RequestCard
-                    key={request.id}
-                    request={request}
-                    onAction={handleRequestAction}
-                  />
-                ))}
-              </div>
-            )}
-          </TabsContent>
 
           {['equipment', 'other'].map(type => (
             <TabsContent key={type} value={type} className="space-y-4">
