@@ -22,6 +22,7 @@ import RequestPage from './pages/Request Page/RequestPage';
 import { TimeOffDashboard } from './pages/Time Off Dashboard/TimeOffDashboard';
 import RequestManagement from './pages/Request Managment/RequestManagement';
 import TeamsShowcase from './pages/Teams/TeamShowCase';
+import AdminSettings from './pages/Settings/AdminSettings';
 import { Toaster } from './components/ui/sonner';
 
 import './App.css';
@@ -70,6 +71,7 @@ function App() {
             <Route path="/request/manage" element={<RequestManagement />} />
             <Route path="/timeoff" element={<TimeOffDashboard />} />
             <Route path="/teams" element={<TeamsShowcase />} />
+            <Route path="/settings/*" element={<AdminSettings />} />
 
           </Route>
           </Route>
