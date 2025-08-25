@@ -22,6 +22,7 @@ import RequestPage from './pages/Request Page/RequestPage';
 import { TimeOffDashboard } from './pages/Time Off Dashboard/TimeOffDashboard';
 import RequestManagement from './pages/Request Managment/RequestManagement';
 import TeamsShowcase from './pages/Teams/TeamShowCase';
+import { Toaster } from './components/ui/sonner';
 
 import './App.css';
 
@@ -42,6 +43,7 @@ function MainLayout() {
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <Toaster />
       <Router>
         <Routes>
           {/* Public routes */}

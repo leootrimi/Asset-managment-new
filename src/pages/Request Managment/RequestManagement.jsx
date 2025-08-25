@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
+import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -17,11 +18,9 @@ import {
   Building
 } from 'lucide-react'
 import RequestCard from './Components/RequestCard'
-import { useToast } from '@/hooks/use-toast'
 import { apiRequest } from '@/services/ApiCalls'
 
 const RequestManagement = () => {
-  const { toast } = useToast()
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [typeFilter, setTypeFilter] = useState('all')
@@ -99,11 +98,11 @@ const RequestManagement = () => {
         : req
     ))
 
-    toast({
-      title: `Request ${action}`,
-      description: `The request has been ${action} successfully.`,
-      variant: action === 'approved' ? 'default' : 'destructive'
-    })
+    console.log('toast called');
+    
+  toast("User created successfully!")
+  toast.success("Saved!");
+  toast.error("Something went wrong");
   }
 
   const filteredRequests = requests.filter(request => {
@@ -127,14 +126,6 @@ const RequestManagement = () => {
   }
 
   const statusCounts = getStatusCounts()
-
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case 'holiday': return Calendar
-      case 'equipment': return Laptop
-      default: return Package
-    }
-  }
 
   const [holidays, setHolidays] = useState([])
 

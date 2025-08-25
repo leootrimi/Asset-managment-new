@@ -147,7 +147,7 @@ const HolidayCard = ({ request, onAction }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <StatusIcon className={`h-4 w-4 text-${statusColor}`} />
-            <Badge variant={statusColor} className="capitalize">
+            <Badge className="capitalize" style={{ backgroundColor: `var(--${statusColor})`}}>
               {request.status}
             </Badge>
             <span className="text-sm text-muted-foreground">
@@ -161,14 +161,14 @@ const HolidayCard = ({ request, onAction }) => {
                 size="sm" 
                 variant="outline"
                 onClick={() => onAction(request.id, 'rejected')}
-                className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                className="text-[var(--destructive)] hover:text-white hover:bg-[var(--destructive)] border-1 border-gray-200"
               >
                 Reject
               </Button>
               <Button 
                 size="sm"
                 onClick={() => onAction(request.id, 'approved')}
-                className="bg-success hover:bg-success/90 text-success-foreground"
+                className="bg-white hover:bg-[var(--success)] text-[var(--success)] hover:text-white border-1 border-gray-200"
               >
                 Approve
               </Button>

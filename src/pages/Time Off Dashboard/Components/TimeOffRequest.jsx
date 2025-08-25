@@ -9,8 +9,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { format } from "date-fns";
 import { CalendarIcon, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from '@/services/ApiCalls';
+import { toast } from 'sonner';
 
 export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
   const [selectedType, setSelectedType] = useState('');
@@ -18,7 +18,6 @@ export function TimeOffRequest({ timeOffTypes, onCancel, onSubmit }) {
   const [endDate, setEndDate] = useState('');
   const [reason, setReason] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
 
   const calculateDays = () => {
     if (!startDate || !endDate) return 0;

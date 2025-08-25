@@ -142,7 +142,6 @@ const useEmployerProfileStore = create((set) => ({
       set({ holidays: response })
     } catch (error) {
       console.log(error.message);
-      
     }
   },
 
